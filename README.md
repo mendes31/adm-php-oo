@@ -26,10 +26,10 @@ git clone --branch <branch_name> <repository_url> .
 
 Definir as configurações do usuário.
 ```
-git config --local user.name Cesar
+git config --local user.name mendes31 Rafael Mendes
 ```
 ```
-git config --local user.email cesar@meuemail.com.br
+git config --local user.email raffaell_mendez@hotmail.com
 ```
 
 Verificar a branch.
