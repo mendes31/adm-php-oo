@@ -27,8 +27,36 @@ RewriteCond %{REQUEST_FILENAME} !-l
 
 RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
 
+# Quando houver o erro 403 redirecionar o usuário 
+ErrorDocument 403 http://localhost/tiaraju/error403   
 
+# Bloquear a opção listar os arquivos do diretório
+Options -Indexes
 
+# Bloquear acesso direto aos diretórios pela URL
+RewriteRule ^app/ - [F]
+RewriteRule ^vendor/ - [F]
+RewriteRule ^logs/ - [F]
 
+# Bloquear acesso direto aos arquivos pela URL
+<FilesMatch "^\.gitignore$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "^\.htaccess$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "^composer.json$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "^composer.lock$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "^README.md$">
+    Require all denied
+</FilesMatch>
 
 

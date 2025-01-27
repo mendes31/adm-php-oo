@@ -16,13 +16,13 @@ class LoadPageAdm
     private string $classLoad;
 
     /** @var array $listPgPublic Recebe a lista de paginas publicas */
-    private array $listPgPublic = ["Login"];
+    private array $listPgPublic = ["Login", "Error403"];
 
     /** @var array $listPgPrivate Recebe a lista de paginas privadas */
     private array $listPgPrivate = ["Dashboard", "ListUsers"];
 
     /** @var array $listDirectory Recebe a lista de diretórios com as controllers */
-    private array $listDirectory = ["login", "dashboard", "users"];
+    private array $listDirectory = ["login", "dashboard", "users", "errors"];
 
     /** @var array $listPackages Recebe a lista de pacotes com as controllers */
     private array $listPackages = ["adms"];
