@@ -25,22 +25,20 @@ abstract class DbConnection
     {
         try {
 
-            // Variável recebe o nome do banco de dados
-            $dbname = "tiaraju";
-
             // Conexão com a porta
-            // $this->connect = new PDO("mysql:host=localhost;port=3306;dbname=" .  $dbname, "root", "");
+            // $this->connect = new PDO("mysql:host={$_ENV['DB_HOST']};port={$_ENV['DB_PORT']};dbname=" . $_ENV['DB_NAME'], $_ENV['DB_USER'], $_ENV['DB_PASS']);
 
             // Conexão sem a porta
-            $this->connect = new PDO("mysql:host=localhost;dbname=" .  $dbname, "root", "");
+            $this->connect = new PDO("mysql:host={$_ENV['DB_HOST']};dbname=" . $_ENV['DB_NAME'], $_ENV['DB_USER'], $_ENV['DB_PASS']);
 
-            echo "Conexão realizada com sucesso!<br>";
+            // echo "Conexão realizada com sucesso!<br>";
+
             return $this->connect;
         } catch (PDOException $err) {
             // Chamar o método para salvar log
             GenerateLog::generateLog("alert", "Conexão com o Banco de Dados não realizada.", ['error' =>  $err->getMessage()]);
 
-            die("Erro 001: Por favor tente novamente. Caso o problema persista, entre em contato com o adminstrador raffaell_mendez@hotmail.com");
+            die("Erro 001: Por favor tente novamente. Caso o problema persista, entre em contato com o adminstrador {$_ENV['EMAIL_ADM']}");
         }
     }
 }

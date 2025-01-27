@@ -6,6 +6,9 @@
 
 ## Como rodar o projeto baixado
 
+Duplicar o arquivo ".env.exemple" e renomear para ".env".<br>
+Alterar no arquivo .env as credenciais do banco de dados.<br>
+
 Instalar as dependências.
 ```
 composer install
@@ -20,6 +23,11 @@ composer init
 Instalar a dependencia Monolog, biblioteca PHO que permite criar arquivo de log.
 ```
 composer require monolog/monolog
+```
+
+Instalar a biblioteca gerenciar variáveis de ambiente
+```
+composer require vlucas/phpdotenv
 ```
 
 ## Como usar o GitHub
@@ -63,6 +71,13 @@ git push <remote> <branch>
 git push origin dev-master
 ```
 
+
+
+## Lista de erros
+001 - DBConnection.php - Erro de conexão com o banco de dados
+002 - LoadPageAdm.php - Não encontrou a pagina
+003 - LoadPageAdm.php - Não encontrou a controller
+004 - LoadPageAdm.php - Não encontrou o metodo
 
 
 
