@@ -1,3 +1,5 @@
 [2025-01-27T17:03:57.533372+00:00] name.ERROR: Pagina não encontrada. {"pagina":"Dashboard1","parametro":""} []
 [2025-01-27T17:28:33.967958+00:00] name.ERROR: Pagina não encontrada. {"pagina":"F","parametro":""} []
 [2025-01-27T17:28:43.605166+00:00] name.ERROR: Pagina não encontrada. {"pagina":"F","parametro":""} []
+[2025-01-27T18:50:53.988491+00:00] name.ALERT: Conexão com o Banco de Dados não realizada. {"error":"SQLSTATE[HY000] [1049] Unknown database 'tiaraju1'"} []
+[2025-01-27T18:59:04.837737+00:00] name.ALERT: Conexão com o Banco de Dados não realizada. {"error":"SQLSTATE[HY000] [1049] Unknown database 'tiaraju7'"} []
