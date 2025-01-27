@@ -17,6 +17,10 @@ Criar o arquivo composer.json com a instrução básica.
 ```
 composer init
 ```
+Instalar a dependencia Monolog, biblioteca PHO que permite criar arquivo de log.
+```
+composer require monolog/monolog
+```
 
 ## Como usar o GitHub
 Baixar os arquivos do Git.
