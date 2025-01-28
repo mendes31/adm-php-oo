@@ -13,6 +13,11 @@ Instalar as dependências.
 ```
 composer install
 ```
+Executar as migrations.
+```
+vendor/bin/phinx migrate -c database/phinx.php
+```
+
 
 
 ## Sequencia para criar o projeto
@@ -29,6 +34,39 @@ Instalar a biblioteca gerenciar variáveis de ambiente
 ```
 composer require vlucas/phpdotenv
 ```
+Instalar a biblioteca para criar/executar migration e seed.
+```
+composer require robmorgan/phinx
+```
+Criar o arquivo "phinx.php" com as configurações e alterar as mesmas.
+```
+vendor/bin/phinx init -f php
+```
+
+Testar as configurações do phinx
+```
+vendor/bin/phinx test 
+```
+Criar o diretório database para adicionar o arquivo phinx
+```
+mkdir database/
+```
+
+Criar o diretório para as migrations.
+```
+mkdir database/migrations/
+```
+
+Criar a migrations.
+```
+vendor/bin/phinx create AdmsUsers -c database/phinx.php
+```
+
+Executar as migrations.
+```
+vendor/bin/phinx migrate -c database/phinx.php
+```
+
 
 ## Como usar o GitHub
 Baixar os arquivos do Git.
