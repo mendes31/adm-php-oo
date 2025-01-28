@@ -1,2 +1,4 @@
 [2025-01-27T19:59:35.226298+00:00] name.INFO: Pagina acessada. {"pagina":"ListUsers","parametro":""} []
 [2025-01-27T19:59:47.391210+00:00] name.ERROR: Pagina não encontrada. {"pagina":"ListUsers4","parametro":""} []
+[2025-01-27T20:10:05.238405+00:00] name.INFO: Pagina acessada. {"pagina":"ListUsers","parametro":""} []
+[2025-01-27T20:10:10.735007+00:00] name.ERROR: Pagina não encontrada. {"pagina":"ListUsers9","parametro":""} []
