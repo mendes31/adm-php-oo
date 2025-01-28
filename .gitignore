@@ -2,7 +2,7 @@
 /vendor/
 
 # Ignorar todos os arquivos dentro do diretório logs
-/logs/*
+/logs/
 
 # # Exceto o arquivo .empty
 # !logs/.empty
