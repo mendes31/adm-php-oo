@@ -17,6 +17,10 @@ Executar as migrations.
 ```
 vendor/bin/phinx migrate -c database/phinx.php
 ```
+Executar as seed
+```
+vendor/bin/phinx seed:run -c database/phinx.php
+```
 
 ## Sequencia para criar o projeto
 Criar o arquivo composer.json com a instrução básica.
@@ -68,6 +72,20 @@ vendor/bin/phinx migrate -c database/phinx.php
 Executar o rollback caso necessário para apagar uma tabela
 ```
 vendor/bin/phinx rollback -c database/phinx.php
+```
+Criar o diretório seeds
+```
+mkdir databse/seeds/
+```
+
+Criar a seed
+```
+vendor/bin/phinx seed:create AddAdmsUsers -c database/phinx.php
+```
+
+Executar as seed
+```
+vendor/bin/phinx seed:run -c database/phinx.php
 ```
 
 
