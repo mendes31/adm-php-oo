@@ -12,7 +12,7 @@ final class AdmsUsers extends AbstractMigration
      * https://book.cakephp.org/phinx/0/en/migrations.html#the-change-method
      * 
      */
-    public function change(): void
+    public function up(): void
     {
 
         // Acessa o IF quando não existe a tabela no banco de dados
@@ -31,4 +31,12 @@ final class AdmsUsers extends AbstractMigration
                 ->create();
         }
     }
+
+// Método down() para reverter a migração (caso necessário)
+    public function down()
+    {
+        // Apagar a tabela adms_users
+        $this->table('adms_users')->drop()->save();
+    }
+
 }
