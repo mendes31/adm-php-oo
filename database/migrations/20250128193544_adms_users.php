@@ -33,7 +33,7 @@ final class AdmsUsers extends AbstractMigration
     }
 
 // Método down() para reverter a migração (caso necessário)
-    public function down()
+    public function down(): void
     {
         // Apagar a tabela adms_users
         $this->table('adms_users')->drop()->save();

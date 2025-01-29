@@ -69,10 +69,11 @@ Executar as migrations.
 vendor/bin/phinx migrate -c database/phinx.php
 ```
 
-Executar o rollback caso necessário para apagar uma tabela
+Executar o rollback na ultima migration - caso necessário reverter as alterações realizadas
 ```
 vendor/bin/phinx rollback -c database/phinx.php
 ```
+
 Criar o diretório seeds
 ```
 mkdir databse/seeds/
