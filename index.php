@@ -2,6 +2,9 @@
 
 use App\adms\Controllers\Services\PageController;
 
+session_start(); // Iniciar a sessão
+ob_start(); // Limpar o Buffer de saída
+
 // Carregar o Composer
 require './vendor/autoload.php';
 

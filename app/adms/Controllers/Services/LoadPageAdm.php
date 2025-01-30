@@ -19,7 +19,7 @@ class LoadPageAdm
     private array $listPgPublic = ["Login", "Error403"];
 
     /** @var array $listPgPrivate Recebe a lista de paginas privadas */
-    private array $listPgPrivate = ["Dashboard", "ListUsers"];
+    private array $listPgPrivate = ["Dashboard", "ListUsers", "ViewUser"];
 
     /** @var array $listDirectory Recebe a lista de diretórios com as controllers */
     private array $listDirectory = ["login", "dashboard", "users", "errors"];
@@ -125,11 +125,13 @@ class LoadPageAdm
         $classLoad = new $this->classLoad();
 
         if (method_exists($classLoad, "index")) {
+            
+            
+            // Chamar o método para salvar log
+            GenerateLog::generateLog("info", "Pagina acessada.", ['pagina' => $this->urlController, 'parametro' => $this->urlParameter]);
 
             // Carregar o método
             $classLoad->{"index"}($this->urlParameter);
-            // Chamar o método para salvar log
-            GenerateLog::generateLog("info", "Pagina acessada.", ['pagina' => $this->urlController, 'parametro' => $this->urlParameter]);
         } else {
 
             // Chamar o método para salvar log

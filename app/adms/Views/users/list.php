@@ -12,10 +12,11 @@ if($this->data['users']){
         extract($user);
 
         // Imprimir as informações do registro
-        echo "ID; $id<br>";
-        echo "Nome; $name<br>";
-        echo "Email; $email<br>";
-        echo "Usuário; $username<br>";
+        echo "ID: $id<br>";
+        echo "Nome: $name<br>";
+        echo "Email: $email<br>";
+        // echo "Usuário: $username<br>";
+        echo "<a href='{$_ENV['URL_ADM']}view-user/$id'>Visualizar</a>";
 
         echo "<hr>";
 
@@ -29,4 +30,4 @@ if($this->data['users']){
     echo "<p style='color: #f00;'>Nenhum usuário encontrado.</p>";
 }
 
-var_dump($this->data);
+// var_dump($this->data);
