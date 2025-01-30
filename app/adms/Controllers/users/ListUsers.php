@@ -3,6 +3,7 @@
 namespace App\adms\Controllers\users;
 
 use App\adms\Models\Repository\UsersRepository;
+use App\adms\Views\Services\LoadViewService;
 
 /**
  * Controller listar usuários
@@ -21,13 +22,15 @@ class ListUsers
      */
     public function index()
     {
-        echo "Listar Usuários<br>";
-
         // Instanciar o Repository para recuperar os registros do banco de dados
         $listUsers = new UsersRepository();
         $this->data['users'] = $listUsers->getAllUsers();
 
-        var_dump($this->data);
+        //var_dump($this->data);
+
+        // Carregar a VIEW
+        $loadView = new LoadViewService("adms/Views/users/list", $this->data);
+        $loadView->loadView();
     }
       
 }

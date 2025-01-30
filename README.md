@@ -138,6 +138,7 @@ git push origin dev-master
 002 - LoadPageAdm.php - Não encontrou a pagina
 003 - LoadPageAdm.php - Não encontrou a controller
 004 - LoadPageAdm.php - Não encontrou o metodo
+005 - LoadViewService.php - Não encontrou a VIEW
 
 
 

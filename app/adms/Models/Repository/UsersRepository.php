@@ -19,7 +19,14 @@ class UsersRepository extends DbConnection
     public function getAllUsers()
     {
         // QUERY para recuperar os registros do banco de dados
-        $sql = 'SELECT id, name, email, username FROM adms_users ORDER BY id DESC';
+        $sql = 'SELECT 
+                    id, 
+                    name, 
+                    email, 
+                    username 
+                FROM adms_users 
+                ORDER BY 
+                    id DESC';
 
         // Preparar a QUERY
         $stmt = $this->getConnection()->prepare($sql);
