@@ -1,12 +1,15 @@
 <?php
 
+use App\adms\Helpers\CSRFHelper;
+
 echo "<h3>Cadastrar Usuário</h3>";
 
-echo "<a href='{$_ENV['URL_ADM']}list-users'>Listar Usuários</a><br><br>";
+echo "<a href='{$_ENV['URL_ADM']}list-users'>Listar Usuários</a><br>";
 
 ?>
 
 <form action="" method="POST">
+    <input type="hidden" name="csrf_token" value="<?php echo CSRFHelper::generateCSRFToken('form_create_user'); ?>"><br><br>
 
     <label for="name">Nome: </label>
     <input type="text" name="name" id="name" placeholder="Nome completo"><br><br>
