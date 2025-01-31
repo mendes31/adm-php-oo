@@ -2,7 +2,7 @@
 
 echo "<h3>Listar Usuários</h3>";
 
-
+echo "<a href='{$_ENV['URL_ADM']}create-user'>Cadastrar Usuários</a><br><br>";
 
 // Acessa o IF quando encontrar o elemento no array users
 if(isset($this->data['users'])){
