@@ -5,7 +5,9 @@ echo "<h3>Listar Usuários</h3>";
 
 
 // Acessa o IF quando encontrar o elemento no array users
-if($this->data['users']){
+if(isset($this->data['users'])){
+
+    //Perceorre o array de usuários
     foreach($this->data['users'] as $user){
 
         // Extrair o array para imprimir o elemento do array através do nome
@@ -27,6 +29,7 @@ if($this->data['users']){
         // echo "Usuário: " . $user['username'] . "<br>";
     }
 }else{
+    // Acessa o ELSE quando o elemento não existir registros
     echo "<p style='color: #f00;'>Nenhum usuário encontrado.</p>";
 }
 
