@@ -69,4 +69,30 @@ class UsersRepository extends DbConnection
         // Ler o registro e retornar
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Cadastrar novo usuário
+     * @param array $data Dados do usuário
+     * @return bool Sucesso ou falha
+     */
+    public function createUser(array $data): bool
+    {
+
+        // QUERY cadastrar usuários
+        $sql = 'INSERT INTO adms_users (name, email, username, password, created_at ) VALUES (:name, :email, :username, :password, :created_at)';
+
+        // Preparar a QUERY
+        $stmt = $this->getConnection()->prepare($sql);
+
+        // Substituir os links da QUERY pelo valor
+        $stmt->bindValue(':name', $data['name'], PDO::PARAM_STR);
+        $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
+        $stmt->bindValue(':username', $data['username'], PDO::PARAM_STR);
+        $stmt->bindValue(':password', password_hash($data['password'], PASSWORD_DEFAULT));
+        $stmt->bindValue(':created_at', date("Y-m-d H:i:s"));
+
+        // Executar a QUERY
+        return $stmt->execute();
+
+    }
 }
