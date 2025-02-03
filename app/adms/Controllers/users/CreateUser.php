@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\users;
 
+use App\adms\Controllers\Services\Validation\ValidationEmptyFieldService;
 use App\adms\Controllers\Services\Validation\ValidationUserService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Models\Repository\UsersRepository;
@@ -58,7 +59,11 @@ class CreateUser
     private function addUser(): void
     {
         // Instanciar a classe validar os dados do fromulário cadastrar usuário
-        $validationUser = new ValidationUserService();
+        // $validationUser = new ValidationUserService();
+        // $this->data['errors'] = $validationUser->validate($this->data['form']);
+
+        // Instanciar a classe validar os dados do fromuláriose houver campo vazio
+        $validationUser = new ValidationEmptyFieldService();
         $this->data['errors'] = $validationUser->validate($this->data['form']);
 
         // Acessa o IF quando existir campo com dados incorretos
