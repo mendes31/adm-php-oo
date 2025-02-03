@@ -25,17 +25,18 @@ if(isset($this->data['errors'])){
 <form action="" method="POST">
     <input type="hidden" name="csrf_token" value="<?php echo CSRFHelper::generateCSRFToken('form_create_user'); ?>"><br><br>
 
+    <!-- Operador de coalescência nula em PHP (??) - Serve para fornecer um valor padrão se uma determinada chave não estiver presente ou for nula. -->
     <label for="name">Nome: </label>
-    <input type="text" name="name" id="name" placeholder="Nome completo"><br><br>
+    <input type="text" name="name" id="name" placeholder="Nome completo" value="<?php echo $this->data['form']['name'] ?? ''; ?>"><br><br>
 
     <label for="email">Email: </label>
-    <input type="email" name="email" id="email" placeholder="Digite o email"><br><br>
+    <input type="email" name="email" id="email" placeholder="Digite o email" value="<?php echo $this->data['form']['email'] ?? ''; ?>"><br><br>
 
     <label for="username">Usuário: </label>
-    <input type="text" name="username" id="username" placeholder="Digite o usuário"><br><br>
+    <input type="text" name="username" id="username" placeholder="Digite o usuário" value="<?php echo $this->data['form']['username'] ?? ''; ?>"><br><br>
 
     <label for="password">Senha: </label>
-    <input type="password" name="password" id="password" placeholder="Senha minímo 6 caracteres"><br><br>
+    <input type="password" name="password" id="password" placeholder="Senha minímo 6 caracteres" value="<?php echo $this->data['form']['password'] ?? ''; ?>"><br><br>
 
     <button type="submit">Cadastrar</button>
 

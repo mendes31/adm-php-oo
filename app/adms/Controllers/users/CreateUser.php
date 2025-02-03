@@ -14,8 +14,8 @@ use App\adms\Views\Services\LoadViewService;
  */
 class CreateUser
 {
-    /** @var array|null $dataForm Recebe os dados do FORMULARIO */
-    private array|null $dataForm;
+    // /** @var array|null $dataForm Recebe os dados do FORMULARIO */
+    // private array|null $dataForm;
 
     /** @var array|string|null $data Recebe os dados que devem ser enviados para a VIEW */
     private array|string|null $data = null;
@@ -23,7 +23,7 @@ class CreateUser
     public function index(): void
     {
         // REceber os dados
-        $this->dataForm = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        $this->data['form'] = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
         // // Instanciar a classe validar os dados do fromulário cadastrar usuário
         // $validationUser = new ValidationUserService();
@@ -33,7 +33,7 @@ class CreateUser
 
 
         // Acessar o IF se existir o CSRF e for valido o CSRF
-        if (isset($this->dataForm['csrf_token']) and CSRFHelper::validateCSRFToken('form_create_user', $this->dataForm['csrf_token'])) {
+        if (isset($this->data['form']['csrf_token']) and CSRFHelper::validateCSRFToken('form_create_user', $this->data['form']['csrf_token'])) {
 
             // Chamar o método cadastrar o 
             $this->addUser();
@@ -59,7 +59,7 @@ class CreateUser
     {
         // Instanciar a classe validar os dados do fromulário cadastrar usuário
         $validationUser = new ValidationUserService();
-        $this->data['errors'] = $validationUser->validate($this->dataForm);
+        $this->data['errors'] = $validationUser->validate($this->data['form']);
 
         // Acessa o IF quando existir campo com dados incorretos
         if (!empty($this->data['errors'])) {
@@ -70,7 +70,7 @@ class CreateUser
 
         // Instanciar o Repository para Criar o usuário
         $userCreate = new UsersRepository();
-        $result = $userCreate->createUser($this->dataForm);
+        $result = $userCreate->createUser($this->data['form']);
 
         // Acessa o IF se o repository retornou TRUE
         if ($result) {
