@@ -3,6 +3,7 @@
 namespace App\adms\Controllers\users;
 
 use App\adms\Controllers\Services\Validation\ValidationEmptyFieldService;
+use App\adms\Controllers\Services\Validation\ValidationUserRakitService;
 use App\adms\Controllers\Services\Validation\ValidationUserService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Models\Repository\UsersRepository;
@@ -63,7 +64,11 @@ class CreateUser
         // $this->data['errors'] = $validationUser->validate($this->data['form']);
 
         // Instanciar a classe validar os dados do fromuláriose houver campo vazio
-        $validationUser = new ValidationEmptyFieldService();
+        // $validationUser = new ValidationEmptyFieldService();
+        // $this->data['errors'] = $validationUser->validate($this->data['form']);
+
+        // Instanciar a classe validar os dados do fromuláriose com Rakit
+        $validationUser = new ValidationUserRakitService();
         $this->data['errors'] = $validationUser->validate($this->data['form']);
 
         // Acessa o IF quando existir campo com dados incorretos
