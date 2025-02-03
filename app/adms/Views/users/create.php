@@ -38,6 +38,9 @@ if(isset($this->data['errors'])){
     <label for="password">Senha: </label>
     <input type="password" name="password" id="password" placeholder="Senha minímo 6 caracteres" value="<?php echo $this->data['form']['password'] ?? ''; ?>"><br><br>
 
+    <label for="confirm_password">Confirmar Senha: </label>
+    <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirmar a senha." value="<?php echo $this->data['form']['confirm_password'] ?? ''; ?>"><br><br>
+
     <button type="submit">Cadastrar</button>
 
 </form>
