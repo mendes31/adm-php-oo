@@ -35,10 +35,19 @@ Options -Indexes
 
 # Bloquear acesso direto aos diretórios pela URL
 RewriteRule ^app/ - [F]
-RewriteRule ^vendor/ - [F]
 RewriteRule ^logs/ - [F]
+RewriteRule ^vendor/ - [F]
+RewriteRule ^database/ - [F]
 
 # Bloquear acesso direto aos arquivos pela URL
+<FilesMatch "^\.env$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "^\.env.exemple$">
+    Require all denied
+</FilesMatch>
+
 <FilesMatch "^\.gitignore$">
     Require all denied
 </FilesMatch>
@@ -52,6 +61,10 @@ RewriteRule ^logs/ - [F]
 </FilesMatch>
 
 <FilesMatch "^composer.lock$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "^LICENSE.txt$">
     Require all denied
 </FilesMatch>
 

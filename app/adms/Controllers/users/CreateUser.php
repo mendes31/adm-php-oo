@@ -42,6 +42,9 @@ class CreateUser
                 // Redirecionar o usuário para a pagina listar
                 header("Location: {$_ENV['URL_ADM']}list-users");
                 return;
+            } else {
+                    // Criar a mensagem de erro
+                    $_SESSION['error'] = "Usuário não cadastrado!";
             }
         }
 

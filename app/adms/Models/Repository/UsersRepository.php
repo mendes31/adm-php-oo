@@ -2,7 +2,10 @@
 
 namespace App\adms\Models\Repository;
 
+use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Services\DbConnection;
+use Exception;
+use Generator;
 use PDO;
 
 /**
@@ -77,22 +80,31 @@ class UsersRepository extends DbConnection
      */
     public function createUser(array $data): bool
     {
+        // Usar o try e catch para gerenciar exeções/erro
+        try{ // Permanece no try se não houver erro
 
-        // QUERY cadastrar usuários
-        $sql = 'INSERT INTO adms_users (name, email, username, password, created_at ) VALUES (:name, :email, :username, :password, :created_at)';
+            // QUERY cadastrar usuários
+            $sql = 'INSERT INTO adms_users (name, email, username, password, created_at ) VALUES (:name, :email, :username, :password, :created_at)';
 
-        // Preparar a QUERY
-        $stmt = $this->getConnection()->prepare($sql);
+            // Preparar a QUERY
+            $stmt = $this->getConnection()->prepare($sql);
 
-        // Substituir os links da QUERY pelo valor
-        $stmt->bindValue(':name', $data['name'], PDO::PARAM_STR);
-        $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
-        $stmt->bindValue(':username', $data['username'], PDO::PARAM_STR);
-        $stmt->bindValue(':password', password_hash($data['password'], PASSWORD_DEFAULT));
-        $stmt->bindValue(':created_at', date("Y-m-d H:i:s"));
+            // Substituir os links da QUERY pelo valor
+            $stmt->bindValue(':name', $data['name'], PDO::PARAM_STR);
+            $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
+            $stmt->bindValue(':username', $data['username'], PDO::PARAM_STR);
+            $stmt->bindValue(':password', password_hash($data['password'], PASSWORD_DEFAULT));
+            $stmt->bindValue(':created_at', date("Y-m-d H:i:s"));
 
-        // Executar a QUERY
-        return $stmt->execute();
+            // Executar a QUERY
+            return $stmt->execute();
+        } catch(Exception $e){ // Acessa o catch quando houver erro no try
+
+            // Chamar o método para salvar o log
+            GenerateLog::generateLog("error", "Usuário não cadastrado.", ['username' => $data['username'], 'email' => $data['email']]);
+
+            return false;
+        }
 
     }
 }
