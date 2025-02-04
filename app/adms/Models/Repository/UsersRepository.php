@@ -101,7 +101,7 @@ class UsersRepository extends DbConnection
         } catch(Exception $e){ // Acessa o catch quando houver erro no try
 
             // Chamar o método para salvar o log
-            GenerateLog::generateLog("error", "Usuário não cadastrado.", ['username' => $data['username'], 'email' => $data['email']]);
+            GenerateLog::generateLog("error", "Usuário não cadastrado.", ['username' => $data['username'], 'email' => $data['email'],'error' => $e->getMessage()]);
 
             return false;
         }
