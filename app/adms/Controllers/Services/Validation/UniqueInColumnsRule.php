@@ -7,13 +7,13 @@ use App\adms\Models\Repository\UniqueValueRepository;
 use Exception;
 use Rakit\Validation\Rule;
 
-class UniqueRule extends Rule
+class UniqueInColumnsRule extends Rule
 {
     // Mensagem de erro genéria (value = valor dentro do campo)
     protected $message = ":value já está em uso";
 
     // Parâmetros dinâmicos
-    protected $fillableParams = ['table', 'column', 'except'];
+    protected $fillableParams = ['table', 'columns', 'except'];
 
     public function check($value): bool
     {
@@ -21,11 +21,11 @@ class UniqueRule extends Rule
         try{// Usar o try catch para gerenciar exceção/erro
 
         // Verificar se os parâmetros necessários existem
-        $this->requireParameters(['table', 'column']);
+        $this->requireParameters(['table', 'columns']);
 
         // Recuperar os parâmetros
         $table = $this->parameter('table');
-        $column = $this->parameter('column');
+        $columns = explode(';', $this->parameter('columns')); // Espera-se que as colunas sejam uma string separda por (;)
         $except = $this->parameter('except');
 
         if ($except and $except == $value) {
@@ -34,7 +34,16 @@ class UniqueRule extends Rule
        
         // Instanciar o Repository para verificar se existe registro com o valor fornecido
         $validateUniqueValue = new UniqueValueRepository();
-        return $validateUniqueValue->getRecord($table, $column, $value);
+
+        // Percorrer o array de colunas 
+        foreach($columns as $column){
+            // Verificar se existe registro com o valor fornecido
+            if(!$validateUniqueValue->getRecord($table, $column, $value)){
+                return false;
+            }
+        }
+
+        return true;
     }catch (Exception $e) { // Acessa o catch quando houver erro no try
 
         // Chamar o método para salvar o log

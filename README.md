@@ -22,11 +22,6 @@ Executar as seed
 vendor/bin/phinx seed:run -c database/phinx.php
 ```
 
-Instalar a biblioteca para vallidar o formulario.
-```
-composer require "rakit/validation"
-```
-
 
 ## Sequencia para criar o projeto
 Criar o arquivo composer.json com a instrução básica.
@@ -93,6 +88,11 @@ vendor/bin/phinx seed:create AddAdmsUsers -c database/phinx.php
 Executar as seed
 ```
 vendor/bin/phinx seed:run -c database/phinx.php
+```
+
+Instalar a biblioteca para vallidar o formulario.
+```
+composer require "rakit/validation"
 ```
 
 
