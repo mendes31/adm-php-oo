@@ -24,9 +24,10 @@ if(isset($this->data['users'])){
         // Imprimir as informações do registro
         echo "ID: $id<br>";
         echo "Nome: $name<br>";
-        echo "Email: $email<br>";
+        echo "Email: $email<br><br>";
         // echo "Usuário: $username<br>";
-        echo "<a href='{$_ENV['URL_ADM']}view-user/$id'>Visualizar</a>";
+        echo "<a href='{$_ENV['URL_ADM']}view-user/$id'>Visualizar</a><br>";
+        echo "<a href='{$_ENV['URL_ADM']}update-user/$id'>Editar</a><br>";
 
         echo "<hr>";
 
