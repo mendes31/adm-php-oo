@@ -15,6 +15,7 @@ class ViewUser
 {
     /** @var array|string|null $data Recebe os dados que devem ser enviados para a VIEW */
     private array|string|null $data = null;
+    
     /**
      * Recuperar os detalhes do usuário
      * 
