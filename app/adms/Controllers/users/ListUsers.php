@@ -26,7 +26,8 @@ class ListUsers
         $listUsers = new UsersRepository();
         $this->data['users'] = $listUsers->getAllUsers();
 
-        //var_dump($this->data);
+        // Criar o título da página
+        $this->data['title_head'] =  "Listar Usuários";
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/users/list", $this->data);

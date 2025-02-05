@@ -12,6 +12,9 @@ require './vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
 $dotenv->load();
 
+// Definir o timezone
+date_default_timezone_set($_ENV['APP_TIMEZONE']);
+
 // Instanciar a classe PageController, responsável em tratar a URL
 $url = new PageController();
 

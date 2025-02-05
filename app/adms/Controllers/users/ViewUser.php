@@ -22,10 +22,10 @@ class ViewUser
      * @param integer|string $id id do usuário
      * @return void
      */
-    public function index(int|string $id): void 
+    public function index(int|string $id): void
     {
         // Acessa o IF se o id for valor do tipo inteiro
-        if(!(int) $id){
+        if (!(int) $id) {
 
             // Chamar o método para salvar o log
             GenerateLog::generateLog("error", "Usuário não encontrado.", ['id' => (int) $id]);
@@ -39,12 +39,12 @@ class ViewUser
         }
 
         // Instanciar o Repository para recuperar o registro do banco de dados
-        $viewUser =new UsersRepository();
+        $viewUser = new UsersRepository();
         $this->data['user'] = $viewUser->getUser((int) $id);
 
 
         // Verificar se existe o registro no banco de dados
-        if(!$this->data['user']){
+        if (!$this->data['user']) {
 
             // Chamar o método para salvar o log
             GenerateLog::generateLog("error", "Usuário não encontrado.", ['id' => (int) $id]);
@@ -55,15 +55,16 @@ class ViewUser
             // Redirecionar o usuário para página listar
             header("Location: {$_ENV['URL_ADM']}list-users");
             return;
-
         }
 
-            // Chamar o método para salvar o log
-            GenerateLog::generateLog("error", "Usuário não encontrado.", ['id' => (int) $id]);
+        // Chamar o método para salvar o log
+        GenerateLog::generateLog("error", "Usuário não encontrado.", ['id' => (int) $id]);
 
-            // Carregar a VIEW
-            $loadView = new LoadViewService("adms/Views/users/view", $this->data);
-            $loadView->loadView();
-        
+        // Criar o título da página
+        $this->data['title_head'] =  "Visualizar Usuário";
+
+        // Carregar a VIEW
+        $loadView = new LoadViewService("adms/Views/users/view", $this->data);
+        $loadView->loadView();
     }
 }

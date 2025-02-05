@@ -52,6 +52,9 @@ class CreateUser
      */
     private function viewUser(): void
     {
+        // Criar o título da página
+        $this->data['title_head'] =  "Cadastrar Usuários";
+
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/users/create", $this->data);
         $loadView->loadView();
