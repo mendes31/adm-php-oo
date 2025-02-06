@@ -81,7 +81,7 @@ class UsersRepository extends DbConnection
     public function createUser(array $data): bool
     {
         // Usar o try e catch para gerenciar exeções/erro
-        try{ // Permanece no try se não houver erro
+        try { // Permanece no try se não houver erro
 
             // QUERY cadastrar usuários
             $sql = 'INSERT INTO adms_users (name, email, username, password, created_at ) VALUES (:name, :email, :username, :password, :created_at)';
@@ -98,13 +98,72 @@ class UsersRepository extends DbConnection
 
             // Executar a QUERY
             return $stmt->execute();
-        } catch(Exception $e){ // Acessa o catch quando houver erro no try
+        } catch (Exception $e) { // Acessa o catch quando houver erro no try
 
             // Chamar o método para salvar o log
-            GenerateLog::generateLog("error", "Usuário não cadastrado.", ['username' => $data['username'], 'email' => $data['email'],'error' => $e->getMessage()]);
+            GenerateLog::generateLog("error", "Usuário não cadastrado.", ['username' => $data['username'], 'email' => $data['email'], 'error' => $e->getMessage()]);
 
             return false;
         }
+    }
 
+    /**
+     * Editar os dados do usuário
+     * @param array $data Dados atualizados do usuário
+     * @return bool Sucesso ou falha
+     */
+    public function updateUser(array $data): bool
+    { 
+        // Usar try e catch para gerenciar exceção/erro
+        try { // Permanece no try se não houver nenhum erro
+
+            // QUERY para atualizar o usuário
+            $sql = 'UPDATE adms_users SET name = :name, email = :email, username = :username, updated_at = :updated_at';
+
+            // Verificar se a senha está incluida nos dados e, se sim, adicionar ao SQL
+            if (!empty($data['password'])) {
+                $sql .= ', password = :password';
+            }
+
+            // Condição para indicar qual registro editar
+            $sql .= ' WHERE id = :id';
+
+            // Preparar a QUERY
+            $stmt = $this->getConnection()->prepare($sql);
+
+            // Substituir os links da QUERY pelo valor
+            $stmt->bindValue(':name', $data['name'], PDO::PARAM_STR);
+            $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
+            $stmt->bindValue(':username', $data['username'], PDO::PARAM_STR);
+            $stmt->bindValue(':updated_at', date("Y-m-d H:i:s"));
+            $stmt->bindValue(':id', $data['id'], PDO::PARAM_INT);
+
+            // Substituir o link da senha se a mesma estiver presente
+            if (!empty($data['password'])) {
+                $stmt->bindValue(':password', password_hash($data['password'], PASSWORD_DEFAULT));
+            }
+
+            // Executar a QUERY
+            $stmt->execute();
+
+            // Receber a quantidade de linhas afetadas
+            $affectedRows = $stmt->rowCount();
+
+            // Verificar o número de linhas afetadas
+            if ($affectedRows > 0) {
+                return true;
+            } else {
+                // Chamar o método para salvar o log
+                GenerateLog::generateLog("error", "Usuário não editado.", ['id' => $data['id'], 'email' => $data['email'], 'username' => $data['username']]);
+
+                return false;
+            }
+        } catch (Exception $e) { // Acessa o catch quando houver erro no try
+
+            // Chamar o método para salvar o log
+            GenerateLog::generateLog("error", "Usuário não editado.", ['id' => $data['id'], 'email' => $data['email'], 'username' => $data['username'], 'error' => $e->getMessage()]);
+
+            return false;
+        }
     }
 }

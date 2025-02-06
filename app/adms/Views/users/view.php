@@ -2,7 +2,8 @@
 
 echo "<h3>Visualizar Usuário</h3>";
 
-echo "<a href='{$_ENV['URL_ADM']}list-users'>Listar Usuários</a><br><br>";
+echo "<a href='{$_ENV['URL_ADM']}list-users'>Listar Usuários</a><br>";
+echo "<a href='{$_ENV['URL_ADM']}update-user/". ($this->data['user']['id'] ?? '')."'>Editar</a><br><br>";
 
 // Acessa o IF quando encontrar o elemento no array user
 if(isset($this->data['user'])){
