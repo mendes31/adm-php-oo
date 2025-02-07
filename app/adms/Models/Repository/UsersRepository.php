@@ -115,6 +115,7 @@ class UsersRepository extends DbConnection
     public function updateUser(array $data): bool
     { 
         // Usar try e catch para gerenciar exceção/erro
+        
         try { // Permanece no try se não houver nenhum erro
 
             // QUERY para atualizar o usuário
@@ -142,27 +143,33 @@ class UsersRepository extends DbConnection
             if (!empty($data['password'])) {
                 $stmt->bindValue(':password', password_hash($data['password'], PASSWORD_DEFAULT));
             }
+           
+            // Retornar TRUE quando conseguir executar a QUERY SQL, não considerando se alterou dados do registro
+            return $stmt->execute();
 
-            // Executar a QUERY
-            $stmt->execute();
+            // // Retornar TRUE quando conseguir executar a QUERY SQL e alterou dados do registro, se não alterar nenhuma informação do registro, retorna FALSE indicando que o registro não foi alterado/editdo.
+            // // Executar a QUERY
+            // $stmt->execute();
 
-            // Receber a quantidade de linhas afetadas
-            $affectedRows = $stmt->rowCount();
+            // // Receber a quantidade de linhas afetadas
+            // $affectedRows = $stmt->rowCount();
 
-            // Verificar o número de linhas afetadas
-            if ($affectedRows > 0) {
-                return true;
-            } else {
-                // Chamar o método para salvar o log
-                GenerateLog::generateLog("error", "Usuário não editado.", ['id' => $data['id'], 'email' => $data['email'], 'username' => $data['username']]);
+            // // Verificar o número de linhas afetadas
+            // if ($affectedRows > 0) {
+            //     return true;
 
-                return false;
-            }
+            // } else {
+            //     // Chamar o método para salvar o log
+            //     GenerateLog::generateLog("error", "Usuário não editado, nenhum valor foi alterado.", ['id' => $data['id'], 'email' => $data['email'], 'username' => $data['username']]);
+               
+            //     return false;
+            // }
+            
         } catch (Exception $e) { // Acessa o catch quando houver erro no try
 
             // Chamar o método para salvar o log
-            GenerateLog::generateLog("error", "Usuário não editado.", ['id' => $data['id'], 'email' => $data['email'], 'username' => $data['username'], 'error' => $e->getMessage()]);
-
+            GenerateLog::generateLog("error", "Usuário não editado, nenhum valor foi alterado.", ['id' => $data['id'], 'email' => $data['email'], 'username' => $data['username'], 'error' => $e->getMessage()]);
+          
             return false;
         }
     }

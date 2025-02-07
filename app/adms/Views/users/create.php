@@ -6,19 +6,8 @@ echo "<h3>Cadastrar Usuário</h3>";
 
 echo "<a href='{$_ENV['URL_ADM']}list-users'>Listar Usuários</a><br>";
 
-// Usar operador ternário para verificar se existe a mensagem de sucesso e erro
-echo isset($_SESSION['success']) ? "<p style='color: #086;'>{$_SESSION['success']}</p>" : "";
-
-echo isset($_SESSION['error']) ? "<p style='color: #f00;'>{$_SESSION['error']}</p>" : "";
-
-// Acessa o IF quando encontrar elementos no array errors
-if(isset($this->data['errors'])){
-
-    foreach($this->data['errors'] as $error){
-
-        echo "<p style='color: #f00;'>$error</p>";
-    }
-}
+// Apresentar mensagem de sucesso e erro
+include './app/adms/Views/partials/alerts.php';
 
 ?>
 

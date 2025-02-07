@@ -29,6 +29,7 @@ class UniqueInColumnsRule extends Rule
         $except = $this->parameter('except');
 
         if ($except and $except == $value) {
+            
             return true;
         }
        
@@ -38,7 +39,7 @@ class UniqueInColumnsRule extends Rule
         // Percorrer o array de colunas 
         foreach($columns as $column){
             // Verificar se existe registro com o valor fornecido
-            if(!$validateUniqueValue->getRecord($table, $column, $value)){
+            if(!$validateUniqueValue->getRecord($table, $column, $value, $except)){
                 return false;
             }
         }

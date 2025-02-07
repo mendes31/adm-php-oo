@@ -5,6 +5,12 @@ echo "<h3>Visualizar Usuário</h3>";
 echo "<a href='{$_ENV['URL_ADM']}list-users'>Listar Usuários</a><br>";
 echo "<a href='{$_ENV['URL_ADM']}update-user/". ($this->data['user']['id'] ?? '')."'>Editar</a><br><br>";
 
+// Apresentar mensagem de sucesso e erro
+include './app/adms/Views/partials/alerts.php';
+
+// // Destruir o que estiver dentro dessas sessões
+// unset($_SESSION['success'], $_SESSION['error']);
+
 // Acessa o IF quando encontrar o elemento no array user
 if(isset($this->data['user'])){
     

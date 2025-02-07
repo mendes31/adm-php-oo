@@ -4,10 +4,8 @@ echo "<h3>Listar Usuários</h3>";
 
 echo "<a href='{$_ENV['URL_ADM']}create-user'>Cadastrar Usuários</a><br><br>";
 
-// Usar operador ternário para verificar se existe a mensagem de sucesso e erro
-echo isset($_SESSION['success']) ? "<p style='color: #086;'>{$_SESSION['success']}</p>" : "";
-
-echo isset($_SESSION['error']) ? "<p style='color: #f00;'>{$_SESSION['error']}</p>" : "";
+// Apresentar mensagem de sucesso e erro
+include './app/adms/Views/partials/alerts.php';
 
 // Destruir o que estiver dentro dessas sessões
 unset($_SESSION['success'], $_SESSION['error']);

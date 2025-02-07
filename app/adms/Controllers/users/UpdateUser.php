@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\users;
 
+use App\adms\Controllers\Services\Validation\ValidationUserRakitService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Repository\UsersRepository;
@@ -89,6 +90,16 @@ class UpdateUser
      */
     private function editUser(): void 
     {
+        // Instanciar a classe validar os dados do formulario
+        $validationUser = new ValidationUserRakitService();
+        $this->data['errors'] = $validationUser->validate($this->data['form']);
+
+        // Acessa o IF quando existir campo com dados incorretos
+        if (!empty($this->data['errors'])) {
+            // Chamar método carregar a view
+            $this->viewUser();
+            return;
+        }
 
         // Instanciar Repository para editar o usuário
         $userUpdate = new UsersRepository();
@@ -99,8 +110,8 @@ class UpdateUser
             // Criar a mensagem de sucesso
             $_SESSION['success'] = "Usuário editado com suscesso!";
 
-            // Redirecionar o usuário para a pagina listar
-            header("Location: {$_ENV['URL_ADM']}list-users");
+            // Redirecionar o usuário para a pagina view - visualizar usuario
+            header("Location: {$_ENV['URL_ADM']}view-user/{$this->data['form']['id']}");
             return;
         }else {
             // Criar a mensagem de erro
