@@ -1,5 +1,7 @@
 <?php
 
+use App\adms\Helpers\CSRFHelper;
+
 echo "<h3>Listar Usuários</h3>";
 
 echo "<a href='{$_ENV['URL_ADM']}create-user'>Cadastrar Usuários</a><br><br>";
@@ -12,6 +14,9 @@ unset($_SESSION['success'], $_SESSION['error']);
 
 // Acessa o IF quando encontrar o elemento no array users
 if(isset($this->data['users'])){
+
+    // Gerar o  token CSRF
+     $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
 
     //Perceorre o array de usuários
     foreach($this->data['users'] as $user){
@@ -26,6 +31,19 @@ if(isset($this->data['users'])){
         // echo "Usuário: $username<br>";
         echo "<a href='{$_ENV['URL_ADM']}view-user/$id'>Visualizar</a><br>";
         echo "<a href='{$_ENV['URL_ADM']}update-user/$id'>Editar</a><br>";
+        ?>
+        
+        <form action="delete-user" method="POST">
+            
+        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+
+        <input type="hidden" name="id" id="id" value="<?php echo $id ?? ''; ?>">
+
+        <button type="submit">Apagar</button>
+
+        </form>
+
+        <?php
 
         echo "<hr>";
 

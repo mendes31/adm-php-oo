@@ -12,7 +12,7 @@ include './app/adms/Views/partials/alerts.php';
 ?>
 
 <form action="" method="POST">
-    <input type="hidden" name="csrf_token" value="<?php echo CSRFHelper::generateCSRFToken('form_create_user'); ?>"><br><br>
+    <input type="hidden" name="csrf_token" value="<?php echo CSRFHelper::generateCSRFToken('form_create_user'); ?>">
 
     <!-- Operador de coalescência nula em PHP (??) - Serve para fornecer um valor padrão se uma determinada chave não estiver presente ou for nula. -->
     <label for="name">Nome: </label>

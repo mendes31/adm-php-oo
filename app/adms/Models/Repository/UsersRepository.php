@@ -97,12 +97,10 @@ class UsersRepository extends DbConnection
             $stmt->bindValue(':created_at', date("Y-m-d H:i:s"));
 
             // Executar a QUERY
-             $stmt->execute();
+            $stmt->execute();
 
-             // Retornar o ID do usuário recém cadastrado
-             return $this->getConnection()->lastInsertId();
-
-
+            // Retornar o ID do usuário recém cadastrado
+            return $this->getConnection()->lastInsertId();
         } catch (Exception $e) { // Acessa o catch quando houver erro no try
 
             // Chamar o método para salvar o log
@@ -118,9 +116,9 @@ class UsersRepository extends DbConnection
      * @return bool Sucesso ou falha
      */
     public function updateUser(array $data): bool
-    { 
+    {
         // Usar try e catch para gerenciar exceção/erro
-        
+
         try { // Permanece no try se não houver nenhum erro
 
             // QUERY para atualizar o usuário
@@ -148,7 +146,7 @@ class UsersRepository extends DbConnection
             if (!empty($data['password'])) {
                 $stmt->bindValue(':password', password_hash($data['password'], PASSWORD_DEFAULT));
             }
-           
+
             // Retornar TRUE quando conseguir executar a QUERY SQL, não considerando se alterou dados do registro
             return $stmt->execute();
 
@@ -166,15 +164,58 @@ class UsersRepository extends DbConnection
             // } else {
             //     // Chamar o método para salvar o log
             //     GenerateLog::generateLog("error", "Usuário não editado, nenhum valor foi alterado.", ['id' => $data['id'], 'email' => $data['email'], 'username' => $data['username']]);
-               
+
             //     return false;
             // }
-            
+
         } catch (Exception $e) { // Acessa o catch quando houver erro no try
 
             // Chamar o método para salvar o log
             GenerateLog::generateLog("error", "Usuário não editado, nenhum valor foi alterado.", ['id' => $data['id'], 'email' => $data['email'], 'username' => $data['username'], 'error' => $e->getMessage()]);
-          
+
+            return false;
+        }
+    }
+
+    /**
+     * Deletar usuário pelo ID
+     * @param int $id
+     * @return bool Sucesso ou falha
+     */
+    public function deleteUser(int $id): bool
+    {
+        // Usar try e catch para gerenciar exceção/erro
+        try {
+            // QUERY para deletar usuário
+            $sql = 'DELETE FROM adms_users WHERE id = :id LIMIT 1';
+
+            // Preparar a QUERY
+            $stms = $this->getConnection()->prepare($sql);
+
+            // Substituir o link da QUERY pelo valor 
+            $stms->bindValue(':id', $id, PDO::PARAM_INT);
+
+            // Executar a QUERY
+            $stms->execute();
+
+            // Verificar o número de linhas afetadas
+            $affectedRows = $stms->rowCount();
+
+            // Verificar o número de linhas afetadas
+            if ($affectedRows > 0) {
+                return true;
+            } else {
+
+                // Chamar o método para salvar o log
+                GenerateLog::generateLog("error", "Usuário não apagado.", ['id' => $id]);
+
+                return false;
+            }
+        } catch (Exception $e) {
+
+            // Chamar o método para salvar o log
+            GenerateLog::generateLog("error", "Usuário não apagado.", ['id' => $id, 'error' => $e->getMessage()]);
+
             return false;
         }
     }

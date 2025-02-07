@@ -30,7 +30,7 @@ class UpdateUser
     public function index(int|string $id): void
     {
 
-        // REceber os dados
+        // Receber os dados do formulário
         $this->data['form'] = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
         // Acessar o IF se existir o CSRF e for valido o CSRF
