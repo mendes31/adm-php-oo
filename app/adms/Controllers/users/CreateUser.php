@@ -92,7 +92,7 @@ class CreateUser
             $_SESSION['success'] = "Usuário cadastrado com suscesso!";
 
             // Redirecionar o usuário para a pagina listar
-            header("Location: {$_ENV['URL_ADM']}list-users");
+            header("Location: {$_ENV['URL_ADM']}view-user/$result");
             return;
         } else {
             // Criar a mensagem de erro

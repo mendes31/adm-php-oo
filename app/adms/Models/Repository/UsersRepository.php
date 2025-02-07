@@ -76,9 +76,9 @@ class UsersRepository extends DbConnection
     /**
      * Cadastrar novo usuário
      * @param array $data Dados do usuário
-     * @return bool Sucesso ou falha
+     * @return bool|int Sucesso ou falha
      */
-    public function createUser(array $data): bool
+    public function createUser(array $data): bool|int
     {
         // Usar o try e catch para gerenciar exeções/erro
         try { // Permanece no try se não houver erro
@@ -97,7 +97,12 @@ class UsersRepository extends DbConnection
             $stmt->bindValue(':created_at', date("Y-m-d H:i:s"));
 
             // Executar a QUERY
-            return $stmt->execute();
+             $stmt->execute();
+
+             // Retornar o ID do usuário recém cadastrado
+             return $this->getConnection()->lastInsertId();
+
+
         } catch (Exception $e) { // Acessa o catch quando houver erro no try
 
             // Chamar o método para salvar o log

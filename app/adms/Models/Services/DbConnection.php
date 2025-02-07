@@ -25,15 +25,20 @@ abstract class DbConnection
     {
         try {
 
-            // Conexão com a porta
-            // $this->connect = new PDO("mysql:host={$_ENV['DB_HOST']};port={$_ENV['DB_PORT']};dbname=" . $_ENV['DB_NAME'], $_ENV['DB_USER'], $_ENV['DB_PASS']);
+            // Criar nova conexão com o bandco de dados se não existir
+            if (!isset($this->connect)) {
 
-            // Conexão sem a porta
-            $this->connect = new PDO("mysql:host={$_ENV['DB_HOST']};dbname=" . $_ENV['DB_NAME'], $_ENV['DB_USER'], $_ENV['DB_PASS']);
+                // Conexão com a porta
+                // $this->connect = new PDO("mysql:host={$_ENV['DB_HOST']};port={$_ENV['DB_PORT']};dbname=" . $_ENV['DB_NAME'], $_ENV['DB_USER'], $_ENV['DB_PASS']);
 
-            // echo "Conexão realizada com sucesso!<br>";
+                // Conexão sem a porta
+                $this->connect = new PDO("mysql:host={$_ENV['DB_HOST']};dbname=" . $_ENV['DB_NAME'], $_ENV['DB_USER'], $_ENV['DB_PASS']);
+
+                // echo "Conexão realizada com sucesso!<br>";
+            }
 
             return $this->connect;
+
         } catch (PDOException $err) {
             // Chamar o método para salvar log
             GenerateLog::generateLog("alert", "Conexão com o Banco de Dados não realizada.", ['error' =>  $err->getMessage()]);
