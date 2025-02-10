@@ -4,7 +4,7 @@ use App\adms\Helpers\CSRFHelper;
 
 echo "<h3>Cadastrar Usuário</h3>";
 
-echo "<a href='{$_ENV['URL_ADM']}list-users'>Listar Usuários</a><br>";
+echo "<a href='{$_ENV['URL_ADM']}list-users'>Listar Usuários</a><br><br>";
 
 // Apresentar mensagem de sucesso e erro
 include './app/adms/Views/partials/alerts.php';

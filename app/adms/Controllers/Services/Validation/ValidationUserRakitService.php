@@ -35,7 +35,9 @@ class ValidationUserRakitService
         // Se estiver ausente o ID, então é uma criação (cadastrar)
         if(!isset($data['id'])){
             $rules['email'] = 'required|email|uniqueInColumns:adms_users,email;username';
-            $rules['password'] = 'required|regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{6,}$/';
+            $rules['username'] = 'required|min:6|regex:/^\S*$/|uniqueInColumns:adms_users,email;username';
+            // $rules['password'] = 'required|regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{6,}$/';
+            $rules['password'] = 'required|min:6|regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_])/';
             $rules['confirm_password'] = 'required|same:password';
         } else {
             // Para edição, adicionar validação de ID e ignorar o próprio usuário na verificação de email e username
@@ -61,7 +63,6 @@ class ValidationUserRakitService
             'username:regex'                => 'O usuário não pode conter espaços em branco.',
             'username:uniqueInColumns'      => 'O usuário já existe.',
             
-            'password:required'             => 'O campo senha é obrigatório.',
             'password:required'             => 'O campo senha é obrigatório.',
             'password:min'                  => 'A senha deve ter no mínimo 6 caracteres.',
             'password:regex'                => 'A senha deve conter letra(s), numero(s) e caractere(s) especial.',
