@@ -19,17 +19,40 @@ class UsersRepository extends DbConnection
      * Recuperar os registros
      * @return array Usuários reguperados do banco de dados
      */
-    public function getAllUsers()
+    public function getAllUsers(int $page = 1, int $limitResult = 10)
     {
+        // Calcular o registro inicial, função max para garantir valor minimo 0
+        $offset = max(0, ($page - 1) * $limitResult);
+
         // QUERY para recuperar os registros do banco de dados
-        $sql = 'SELECT 
-                    id, 
-                    name, 
-                    email,
-                    username
+        $sql = 'SELECT id, name, email, username
                 FROM adms_users 
-                ORDER BY 
-                    id DESC';
+                ORDER BY id DESC
+                LIMIT :limit OFFSET :offset';
+
+        // Preparar a QUERY
+        $stmt = $this->getConnection()->prepare($sql);
+
+        // Substituir o link da QUERY pelo valor / Evita SQL INJECTION
+        $stmt->bindValue(':limit', $limitResult, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        // Executar a QUERY
+        $stmt->execute();
+
+        // Ler os registros e retornar
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Recuperar a quantidade de usuários para paginação
+     * @return int|bool Quantidade de usuários encontrados no banco de dados
+     */
+    public function getAmountUsers(): int|bool
+    {
+        // Query para recuperar quantiade de registros
+        $sql = 'SELECT COUNT(id) as amount_records 
+        FROM adms_users';
 
         // Preparar a QUERY
         $stmt = $this->getConnection()->prepare($sql);
@@ -38,7 +61,9 @@ class UsersRepository extends DbConnection
         $stmt->execute();
 
         // Ler os registros e retornar
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return ($stmt->fetch(PDO::FETCH_ASSOC)['amount_records']) ?? 0;
+
+
     }
 
     /**

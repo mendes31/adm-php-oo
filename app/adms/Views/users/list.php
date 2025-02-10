@@ -9,11 +9,11 @@ echo "<a href='{$_ENV['URL_ADM']}create-user'>Cadastrar Usuários</a><br><br>";
 // Apresentar mensagem de sucesso e erro
 include './app/adms/Views/partials/alerts.php';
 
-// Destruir o que estiver dentro dessas sessões
-unset($_SESSION['success'], $_SESSION['error']);
+// // Destruir o que estiver dentro dessas sessões
+// unset($_SESSION['success'], $_SESSION['error']);
 
 // Acessa o IF quando encontrar o elemento no array users
-if(isset($this->data['users'])){
+if($this->data['users'] ?? false){
 
     // Gerar o  token CSRF
      $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
@@ -47,12 +47,11 @@ if(isset($this->data['users'])){
 
         echo "<hr>";
 
-
-        // echo "ID: " . $user['id'] . "<br>";
-        // echo "Nome: " . $user['name'] . "<br>";
-        // echo "Email: " . $user['email'] . "<br>";
-        // echo "Usuário: " . $user['username'] . "<br>";
     }
+
+    // Apresentar a paginação
+    include_once './app/adms/Views/partials/pagination.php';
+
 }else{
     // Acessa o ELSE quando o elemento não existir registros
     echo "<p style='color: #f00;'>Nenhum usuário encontrado.</p>";
