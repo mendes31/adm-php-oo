@@ -2,52 +2,56 @@
 
 namespace App\adms\Controllers\users;
 
-use App\adms\Controllers\Services\Validation\ValidationEmptyFieldService;
 use App\adms\Controllers\Services\Validation\ValidationUserRakitService;
-use App\adms\Controllers\Services\Validation\ValidationUserService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Models\Repository\UsersRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**
- * Controller cadastrar usuário
+ * Controller para criação de usuário
+ *
+ * Esta classe é responsável pelo processo de criação de novos usuários. Ela lida com a recepção dos dados do
+ * formulário, validação dos mesmos, e criação do usuário no sistema. Além disso, é responsável por carregar
+ * a visualização apropriada com mensagens de sucesso ou erro.
  * 
+ * @package App\adms\Controllers\users
  * @author Rafael Mendes <raffaell_mendez@hotmail.com>
  */
 class CreateUser
 {
-    // /** @var array|null $dataForm Recebe os dados do FORMULARIO */
-    // private array|null $dataForm;
-
     /** @var array|string|null $data Recebe os dados que devem ser enviados para a VIEW */
     private array|string|null $data = null;
 
+    /**
+     * Método principal que gerencia a criação do usuário.
+     *
+     * Este método é chamado para processar a criação de um novo usuário. Ele verifica a validade do token CSRF,
+     * valida os dados do formulário e, se tudo estiver correto, cria o usuário. Caso contrário, carrega a
+     * visualização de criação de usuário com mensagens de erro.
+     * 
+     * @return void
+     */
     public function index(): void
     {
-        // REceber os dados
+        // Receber os dados do formulário
         $this->data['form'] = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-        // // Instanciar a classe validar os dados do fromulário cadastrar usuário
-        // $validationUser = new ValidationUserService();
-        // $this->data['erros'] = $validationUser->validate($this->dataForm);
-
-        // var_dump($this->data['erros']);
-
-
-        // Acessar o IF se existir o CSRF e for valido o CSRF
+        // Verificar se o token CSRF é valido
         if (isset($this->data['form']['csrf_token']) and CSRFHelper::validateCSRFToken('form_create_user', $this->data['form']['csrf_token'])) {
 
-            // Chamar o método cadastrar o 
+            // Chamar o método para cadastrar o usuário 
             $this->addUser();
         } else {
-            // Chamar método carregar a view
+            // Chamar método carregar a view de criação de usuário
             $this->viewUser();
         }
     }
 
     /**
-     * Instanciar a classe responsável em carregar a VIEW e enviar os dados para a VIEW.
-     *
+     * Carregar a visualização de criação de usuário.
+     * 
+     * Este método configura os dados necessários e carrega a view para a criação de um novo usuário.
+     * 
      * @return void
      */
     private function viewUser(): void
@@ -60,16 +64,17 @@ class CreateUser
         $loadView->loadView();
     }
 
+    /**
+     * Adicionar um novo usuário ao sistema.
+     * 
+     * Este método valida os dados do formulário usando a classe de validação `ValidationUserRakitService` e,
+     * se não houver erros, cria o usuário no banco de dados usando o `UsersRepository`. Caso contrário, ele
+     * recarrega a visualização de criação com mensagens de erro.
+     * 
+     * @return void
+     */
     private function addUser(): void
     {
-        // Instanciar a classe validar os dados do fromulário cadastrar usuário
-        // $validationUser = new ValidationUserService();
-        // $this->data['errors'] = $validationUser->validate($this->data['form']);
-
-        // Instanciar a classe validar os dados do fromuláriose houver campo vazio
-        // $validationUser = new ValidationEmptyFieldService();
-        // $this->data['errors'] = $validationUser->validate($this->data['form']);
-
         // Instanciar a classe validar os dados do fromuláriose com Rakit
         $validationUser = new ValidationUserRakitService();
         $this->data['errors'] = $validationUser->validate($this->data['form']);

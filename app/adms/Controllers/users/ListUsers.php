@@ -8,8 +8,13 @@ use App\adms\Models\Repository\UsersRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**
- * Controller listar usuários
+ * Controller para listar usuários
+ *
+ * Esta classe é responsável por recuperar e exibir uma lista de usuários no sistema. Utiliza um repositório
+ * para obter dados dos usuários e um serviço de paginação para gerenciar a navegação entre páginas de resultados.
+ * Em seguida, carrega a visualização correspondente com os dados recuperados.
  * 
+ * @package App\adms\Controllers\users
  * @author Rfael Mendes <raffaell_mendez@hotmail.com>
  */
 class ListUsers
@@ -21,7 +26,12 @@ class ListUsers
     private int $limitResult = 2;
 
     /**
-     * Recuperar os últimos usuários
+     * Recuperar e listar usuários com paginação.
+     * 
+     * Este método recupera os usuários a partir do repositório de usuários com base na página atual e no limite
+     * de registros por página. Gera os dados de paginação e carrega a visualização para exibir a lista de usuários.
+     * 
+     * @param string|int $page Página atual para a exibição dos resultados. O padrão é 1.
      * 
      * @return void
      */

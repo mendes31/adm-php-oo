@@ -1,24 +1,30 @@
 <?php
 
-// Carregar o Composer
+// Carregar o Composer, que inclui todas as classes e bibliotecas necessárias.
 require __DIR__ . '/../vendor/autoload.php';
 
-// Instanciar a dependência de variáveis de ambiente.
+// Carregar variáveis de ambiente a partir do arquivo .env usando Dotenv.
 $dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '/..');
 $dotenv->load();
 
-// Definir o fuso horário da aplicação.
+// Definir o fuso horário padrão da aplicação.
 date_default_timezone_set($_ENV['APP_TIMEZONE']);
 
+// Retornar a configuração para o Phinx, ferramenta de migração de banco de dados.
 return
 [
     'paths' => [
+        // Caminhos para migrações e sementes.
         'migrations' => '%%PHINX_CONFIG_DIR%%/migrations',
         'seeds' => '%%PHINX_CONFIG_DIR%%/seeds'
     ],
     'environments' => [
+        // Tabela para registrar migrações aplicadas.
         'default_migration_table' => 'phinxlog',
+        // Ambiente padrão.
         'default_environment' => $_ENV['APP_ENV'],
+
+        // Configurações para ambientes específicos.
         'production' => [
             'adapter' => 'mysql',
             'host' => $_ENV['DB_HOST'],
@@ -47,5 +53,6 @@ return
             'charset' => 'utf8',
         ]
     ],
+    // Ordem das migrações.
     'version_order' => 'creation'
 ];

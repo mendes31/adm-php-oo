@@ -7,6 +7,15 @@ use App\adms\Models\Repository\UniqueValueRepository;
 use Exception;
 use Rakit\Validation\Rule;
 
+/**
+ * Classe UniqueInColumnsRule
+ * 
+ * @author Rafael Mendes
+ * Esta classe define as regras de validação personalizadas para verificar a unicidade de um valor em multiplas colunas de uma tabela no banco de dados.
+ * Ela estende a classe `Rule` do pacote `Rakit\Validation`.
+ * 
+ * @package App\adms\Controllers\Services\Validation
+ */
 class UniqueInColumnsRule extends Rule
 {
     // Mensagem de erro genéria (value = valor dentro do campo)
@@ -15,6 +24,14 @@ class UniqueInColumnsRule extends Rule
     // Parâmetros dinâmicos
     protected $fillableParams = ['table', 'columns', 'except'];
 
+    /**
+     * Verifica se o valor fornecido é único em múltiplas colunas especificas de uma tabela.
+     *
+     * @param mixed $value o valor a ser validado
+     * @return boolean Retorna true se o valor for único em todas as colunas especificadas ou igual ao valor de exceção; caso contrário, false.
+     * 
+     * @throws Exception Caso ocorra um erro ao verificar a unicidade do valor, uma exceção será lançada e registrada no log.
+     */
     public function check($value): bool
     {
         

@@ -7,6 +7,16 @@ use App\adms\Models\Repository\UniqueValueRepository;
 use Exception;
 use Rakit\Validation\Rule;
 
+/**
+ * Classe UniqueRule
+ * 
+ * @author Rafael Mendes
+ * 
+ * Esta classe define uma regra dse validação personalizada para verificar a unicidade de um valor em uma tabela do banco de dados.
+ * Ela estende a classse `Rule`do pacote `Rakit\Validatio`.
+ * 
+ * @package App\adms\Controllers\Services\Validation
+ */
 class UniqueRule extends Rule
 {
     // Mensagem de erro genéria (value = valor dentro do campo)
@@ -15,6 +25,15 @@ class UniqueRule extends Rule
     // Parâmetros dinâmicos
     protected $fillableParams = ['table', 'column', 'except'];
 
+    /**
+     * Verifica se o valor é único em uma coluna específica de uma tabela.
+     *      *
+     * @param mixed $value O valor a ser validado.
+     * 
+     * @return boolean Retorna true se o valor for único ou igual ao valor de esceção; caso contrário, false.
+     * 
+     * @throws Exception Caso ocorra um erro ao verificar a unicidade do valor, uma exceção será lançada e registrada no log.
+     */
     public function check($value): bool
     {
         

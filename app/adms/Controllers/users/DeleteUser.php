@@ -7,8 +7,13 @@ use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Repository\UsersRepository;
 
 /**
- * Controller deletar usuário
+ * Controller para exclusão de usuário
+ *
+ * Esta classe gerencia o processo de exclusão de usuários no sistema. Ela lida com a validação dos dados
+ * do formulário, a exclusão do usuário do banco de dados e o registro de logs para operações bem-sucedidas ou
+ * falhas. Além disso, redireciona o usuário para a página de listagem de usuários com mensagens de sucesso ou erro.
  * 
+ * @package App\adms\Controllers\users
  * @author Rafael Mendes <raffaell_mendez@hotmail.com>
  */
 class DeleteUser
@@ -17,7 +22,11 @@ class DeleteUser
     private array|string|null $data = null;
 
     /**
-     * Recuperar os detalhes do usuário
+     * Recuperar os detalhes do usuário e processar a exclusão.
+     *
+     * Este método verifica a validade do token CSRF e a existência do ID do usuário. Se válido, recupera os
+     * detalhes do usuário do banco de dados e tenta excluir o usuário. Redireciona o usuário para a página de 
+     * listagem de usuários com mensagens apropriadas baseadas no sucesso ou falha da operação.
      * 
      * @return void
      */

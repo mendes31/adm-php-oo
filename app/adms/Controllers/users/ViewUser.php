@@ -7,8 +7,13 @@ use App\adms\Models\Repository\UsersRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**
- * Controller visualizar usuário
- * 
+ * Controller para visualizar um usuário
+ *
+ * Esta classe é responsável por exibir as informações detalhadas de um usuário específico. Ela recupera os dados
+ * do usuário a partir do repositório, valida se o usuário existe e carrega a visualização apropriada. Se o usuário
+ * não for encontrado, uma mensagem de erro é exibida e o usuário é redirecionado para a página de lista.
+ *
+ * @package App\adms\Controllers\users
  * @author Rafael Mendes <raffaell_mendez@hotmail.com>
  */
 class ViewUser
@@ -17,10 +22,14 @@ class ViewUser
     private array|string|null $data = null;
     
     /**
-     * Recuperar os detalhes do usuário
-     * 
+     * Recuperar os detalhes do usuário.
      *
-     * @param integer|string $id id do usuário
+     * Este método gerencia a recuperação e exibição dos detalhes de um usuário específico. Ele valida o ID fornecido,
+     * recupera os dados do usuário do repositório e carrega a visualização. Se o usuário não for encontrado, registra
+     * um erro, exibe uma mensagem e redireciona para a página de lista de usuários.
+     *
+     * @param int|string $id ID do usuário a ser visualizado.
+     * 
      * @return void
      */
     public function index(int|string $id): void

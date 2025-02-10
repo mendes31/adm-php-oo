@@ -9,8 +9,13 @@ use App\adms\Models\Repository\UsersRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**
- * Controller editar senha do usuário
- * 
+ * Controller para editar a senha do usuário
+ *
+ * Esta classe é responsável por gerenciar a edição da senha de um usuário. Inclui a validação dos dados de entrada,
+ * a atualização da senha no repositório de usuários e a renderização da visualização apropriada. Caso haja
+ * algum problema, como um usuário não encontrado ou dados inválidos, as mensagens de erro são geradas e registradas.
+ *
+ * @package App\adms\Controllers\users
  * @author Rafael Mendes <raffaell_mendez@hotmail.com>
  */
 class UpdatePasswordUser
@@ -20,9 +25,14 @@ class UpdatePasswordUser
     private array|string|null $data = null;
 
     /**
-     * Editar a senha do usuário
-     *   
-     * @param integer|string $id id do usuário
+     * Editar a senha do usuário.
+     *
+     * Este método gerencia o processo de edição da senha do usuário. Se o CSRF token for válido e os dados do formulário
+     * forem corretos, a senha do usuário é atualizada. Caso contrário, a visualização de edição é carregada com
+     * as informações necessárias.
+     *
+     * @param int|string $id ID do usuário cuja senha deve ser editada.
+     * 
      * @return void
      */
     public function index(int|string $id): void
@@ -64,8 +74,10 @@ class UpdatePasswordUser
     }
 
     /**
-     * Instanciar a classe responsável em carregar a VIEW e enviar os dados para a VIEW.
+     * Carregar a visualização para edição da senha do usuário.
      *
+     * Este método define o título da página e carrega a visualização de edição de senha com os dados necessários.
+     * 
      * @return void
      */
     private function viewUser(): void
@@ -79,10 +91,11 @@ class UpdatePasswordUser
     }
 
     /**
-     * Editar usuário
-     * 
-     * Este método realiza a edição de um usuário existente nos sistema. Ele valida os dados do formulário usando a classe `ValidationUserRakitService`, exibe a view com os erros caso existam campos com dados incorretos.
-     * Chama o repositório para atualizar o usuário e, dependendo do resultado, redireciona o usuario ou exibe uma mensagem de erro.
+     * Editar a senha do usuário.
+     *
+     * Este método valida os dados do formulário, atualiza a senha do usuário no repositório e lida com o resultado
+     * da operação. Se a atualização for bem-sucedida, o usuário é redirecionado para a página de visualização do usuário.
+     * Caso contrário, uma mensagem de erro é exibida e a visualização de edição é recarregada.
      * 
      * @return void
      */

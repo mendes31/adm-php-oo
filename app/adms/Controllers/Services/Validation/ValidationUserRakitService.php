@@ -5,13 +5,24 @@ namespace App\adms\Controllers\Services\Validation;
 
 use Rakit\Validation\Validator;
 
+/**
+ * Classe ValidationUserRakitService
+ * 
+ * Esta classe é responsável por validar os dados de um formulário de usuário, aplicando regras de validação para criação e edição de usuários.
+ * Ela utiliza o pacote `Rakit\Validation` para realizar as validações e inclui uma regra personalizada de unicidade em múltiplas colunas.
+ * 
+ * @package App\adms\Controllers\Services\Validation
+ * @author Rafael Mendes
+ */
 class ValidationUserRakitService 
 {
     /**
      * Validar os dados do formulário.
-     *
-     * @param array $data Dados do formulário
-     * @return array Lista de erros
+     * 
+     * Este método valida os dados fornecidos no formulário de usuário, aplicando diferentes regras dependendo se é uma criação ou edição de usuário.
+     * 
+     * @param array $data Dados do formulário.
+     * @return array Lista de erros. Se não houver erros, o array será vazio.
      */
     public function validate(array $data): array 
     {

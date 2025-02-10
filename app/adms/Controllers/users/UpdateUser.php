@@ -9,8 +9,13 @@ use App\adms\Models\Repository\UsersRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**
- * Controller editae usuário
- * 
+ * Controller para editar usuário
+ *
+ * Esta classe é responsável por gerenciar a edição de informações de um usuário existente. Inclui a validação dos dados
+ * do formulário, a atualização das informações do usuário no repositório e a renderização da visualização apropriada.
+ * Caso haja algum problema, como um usuário não encontrado ou dados inválidos, mensagens de erro são exibidas e registradas.
+ *
+ * @package App\adms\Controllers\users
  * @author Rafael Mendes <raffaell_mendez@hotmail.com>
  */
 class UpdateUser
@@ -22,9 +27,13 @@ class UpdateUser
     private array|string|null $data = null;
 
     /**
-     * Editar os detalhes do usuário
-     *      *
-     * @param integer|string $id id do usuário
+     * Editar o usuário.
+     *
+     * Este método gerencia o processo de edição de um usuário. Recebe os dados do formulário, valida o CSRF token e
+     * a existência do usuário, e chama o método adequado para editar o usuário ou carregar a visualização de edição.
+     *
+     * @param int|string $id ID do usuário a ser editado.
+     * 
      * @return void
      */
     public function index(int|string $id): void
@@ -66,8 +75,10 @@ class UpdateUser
     }
 
     /**
-     * Instanciar a classe responsável em carregar a VIEW e enviar os dados para a VIEW.
+     * Carregar a visualização para edição do usuário.
      *
+     * Este método define o título da página e carrega a visualização de edição do usuário com os dados necessários.
+     * 
      * @return void
      */
     private function viewUser(): void
@@ -80,11 +91,12 @@ class UpdateUser
         $loadView->loadView();
     }
 
-    /**
-     * Editar usuário
-     * 
-     * Este método realiza a edição de um usuário existente nos sistema. Ele valida os dados do formulário usando a classe `ValidationUserRakitService`, exibe a view com os erros caso existam campos com dados incorretos.
-     * Chama o repositório para atualizar o usuário e, dependendo do resultado, redireciona o usuario ou exibe uma mensagem de erro.
+   /**
+     * Editar o usuário.
+     *
+     * Este método valida os dados do formulário, atualiza as informações do usuário no repositório e lida com o resultado
+     * da operação. Se a atualização for bem-sucedida, o usuário é redirecionado para a página de visualização do usuário.
+     * Caso contrário, uma mensagem de erro é exibida e a visualização de edição é recarregada.
      * 
      * @return void
      */

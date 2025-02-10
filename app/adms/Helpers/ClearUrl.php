@@ -3,18 +3,29 @@
 namespace App\adms\Helpers;
 
 /**
- * Limpar URL
+ * Classe para limpar URLs.
+ *
+ * Esta classe fornece um método estático para limpar URLs, removendo caracteres especiais, espaços em branco,
+ * e a barra final. A limpeza é realizada substituindo caracteres não aceitos por caracteres aceitos para garantir
+ * que a URL seja mais segura e compatível.
+ *
+ * @package App\adms\Helpers
  * @author Rafael Mendes <raffaell_mendez@hotmail.com>
  */
 class ClearUrl
 {
     /**
-     * O método estático pode ser chamado diretamente na classe, sem a necessidade de criar uma instância (objeto) da classe.
-     * Limpará a URL, eliminando as TAG, os espaços em branco, retirar a barra no final da URLe retirar os caracteres especiais.
-     * 
-     * @return string
+     * Limpa uma URL removendo caracteres especiais e espaços.
+     *
+     * Este método estático pode ser chamado diretamente na classe sem a necessidade de instanciar um objeto. Ele
+     * realiza a limpeza da URL da seguinte forma:
+     * - Remove a barra no final da URL.
+     * - Substitui caracteres especiais e acentuados por seus equivalentes aceitos.
+     * - Remove espaços e outros caracteres não alfanuméricos.
+     *
+     * @param string $url A URL que deve ser limpa.
+     * @return string A URL limpa.
      */
-    
      public static function clearUrl(string $url): string
      {
  

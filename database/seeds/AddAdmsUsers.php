@@ -7,8 +7,13 @@ use Phinx\Seed\AbstractSeed;
 class AddAdmsUsers extends AbstractSeed
 {
     /**
-     * Cadastrar usuário no banco de dados
+     * Cadastra usuários na tabela `adms_users` se ainda não existirem.
+     *
+     * Este método é executado para popular a tabela `adms_users` com registros iniciais de usuários.
+     * Primeiro, verifica se cada usuário já existe na tabela com base no email. Se o usuário não existir,
+     * os dados são inseridos na tabela. As senhas são armazenadas usando `password_hash` para garantir a segurança.
      * 
+     * @return void
      */
     public function run(): void
     {

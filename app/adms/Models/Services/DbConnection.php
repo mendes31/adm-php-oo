@@ -7,8 +7,14 @@ use PDO;
 use PDOException;
 
 /**
- * COnexão com o banco de dados
- * 
+ * Classe responsável pela conexão com o banco de dados.
+ *
+ * Esta classe fornece uma abstração para a conexão com o banco de dados usando PDO. 
+ * Ela garante que a conexão seja estabelecida apenas uma vez e fornece um método 
+ * para recuperar a conexão. Em caso de erro na conexão, um log é gerado e uma 
+ * mensagem de erro é exibida.
+ *
+ * @package App\adms\Models\Services
  * @author Rafael Mendes <raffaell_mendez@hotmail.com>
  */
 abstract class DbConnection
@@ -18,8 +24,14 @@ abstract class DbConnection
 
     /**
      * Realiza a conexão com o banco de dados.
-     * Não realizando a conexão corretamente, para o processamento da pagina e apresenta a mensagem de erro, com o e-mail de contato do adminstrador.
-     * @return object retorna a conexão com o banco de dados.
+     *
+     * Este método estabelece uma conexão com o banco de dados usando as credenciais e 
+     * detalhes fornecidos nas variáveis de ambiente. Se a conexão falhar, um log é gerado 
+     * e uma mensagem de erro é exibida. Se a conexão já estiver estabelecida, o método 
+     * retorna a conexão existente.
+     *
+     * @return object Retorna a conexão com o banco de dados.
+     * @throws PDOException Se ocorrer um erro durante a tentativa de conexão com o banco de dados.
      */
     public function getConnection(): object
     {

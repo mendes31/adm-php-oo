@@ -5,19 +5,28 @@ namespace App\adms\Models\Repository;
 use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Services\DbConnection;
 use Exception;
-use Generator;
 use PDO;
 
 /**
- * Repository responsável em buscar os usuários no banco de dados
- * 
+ * Repository responsável em buscar e manipular usuários no banco de dados.
+ *
+ * Esta classe fornece métodos para recuperar, criar, atualizar e deletar usuários no banco de dados.
+ * Ela estende a classe `DbConnection` para gerenciar conexões com o banco de dados e utiliza o `GenerateLog`
+ * para registrar erros que ocorrem durante as operações.
+ *
+ * @package App\adms\Models\Repository
  * @return Rafael Mendes
  */
 class UsersRepository extends DbConnection
 {
     /**
-     * Recuperar os registros
-     * @return array Usuários reguperados do banco de dados
+     * Recuperar todos os usuários com paginação.
+     *
+     * Este método retorna uma lista de usuários da tabela `adms_users`, com suporte à paginação.
+     *
+     * @param int $page Número da página para recuperação de usuários (começa do 1).
+     * @param int $limitResult Número máximo de resultados por página.
+     * @return array Lista de usuários recuperados do banco de dados.
      */
     public function getAllUsers(int $page = 1, int $limitResult = 10)
     {
@@ -45,8 +54,11 @@ class UsersRepository extends DbConnection
     }
 
     /**
-     * Recuperar a quantidade de usuários para paginação
-     * @return int|bool Quantidade de usuários encontrados no banco de dados
+     * Recuperar a quantidade total de usuários para paginação.
+     *
+     * Este método retorna a quantidade total de usuários na tabela `adms_users`, útil para a paginação.
+     *
+     * @return int Quantidade total de usuários encontrados no banco de dados.
      */
     public function getAmountUsers(): int|bool
     {
@@ -62,28 +74,23 @@ class UsersRepository extends DbConnection
 
         // Ler os registros e retornar
         return ($stmt->fetch(PDO::FETCH_ASSOC)['amount_records']) ?? 0;
-
-
     }
 
     /**
-     * Recuperar o usuário seleionado
-     * @return array|bool  Usuário recuperado do banco de dados
+     * Recuperar um usuário específico pelo ID.
+     *
+     * Este método retorna os detalhes de um usuário específico identificado pelo ID.
+     *
+     * @param int $id ID do usuário a ser recuperado.
+     * @return array|bool Detalhes do usuário recuperado ou `false` se não encontrado.
      */
     public function getUser(int $id): array|bool
     {
         // QUERY para recuperar o registro selecionado do banco de dados
-        $sql = 'SELECT 
-                    id, 
-                    name, 
-                    email, 
-                    username,
-                    created_at,
-                    updated_at 
+        $sql = 'SELECT id, name, email, username, created_at, updated_at 
                 FROM adms_users
                 WHERE id = :id
-                ORDER BY 
-                    id DESC';
+                ORDER BY id DESC';
 
         // Preparar a QUERY
         $stmt = $this->getConnection()->prepare($sql);
@@ -99,9 +106,12 @@ class UsersRepository extends DbConnection
     }
 
     /**
-     * Cadastrar novo usuário
-     * @param array $data Dados do usuário
-     * @return bool|int Sucesso ou falha
+     * Cadastrar um novo usuário.
+     *
+     * Este método insere um novo usuário na tabela `adms_users`. Em caso de erro, um log é gerado.
+     *
+     * @param array $data Dados do usuário a ser cadastrado, incluindo `name`, `email`, `username`, `password`.
+     * @return bool|int `true` se o usuário foi criado com sucesso ou `false` em caso de erro.
      */
     public function createUser(array $data): bool|int
     {
@@ -136,9 +146,13 @@ class UsersRepository extends DbConnection
     }
 
     /**
-     * Editar os dados do usuário
-     * @param array $data Dados atualizados do usuário
-     * @return bool Sucesso ou falha
+     * Atualizar os dados de um usuário existente.
+     *
+     * Este método atualiza as informações de um usuário existente. Se a senha for fornecida, ela também será atualizada.
+     * Em caso de erro, um log é gerado.
+     *
+     * @param array $data Dados atualizados do usuário, incluindo `id`, `name`, `email`, `username`, e opcionalmente `password`.
+     * @return bool `true` se a atualização foi bem-sucedida ou `false` em caso de erro.
      */
     public function updateUser(array $data): bool
     {
@@ -175,24 +189,6 @@ class UsersRepository extends DbConnection
             // Retornar TRUE quando conseguir executar a QUERY SQL, não considerando se alterou dados do registro
             return $stmt->execute();
 
-            // // Retornar TRUE quando conseguir executar a QUERY SQL e alterou dados do registro, se não alterar nenhuma informação do registro, retorna FALSE indicando que o registro não foi alterado/editdo.
-            // // Executar a QUERY
-            // $stmt->execute();
-
-            // // Receber a quantidade de linhas afetadas
-            // $affectedRows = $stmt->rowCount();
-
-            // // Verificar o número de linhas afetadas
-            // if ($affectedRows > 0) {
-            //     return true;
-
-            // } else {
-            //     // Chamar o método para salvar o log
-            //     GenerateLog::generateLog("error", "Usuário não editado, nenhum valor foi alterado.", ['id' => $data['id'], 'email' => $data['email'], 'username' => $data['username']]);
-
-            //     return false;
-            // }
-
         } catch (Exception $e) { // Acessa o catch quando houver erro no try
 
             // Chamar o método para salvar o log
@@ -202,10 +198,13 @@ class UsersRepository extends DbConnection
         }
     }
 
-    /**
-     * Editar senha do usuário
-     * @param array $data Dados atualizados do usuário
-     * @return bool Sucesso ou falha
+   /**
+     * Atualizar a senha de um usuário.
+     *
+     * Este método atualiza a senha de um usuário específico. Em caso de erro, um log é gerado.
+     *
+     * @param array $data Dados atualizados do usuário, incluindo `id` e `password`.
+     * @return bool `true` se a atualização foi bem-sucedida ou `false` em caso de erro.
      */
     public function updatePasswordUser(array $data): bool
     {
@@ -237,9 +236,12 @@ class UsersRepository extends DbConnection
     }
 
     /**
-     * Deletar usuário pelo ID
-     * @param int $id
-     * @return bool Sucesso ou falha
+     * Deletar um usuário pelo ID.
+     *
+     * Este método remove um usuário específico da tabela `adms_users`. Em caso de erro, um log é gerado.
+     *
+     * @param int $id ID do usuário a ser deletado.
+     * @return bool `true` se o usuário foi deletado com sucesso ou `false` em caso de erro.
      */
     public function deleteUser(int $id): bool
     {

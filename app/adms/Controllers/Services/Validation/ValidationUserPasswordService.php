@@ -5,13 +5,24 @@ namespace App\adms\Controllers\Services\Validation;
 
 use Rakit\Validation\Validator;
 
+/**
+ * Classe ValidationUserPasswordService
+ * 
+ * Esta classe é responsável por validar os campos de senha e confirmação de senha em um formulário de usuário.
+ * Ela garante que a senha atenda a critérios específicos de segurança e que a confirmação da senha coincida com a senha fornecida.
+ * 
+ * @package App\adms\Controllers\Services\Validation
+ * @author Rafael Mendes
+ */
 class ValidationUserPasswordService
 {
     /**
      * Validar os dados do formulário.
-     *
-     * @param array $data Dados do formulário
-     * @return array Lista de erros
+     * 
+     * Este método valida os campos de senha e confirmação de senha, garantindo que a senha seja forte o suficiente e que a confirmação coincida com a senha.
+     * 
+     * @param array $data Dados do formulário.
+     * @return array Lista de erros. Se não houver erros, o array será vazio.
      */
     public function validate(array $data): array 
     {

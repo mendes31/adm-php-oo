@@ -2,13 +2,23 @@
 
 namespace App\adms\Controllers\Services\Validation;
 
+/**
+ * Classe ValidationUserService
+ * 
+ * Esta classe é responsável por validar os dados de um formulário de usuário, garantindo que os campos nome, e-mail e senha atendam aos critérios especificados.
+ * 
+ * @package App\adms\Controllers\Services\Validation
+ * @author Rafael Mendes
+ */
 class ValidationUserService
 {
     /**
      * Validar os dados do formulário.
-     *
-     * @param array $data Dados do formulário
-     * @return array Lista de erros
+     * 
+     * Este método verifica se os campos nome, e-mail e senha foram preenchidos corretamente. Ele garante que o nome não esteja vazio, que o e-mail seja válido, e que a senha atenda a critérios de segurança.
+     * 
+     * @param array $data Dados do formulário.
+     * @return array Lista de erros. Se não houver erros, o array será vazio.
      */
     public function validate(array $data): array
     {

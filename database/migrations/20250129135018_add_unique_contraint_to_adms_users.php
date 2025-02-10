@@ -7,12 +7,18 @@ use Phinx\Migration\AbstractMigration;
 final class AddUniqueContraintToAdmsUsers extends AbstractMigration
 {
     /**
-     * Alterar as colunas email e username para serem unicas
+     * Adiciona restrições de unicidade às colunas `email` e `username` da tabela `adms_users`.
+     *
+     * Este método é executado durante a aplicação da migração para garantir que os valores das colunas `email`
+     * e `username` sejam únicos na tabela `adms_users`. Se a tabela existe, índices únicos são adicionados
+     * às colunas para evitar valores duplicados.
+     *
+     * @return void
      */
     public function up(): void
     {
         // Acessar o IF quando a tabela existe no banco de dados
-        if($this->hasTable('adms_users')){
+        if ($this->hasTable('adms_users')) {
 
             // Alterar a tabela para adicionar índices únicos
             $table = $this->table('adms_users');
@@ -23,24 +29,28 @@ final class AddUniqueContraintToAdmsUsers extends AbstractMigration
             $table->addIndex(['email'], ['unique' => true, 'name' => 'idx_unique_email'])
                 ->addIndex(['username'], ['unique' => true, 'name' => 'idx_unique_username'])
                 ->update();
-
         }
-
     }
-
-    // Método down() para reverter a migração (caso necessário)
+    /**
+     * Remove as restrições de unicidade das colunas `email` e `username` da tabela `adms_users`.
+     *
+     * Este método é executado durante a reversão da migração para remover os índices únicos das colunas
+     * `email` e `username`. Se a tabela existe, os índices únicos são removidos.
+     *
+     * @return void
+     */
     public function down(): void
     {
         // Acessa o IF quando a tabela existe no banco de dados
-        if($this->hasTable('adms_users')){
-            
+        if ($this->hasTable('adms_users')) {
+
             // Indicar a tabela para remover os indices punicos das colunas email e username
             $table = $this->table('adms_users');
 
             // Remover os indices unicos
             $table->removeIndexByName('idx_unique_email')
-            ->removeIndexByName('idx_unique_username')
-            ->update();
+                ->removeIndexByName('idx_unique_username')
+                ->update();
         }
     }
 }

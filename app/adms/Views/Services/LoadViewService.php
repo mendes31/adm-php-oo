@@ -5,6 +5,8 @@ namespace App\adms\Views\Services;
 /**
  * Carregar as páginas da View
  * 
+ * Classe responsável por carregar arquivos de view e incluí-los no layout principal.
+ * 
  * @author Rafael Mendes <raffaell_mendez@hotmail.com>
  */
 class LoadViewService
@@ -13,17 +15,27 @@ class LoadViewService
     private string $view;
 
     /**
-     * REceber o endereço da VIEW e os dados.
-     * @param string $nameView Endereço da VIEW que deve ser carregada
-     * @param array|string|null $data Dados que a VIEW deve receber
-     */
-    public function __construct(private string $nameView, private array|string|null $data) {}
-
-    /**
-     * Carregar a VIEW.
-     * Verificar se o arquivo existe, e carregar caso exista, não existindo parar o carregamento
+     * Receber o endereço da VIEW e os dados.
+     *
+     * Construtor que inicializa o endereço da VIEW e os dados a serem passados para a VIEW.
      * 
-     * @return void 
+     * @param string $nameView Endereço da VIEW que deve ser carregada. 
+     * @param array|string|null $data Dados que a VIEW deve receber (opcional).
+     */
+    public function __construct(private string $nameView, private array|string|null $data) 
+    {
+        // Inicializa os parâmetros da classe
+    }
+
+   /**
+     * Carregar a VIEW.
+     * 
+     * Verifica se o arquivo da VIEW existe e, se existir, inclui o layout principal que carregará a VIEW.
+     * Caso o arquivo da VIEW não seja encontrado, exibe uma mensagem de erro e encerra a execução.
+     * 
+     * @return void
+     * 
+     * @throws Exception Se o arquivo da VIEW não for encontrado, exibe uma mensagem de erro e encerra a execução.
      */
     public function loadView(): void
     {

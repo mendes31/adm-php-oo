@@ -4,6 +4,15 @@ namespace App\adms\Controllers\Services;
 
 use App\adms\Helpers\GenerateLog;
 
+/**
+ * Classe LoadPageAdm
+ * 
+ * Esta classe é responsável por carregar a página de administração solicitada, verificando se a página e a controller existem, 
+ * e se o método necessário está presente na controller. Ela também registra logs de erros ou acessos bem-sucedidos.
+ * 
+ * @package App\adms\Controllers\Services
+ * @author Rafael Mendes
+ */
 class LoadPageAdm
 {
     /** @var string $urlController Recebe da URL o nome da controller */
@@ -28,10 +37,13 @@ class LoadPageAdm
     private array $listPackages = ["adms"];
 
     /**
-     * Verificar se existe a página com o método checkPageExists
-     * Verificar se existe a classe com o método checkControllersExists
-     * @param string $urlController Recebe da URL o nome da controller
-     * @param string $urlParameter Recebe da URL o parametro
+     * Carregar a página de administração.
+     * 
+     * Este método verifica se a página existe entre as páginas públicas ou privadas. Em seguida, verifica se a controller correspondente existe,
+     * e se o método apropriado ("index") está presente nessa controller. Em caso de falha, logs são gerados e mensagens de erro são exibidas.
+     * 
+     * @param string|null $urlController Recebe da URL o nome da controller
+     * @param string|null $urlParameter Recebe da URL o parâmetro
      * 
      * @return void
      */
@@ -60,9 +72,11 @@ class LoadPageAdm
     }
 
     /**
-     * Verificar se a pagina existe no array de paginas publicas ou privadas
+     * Verificar se a página existe.
      * 
-     * @return boll
+     * Este método verifica se o nome da controller está presente na lista de páginas públicas ou privadas.
+     * 
+     * @return bool Retorna verdadeiro se a página existir, falso caso contrário.
      */
     private function checkPageExists(): bool
     {
@@ -81,10 +95,12 @@ class LoadPageAdm
     }
 
     /**
-     * Verificar se existe a controller
-     * Chamar o método para verificar se existe o método da controller
+     * Verificar se a controller existe.
      * 
-     * @return bool
+     * Este método percorre os pacotes e diretórios definidos para verificar se a classe controller correspondente à página existe.
+     * Se a classe for encontrada, o método `loadMetodo` é chamado para verificar a existência do método "index" e carregá-lo.
+     * 
+     * @return bool Retorna verdadeiro se a controller existir, falso caso contrário.
      */
     private function checkControllersExists(): bool
     {
@@ -115,9 +131,12 @@ class LoadPageAdm
     }
 
     /**
-     * Verificar se existe o método e carrega a pagina/controller 
+     * Verificar se o método "index" existe na controller e carregar a página.
      * 
-     * @return void  
+     * Este método instancia a controller correspondente e verifica se o método "index" está presente. 
+     * Se o método existir, ele é executado com o parâmetro fornecido. Caso contrário, um log de erro é gerado e uma mensagem de erro é exibida.
+     * 
+     * @return void
      */
     private function loadMetodo(): void
     {

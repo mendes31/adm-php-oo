@@ -2,59 +2,60 @@
 
 use App\adms\Helpers\CSRFHelper;
 
+// Exibe o título da página
 echo "<h3>Listar Usuários</h3>";
 
+// Exibe link para criar um novo usuário
 echo "<a href='{$_ENV['URL_ADM']}create-user'>Cadastrar Usuários</a><br><br>";
 
-// Apresentar mensagem de sucesso e erro
+// Inclui o arquivo que exibe mensagens de sucesso e erro
 include './app/adms/Views/partials/alerts.php';
 
-// // Destruir o que estiver dentro dessas sessões
-// unset($_SESSION['success'], $_SESSION['error']);
+// Verifica se há usuários no array
+if ($this->data['users'] ?? false) {
 
-// Acessa o IF quando encontrar o elemento no array users
-if($this->data['users'] ?? false){
-
-    // Gerar o  token CSRF
-     $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
+    // Gera o token CSRF para proteger o formulário de deleção
+    $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
 
     //Perceorre o array de usuários
-    foreach($this->data['users'] as $user){
+    foreach ($this->data['users'] as $user) {
 
-        // Extrair o array para imprimir o elemento do array através do nome
+        // Extrai variáveis do array de usuário
         extract($user);
 
-        // Imprimir as informações do registro
+        // Exibe as informações do usuário
         echo "ID: $id<br>";
         echo "Nome: $name<br>";
         echo "Email: $email<br><br>";
         // echo "Usuário: $username<br>";
+
+        // Exibe links para visualizar, editar e editar senha do usuário
         echo "<a href='{$_ENV['URL_ADM']}view-user/$id'>Visualizar</a><br>";
         echo "<a href='{$_ENV['URL_ADM']}update-user/$id'>Editar</a><br>";
-        ?>
-        
+?>
+        <!-- Formulário para deletar usuário -->
         <form action="delete-user" method="POST">
-            
-        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
 
-        <input type="hidden" name="id" id="id" value="<?php echo $id ?? ''; ?>">
+            <!-- Campo oculto para o token CSRF -->
+            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
 
-        <button type="submit">Apagar</button>
+            <!-- Campo oculto para o ID do usuário -->
+            <input type="hidden" name="id" id="id" value="<?php echo $id ?? ''; ?>">
+
+            <!-- Botão para submeter o formulário -->
+            <button type="submit">Apagar</button>
 
         </form>
 
-        <?php
+<?php
 
+        // Exibe uma linha horizontal para separar os registros
         echo "<hr>";
-
     }
 
-    // Apresentar a paginação
+    // Inclui o arquivo de paginação
     include_once './app/adms/Views/partials/pagination.php';
-
-}else{
+} else {
     // Acessa o ELSE quando o elemento não existir registros
     echo "<p style='color: #f00;'>Nenhum usuário encontrado.</p>";
 }
-
-// var_dump($this->data);

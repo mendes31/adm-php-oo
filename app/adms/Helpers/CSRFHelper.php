@@ -3,17 +3,25 @@
 namespace App\adms\Helpers;
 
 /**
- * Gerar e validar CSRF
- * 
+ * Classe para gerar e validar tokens CSRF.
+ *
+ * Esta classe fornece métodos estáticos para gerar e validar tokens CSRF (Cross-Site Request Forgery).
+ * Os tokens CSRF são usados para proteger contra ataques de falsificação de solicitação entre sites, garantindo
+ * que as solicitações sejam feitas apenas pelo usuário autenticado e autorizado.
+ *
+ * @package App\adms\Helpers
  * @author Rafael Mendes <raffaell_mendez@hotmail.com>
  */
 class CSRFHelper
 {
     /**
-     * Gerar um token CSRF único
-     * 
-     * @param string $formIdentifier Identificador do formulário
-     * @return string Token CSRF gerado.
+     * Gerar um token CSRF único.
+     *
+     * Este método gera um token CSRF único para um formulário específico. O token é salvo na sessão e retornado
+     * para ser incluído no formulário como um campo oculto.
+     *
+     * @param string $formIdentifier Identificador do formulário. Usado para distinguir tokens de diferentes formulários.
+     * @return string Token CSRF gerado. Um valor hexadecimal único.
      */
     public static function generateCSRFToken(string $formIdentifier): string
     {
@@ -30,10 +38,13 @@ class CSRFHelper
 
     /**
      * Validar um token CSRF.
-     * 
-     * @param string $formIdentfier Identificador do feormulário.
-     * @param string $token TOken CSRF para validar
-     * @return bool True se o token for válido, False caso contrário.
+     *
+     * Este método valida um token CSRF recebido em uma solicitação comparando-o com o token armazenado na sessão.
+     * Após a validação, o token é invalidado para evitar reutilização.
+     *
+     * @param string $formIdentifier Identificador do formulário. Usado para localizar o token CSRF na sessão.
+     * @param string $token Token CSRF para validar. O token recebido do formulário.
+     * @return bool Retorna true se o token for válido e coincidir com o token armazenado na sessão; false caso contrário.
      */
      public static function validateCSRFToken(string $formIdentifier, string $token)
      {
