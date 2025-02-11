@@ -2,6 +2,8 @@
 
 namespace App\adms\Controllers\login;
 
+use App\adms\Controllers\Services\Validation\ValidationLoginService;
+use App\adms\Controllers\Services\ValidationUserLogin;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Views\Services\LoadViewService;
 
@@ -27,13 +29,13 @@ class Login
         // Verificar se o token CSRF é valido
         if (isset($this->data['form']['csrf_token']) and CSRFHelper::validateCSRFToken('form_login', $this->data['form']['csrf_token'])) {
 
-            // Chamar o método para cadastrar o usuário 
-            var_dump($this->data['form']);
-        } else {
-            // Chamar método carregar a view de criação de usuário
-            $this->viewUser();
-        }
+            // Chamar o método Login
+             $this->login();
 
+        } else {
+            // Chamar método para carregar a viewLogin
+            $this->viewLogin();
+        }
         
     }
 
@@ -44,7 +46,7 @@ class Login
      * 
      * @return void
      */
-    private function viewUser(): void
+    private function viewLogin(): void
     {
         // Criar o título da página
         $this->data['title_head'] =  "Login";
@@ -53,4 +55,35 @@ class Login
         $loadView = new LoadViewService("adms/Views/login/login", $this->data);
         $loadView->loadView();
     }
+
+    private function login(): void
+    {
+        // Instanciar a classe validar os dados do fromulário
+        $validationLogin = new ValidationLoginService();
+        $this->data['errors'] = $validationLogin->validate($this->data['form']);
+
+        // Acessa o IF quando existir campo com dados incorretos
+        if (!empty($this->data['errors'])) {
+            // Chamar método carregar a view
+            $this->viewLogin();
+            return;
+        }
+
+        // Instanciar a classe validar  o usuário
+        $validationUserLogin = new ValidationUserLogin();
+        $result = $validationUserLogin->validationUserLogin($this->data['form']);
+
+        if($result){
+
+            // Redirecionar o usuário para página listar
+            header("Location: {$_ENV['URL_ADM']}dashboard");
+
+        } else {
+            // Chamar método para carregar a viewLogin
+            $this->viewLogin();
+
+            return;
+        }
+    }
+
 }
