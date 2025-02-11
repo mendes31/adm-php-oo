@@ -58,10 +58,17 @@ class LoadPageAdm
             // Chamar o método para salvar log
             GenerateLog::generateLog("error", "Pagina não encontrada.", ['pagina' => $this->urlController, 'parametro' => $this->urlParameter]);
 
-            die("Erro 002: Por favor tente novamente. Caso o problema persista, entre em contato com o adminstrador {$_ENV['EMAIL_ADM']}");
+            // die("Erro 002: Por favor tente novamente. Caso o problema persista, entre em contato com o adminstrador {$_ENV['EMAIL_ADM']}");
+            
+            // Criar a mensagem de erro
+            $_SESSION['error'] = "Necessário estar logado para acessar pagina restrita.";
+
+            // Redirecionar o usuário para a pagina de login
+            header("Location: {$_ENV['URL_ADM']}login");
+
         }
 
-        // Verificar s ea classe existe
+        // Verificar se a classe/controller existe
         if (!$this->checkControllersExists()) {
 
             // Chamar o método para salvar log
@@ -86,12 +93,28 @@ class LoadPageAdm
             return true;
         }
 
-        // Verificar se existe a pagina no array de paginas privadas
-        if (in_array($this->urlController, $this->listPgPrivate)) {
+        // Chamar o método para verificar se existe a pagina no array de paginas privadas
+        if($this->checkPagePrivateExists()){
             return true;
         }
+       
 
         return false;
+    }
+
+    private function checkPagePrivateExists(): bool 
+    {
+
+         // Verificar se existe a pagina no array de paginas privadas
+         if (!in_array($this->urlController, $this->listPgPrivate)) {
+            return false;
+        }
+
+        // Verificar se o usuário está logado
+        if((!isset($_SESSION['user_id'])) and (!isset($_SESSION['user_name'])) and (!isset($_SESSION['user_email'])) and (!isset($_SESSION['user_email']))){
+            return false;
+        }
+        return true;
     }
 
     /**
