@@ -30,7 +30,7 @@ class UniqueValueRepository extends DbConnection
      * @param int|null $except ID do registro a ser excluído da verificação, se aplicável.
      * @return bool `false` se o valor fornecido já estiver cadastrado, `true` caso contrário.
      */
-    public function getRecord($table, $column, $value, $except = null)
+    public function getRecord(string $table, string $column, $value, $except = null): bool
     {
         // QUERY para recuperar o registro do baco de dados
         $sql = "SELECT COUNT(id) as count FROM `{$table}` WHERE `{$column}` = :value";

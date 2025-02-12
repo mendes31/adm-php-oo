@@ -30,4 +30,5 @@ include './app/adms/Views/partials/alerts.php';
 
 </form>
 
-<a href="<?php echo $_ENV['URL_ADM']; ?>new-user">Novo Usuário</a>
+<a href="<?php echo $_ENV['URL_ADM']; ?>new-user">Novo Usuário</a> - <a href="<?php echo $_ENV['URL_ADM']; ?>forgot-password">Recuperar Senha</a>
+
