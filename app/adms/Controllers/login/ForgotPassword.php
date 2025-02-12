@@ -28,7 +28,7 @@ class ForgotPassword
             // Chamar o método esqueceu a senha 
             $this->forgotPassword();
         } else {
-            // Chamar método carregar a view de criação de usuário
+            // Chamar método carregar a view esqueceu a senha
             $this->viewForgotPassword();
         }
     }

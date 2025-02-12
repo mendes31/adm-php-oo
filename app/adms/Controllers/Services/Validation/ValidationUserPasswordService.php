@@ -36,12 +36,15 @@ class ValidationUserPasswordService
         $validation = $validator->make($data, [
             // 'password' => 'required|min:6|regex:/[A-Z]/|regex:/[^\w\s]/',
             // 'password' => 'required|regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{6,}$/',
+            'email' => 'required|email', 
             'password' => 'required|min:6|regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_])/',            
             'confirm_password' => 'required|same:password',
         ]);
 
         // Definir as mensagens de erro personalizadas
         $validation->setMessages([
+            'email:required'               => 'O campo email é obrigatório.',
+            'email:email'                  => 'O campo email deve ser um email válido.',
             'password:required'             => 'O campo senha é obrigatório.',
             'password:min'                  => 'A senha deve ter no mínimo 6 caracteres.',
             'password:regex'                => 'A senha deve conter letra(s), numero(s) e caractere(s) especial.',
