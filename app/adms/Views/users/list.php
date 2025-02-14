@@ -43,7 +43,7 @@ if ($this->data['users'] ?? false) {
             <input type="hidden" name="id" id="id" value="<?php echo $id ?? ''; ?>">
 
             <!-- Botão para submeter o formulário -->
-            <button type="submit">Apagar</button>
+            <button type="submit" onclick="return confirm('Tem certeza que deseja apagar este registro?')">Apagar</button>
 
         </form>
 
