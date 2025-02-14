@@ -4,6 +4,8 @@
 * MySQL 8.0 ou superior;
 * Composer;
 
+* Teste verificação de envio para o git
+
 ## Como rodar o projeto baixado
 
 Duplicar o arquivo ".env.exemple" e renomear para ".env".<br>
