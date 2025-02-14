@@ -3,6 +3,9 @@
 // Inclui o cabeçalho da página. Este arquivo contém elementos comuns ao topo de todas as páginas, como links para CSS e scripts JavaScript.
 include 'app/adms/Views/partials/head.php';
 
+// Inclui o menu.
+include 'app/adms/Views/partials/menu.php';
+
 // Inclui o conteúdo principal da página, que é especificado pela propriedade $this->view. Este arquivo é dinâmico e pode variar conforme a lógica do controlador ou o contexto da página.
 include $this->view;
 

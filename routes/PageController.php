@@ -1,6 +1,6 @@
 <?php
 
-namespace App\adms\Controllers\Services;
+namespace Routes;
 
 use App\adms\Helpers\ClearUrl;
 use App\adms\Helpers\SlugController;

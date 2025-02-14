@@ -35,9 +35,10 @@ Options -Indexes
 
 # Bloquear acesso direto aos diretórios pela URL
 RewriteRule ^app/ - [F]
-RewriteRule ^logs/ - [F]
-RewriteRule ^vendor/ - [F]
 RewriteRule ^database/ - [F]
+RewriteRule ^logs/ - [F]
+RewriteRule ^routes/ - [F]
+RewriteRule ^vendor/ - [F]
 
 # Bloquear acesso direto aos arquivos pela URL
 <FilesMatch "^\.env$">

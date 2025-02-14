@@ -45,7 +45,7 @@ class ForgotPassword
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/login/forgotPassword", $this->data);
-        $loadView->loadView();
+        $loadView->loadViewLogin();
     }
     
 

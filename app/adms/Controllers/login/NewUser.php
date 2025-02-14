@@ -43,7 +43,7 @@ class NewUser
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/login/newUser", $this->data);
-        $loadView->loadView();
+        $loadView->loadViewLogin();
     }
 
     private function addUser(): void

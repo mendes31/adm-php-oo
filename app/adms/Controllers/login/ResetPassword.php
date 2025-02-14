@@ -40,7 +40,7 @@ class ResetPassword
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/login/resetPassword", $this->data);
-        $loadView->loadView();
+        $loadView->loadViewLogin();
     }
 
     private function resetPassword(): void

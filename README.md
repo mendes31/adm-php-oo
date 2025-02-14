@@ -9,7 +9,9 @@
 Duplicar o arquivo ".env.exemple" e renomear para ".env".<br>
 Alterar no arquivo .env as credenciais do banco de dados.<br>
 Criar o banco de dados com a COLLACTION "utf8mb4_unicode_ci".<br>
-Alterar no arquivo .env o endereço da aplicação na variável de ambiente URL_ADM.<br> 
+Alterar no arquivo .env o endereço da aplicação na variável de ambiente URL_ADM.<br>
+Alterar no arquivo .env as credenciais do servidor para enviar email.<br>
+Enviar e-mail gratuito via SMTP https://www.iagente.com.br/solicitacao-conta-smtp/origin/celke
 
 Instalar as dependências.
 ```
