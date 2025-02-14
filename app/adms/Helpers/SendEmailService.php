@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\Exception;
 
 class SendEmailService
 {
-    public static function sendEmail(string $email, string $name, string $subject, string $body, string $altBody)
+    public static function sendEmail(string $email, string $name, string $subject, string $body, string $altBody) : bool
     {
         $mail = new PHPMailer(true);
 
@@ -20,7 +20,7 @@ class SendEmailService
             $mail->SMTPAuth   = true;                                   //Habilita autenticação SMTP
             $mail->Username   = $_ENV['MAIL_USERNAME'];                 //Nome de usuário SMTP
             $mail->Password   = $_ENV['MAIL_PASSWORD'];                 //senha SMTP
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         //Habilita criptografia TLS implícita
+            $mail->SMTPSecure = $_ENV['MAIL_ENCRYPTI'];                 //Habilita criptografia TLS implícita
             $mail->Port       = $_ENV['MAIL_PORT'];
 
             //Recipients

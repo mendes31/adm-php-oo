@@ -15,7 +15,7 @@ class ResetPasswordRepository extends DbConnection
     public function getUser(string $email)
     {
         // QUERY para recuperar o registro do baco de dados
-        $sql = "SELECT id, recover_password, validate_recover_password FROM adms_users WHERE email = :email";
+        $sql = "SELECT id, name, email, recover_password, validate_recover_password FROM adms_users WHERE email = :email";
 
 
         // Preparar a QUERY
@@ -48,9 +48,9 @@ class ResetPasswordRepository extends DbConnection
 
             // Substituir os links da QUERY pelo valor
             $stmt->bindValue(':recover_password', $data['recover_password'], PDO::PARAM_STR);
-            $stmt->bindValue(':validate_recover_password', date("Y-m-d H:i:s", strtotime('+1hour')));
+            $stmt->bindValue(':validate_recover_password', $data['validate_recover_password']);
             $stmt->bindValue(':updated_at', date("Y-m-d H:i:s"));
-            $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
+            $stmt->bindValue(':email', $data['form']['email'], PDO::PARAM_STR);
 
 
             // Retornar TRUE quando conseguir executar a QUERY SQL, não considerando se alterou dados do registro

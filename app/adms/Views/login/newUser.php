@@ -38,7 +38,9 @@ include './app/adms/Views/partials/alerts.php';
     <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirmar a senha." value="<?php echo $this->data['form']['confirm_password'] ?? ''; ?>"><br><br>
 
     <!-- Botão para submeter o formulário -->
-    <button type="submit">Cadastrar</button>
+    <button type="submit">Cadastrar</button><br><br>
 
 </form>
+
+<a href="<?php echo $_ENV['URL_ADM']; ?>login">Login</a><br><br>
 

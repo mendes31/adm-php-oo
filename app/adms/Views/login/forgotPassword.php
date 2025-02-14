@@ -22,7 +22,8 @@ include './app/adms/Views/partials/alerts.php';
     <input type="email" name="email" id="email" placeholder="Digite o email cadastrado." value="<?php echo $this->data['form']['email'] ?? ''; ?>"><br><br>
 
     <!-- Botão para submeter o formulário -->
-    <button type="submit">Recuperar</button>
+    <button type="submit">Recuperar</button><br><br>
 
 </form>
 
+<a href="<?php echo $_ENV['URL_ADM']; ?>login">Login</a><br><br>

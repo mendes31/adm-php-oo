@@ -3,6 +3,7 @@
 namespace App\adms\Controllers\login;
 
 use App\adms\Controllers\Services\GenerateKeyService;
+use App\adms\Controllers\Services\RecoverPassword;
 use App\adms\Controllers\Services\Validation\ValidationEmailService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
@@ -81,31 +82,31 @@ class ForgotPassword
             return;
         }
 
-        // Instanciar o serviço para gerar a chave
-        $valueGenerateKey = GenerateKeyService::generateKey();
+        // Instaciar o serviço para recuperar a senha
+        $recoverPassword = new RecoverPassword();
+        $resultRecoverPassword = $recoverPassword->recoverPassword($this->data);
 
-        $this->data['form']['key'] = $valueGenerateKey['key'];
-        $this->data['form']['recover_password'] = $valueGenerateKey['encryptedkey'];
+        // Verificar se enviou o email com sucesso  
+        if(!$resultRecoverPassword){
 
-        // Instanciar Repository para resetar a senha
-        $userUpdate = new ResetPasswordRepository();
-        $result = $userUpdate->updateForgotPassword($this->data['form']);
+            // Chamar o método para salvar o log
+            GenerateLog::generateLog("error", "Email com instruções para recuperar a senha não enviado.", ['email' => (string) $this->data['form']['email']]);
 
-        // Acessa o IF se o repository retornou TRUE
-        if($result){
-            // Criar a mensagem de sucesso
-            $_SESSION['success'] = "Enviado email com as instruções para recuperar a senha. Acesse a sua caixa de email para recuperar a senha. - {$_ENV['URL_ADM']}reset-password/{$this->data['form']['key']}";
+            // Criar a mensagem de erro 
+            $_SESSION['error'] = "Email com instruções para recuperar a senha não enviado, tente novamente ou entre em contato com o e-mail {$_ENV['EMAIL_ADM']}.";
 
-            // Redirecionar o usuário para a pagina view - visualizar usuario
-            header("Location: {$_ENV['URL_ADM']}login");
-            return;
-        }else {
-            // Criar a mensagem de erro
-            $this->data['errors'][] = "Email com as instruções para recuperar a senha não enviado, tente novamente ou enrte em contato com o email {$_ENV['EMAIL_ADM']}";
-
-            // Chamar método carregar a view
+            // Chamar o método carregar a view
             $this->viewForgotPassword();
+
+            return;
+
         }
+
+        // Criar mensagem de sucesso
+        $_SESSION['success'] = "Enviado email com as intruções para recuperar a senha. Acesse a sua caixa de email para recuperar a sua senha.";
+        
+        // Redirecionar o usuário para página de login
+        header("Location: {$_ENV['URL_ADM']}");
 
     }
 
