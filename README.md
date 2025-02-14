@@ -4,7 +4,11 @@
 * MySQL 8.0 ou superior;
 * Composer;
 
+<<<<<<< HEAD
 * Teste verificação de envio para o git
+=======
+* teste
+>>>>>>> 115ba82e8bf991d524802aa8cf67968a0f5bcca2
 
 ## Como rodar o projeto baixado
 
