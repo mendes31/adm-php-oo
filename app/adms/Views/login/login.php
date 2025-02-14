@@ -26,7 +26,7 @@ include './app/adms/Views/partials/alerts.php';
     <input type="password" name="password" id="password" placeholder="Digite sua senha" value="<?php echo $this->data['form']['password'] ?? ''; ?>"><br><br>
 
     <!-- Botão para submeter o formulário -->
-    <button type="submit">Acessar</button><br><br>
+    <button type="submit" class="btn btn-primary">Acessar</button><br><br>
 
 </form>
 
