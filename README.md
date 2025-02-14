@@ -101,6 +101,11 @@ Instalar a biblioteca para vallidar o formulario.
 composer require "rakit/validation"
 ```
 
+Instalar a biblioteca phpmailer para enviar email.
+```
+composer require phpmailer/phpmailer
+```
+
 
 ## Como usar o GitHub
 Baixar os arquivos do Git.

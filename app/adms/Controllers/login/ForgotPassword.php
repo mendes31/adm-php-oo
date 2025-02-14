@@ -6,6 +6,7 @@ use App\adms\Controllers\Services\GenerateKeyService;
 use App\adms\Controllers\Services\Validation\ValidationEmailService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
+use App\adms\Helpers\SendEmailService;
 use App\adms\Models\Repository\LoginRepository;
 use App\adms\Models\Repository\ResetPasswordRepository;
 use App\adms\Models\Repository\UsersRepository;
@@ -19,6 +20,9 @@ class ForgotPassword
 
     public function index(): void
     {
+        // $sendEmail = new SendEmailService();
+        // $sendEmail->sendEmail('rafael.oliveira@tiaraju.com.br', 'Rafael', 'Recuperar senha', 'Abaixo segue o link para recuperação de sua senha, o mesmo irá expirar em 60 minutos!</b>', 'Abaixo segue o link para recuperação de sua senha, o mesmo irá expirar em 60 minutos!');
+
         // Receber os dados do formulário
         $this->data['form'] = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
