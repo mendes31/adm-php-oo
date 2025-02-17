@@ -12,6 +12,11 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
     <div class="mb-1 hstack gap-2">
         <h2 class="mt-3">Usuários</h2>
 
+        <ol class="breadcrumb  mb-3 ms-auto">
+            <li class="breadcrumb-item"><a href="<?php echo $_ENV['URL_ADM']; ?>dashboard" class="text-decoration-none">Dashboard</a></li>
+            <li class="breadcrumb-item">Usuários</li>
+        </ol>
+
     </div>
     <div class="card mb-4 border-light shadow">
         <div class="card-header hstack gap-2">

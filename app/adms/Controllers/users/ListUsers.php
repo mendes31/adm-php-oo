@@ -23,7 +23,7 @@ class ListUsers
     private array|string|null $data = null;
 
     /** @var int $limitResult Recebe a quantidade de registros que deve retornar do banco de dados */
-    private int $limitResult = 1;
+    private int $limitResult = 10; // Ajuste se necessário a quantidade de registro por pagina
 
     /**
      * Recuperar e listar usuários com paginação.

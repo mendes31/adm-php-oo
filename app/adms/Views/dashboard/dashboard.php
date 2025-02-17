@@ -3,12 +3,19 @@
     <div class="mb-1 hstack gap-2">
         <h2 class="mt-3">Dashboard</h2>
 
+        <ol class="breadcrumb mb-3 ms-auto">
+            <li class="breadcrumb-item">
+                Dashboard
+            </li>
+        </ol>
+
     </div>
 
     <div class="card mb-4 border-light shadow">
 
         <div class="card-header hstack gap-2">
             <span>Dashboard</span>
+
         </div>
 
         <div class="card-body">
