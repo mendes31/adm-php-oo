@@ -2,35 +2,45 @@
 
 // Verifica se há uma página final disponível e se não é a primeira página
 if (($this->data['pagination']['last_page'] ?? false) and ($this->data['pagination']['last_page'] != 1)) {
-    
-    // Se a página atual for maior que 1, exibe links para a primeira página e a página anterior
-    if($this->data['pagination']['current_page'] > 1){
-        
-        // Gera um link para a primeira página
-        echo "<a href='" . $_ENV['URL_ADM'] . ($this->data['pagination']['url_controller'] ?? '') . "/1'>Primeira</a> ";
+?>
+    <nav aria-label="...">
+        <ul class="pagination pagination-sm">
 
-        // Calcula o número da página anterior
-        $beforePage = $this->data['pagination']['current_page'] - 1;
+            <?php
+            // Se a página atual for maior que 1, exibe links para a primeira página e a página anterior
+            if ($this->data['pagination']['current_page'] > 1) {
 
-        // Gera um link para a página anterior
-        echo "<a href='" . $_ENV['URL_ADM'] . ($this->data['pagination']['url_controller'] ?? '') . "/" . $beforePage . "'>$beforePage</a> ";
-    }
+                // Gera um link para a primeira página
+                echo "<li class='page-item'><a href='" . $_ENV['URL_ADM'] . ($this->data['pagination']['url_controller'] ?? '') . "/1' class='page-link'>Primeira</a></li>";
 
-    // Exibe a página atual como um link (não clicável)
-    echo "<a href='#'>" . ($this->data['pagination']['current_page'] ?? 1) . "</a> ";
+                // Calcula o número da página anterior
+                $beforePage = $this->data['pagination']['current_page'] - 1;
 
-    // Se a página atual for menor que a página final, exibe links para a próxima página e a última página
-    if($this->data['pagination']['current_page'] < $this->data['pagination']['last_page']){
+                // Gera um link para a página anterior                
+                echo "<li class='page-item'><a href='" . $_ENV['URL_ADM'] . ($this->data['pagination']['url_controller'] ?? '') . "/" . $beforePage . "' class='page-link'>$beforePage</a></li>";
+            } 
 
-        // Calcula o número da próxima página
-        $afterPage = $this->data['pagination']['current_page'] + 1;
+            $currentPage = ($this->data['pagination']['current_page'] ?? 1);
 
-        // Gera um link para a próxima página
-        echo "<a href='" . $_ENV['URL_ADM'] . ($this->data['pagination']['url_controller'] ?? '') . "/" . $afterPage . "'>$afterPage</a> ";
+            // Exibe a pagina atual
+            echo "<li class='page-item active' aria-current='page'><span class='page-link'>$currentPage</span></li>";
 
-        // Gera um link para a última página
-        echo "<a href='" . $_ENV['URL_ADM'] . ($this->data['pagination']['url_controller'] ?? '') . "/" .($this->data['pagination']['last_page'] ?? ''). "'> Última</a> ";
-    }
+            // Se a página atual for menor que a página final, exibe links para a próxima página e a última página
+            if ($this->data['pagination']['current_page'] < $this->data['pagination']['last_page']) {
 
-    
+                // Calcula o número da próxima página
+                $afterPage = $this->data['pagination']['current_page'] + 1;
+
+                // Gera um link para a próxima página
+                echo "<li class='page-item'><a href='" . $_ENV['URL_ADM'] . ($this->data['pagination']['url_controller'] ?? '') . "/" . $afterPage . "' class='page-link'>$afterPage</a></li>";
+
+                // Gera um link para a última página                
+                echo "<li class='page-item'><a href='" . $_ENV['URL_ADM'] . ($this->data['pagination']['url_controller'] ?? '') . "/" . ($this->data['pagination']['last_page'] ?? '') . "' class='page-link'>Última</a></li>";
+            } ?>
+
+        </ul>
+    </nav>
+
+<?php
 }
+?>
