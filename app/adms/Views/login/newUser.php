@@ -2,45 +2,69 @@
 
 use App\adms\Helpers\CSRFHelper;
 
-// Exibe o título da página de cadastro de usuário
-echo "<h3>Novo Usuário</h3>";
-
-
-// Inclui o arquivo que exibe mensagens de sucesso e erro
-include './app/adms/Views/partials/alerts.php';
-
 ?>
 
-<!-- Formulário para cadastrar um novo usuário -->
-<form action="" method="POST">
+<div class="col-lg-5">
+    <div class="card shadow-lg border-0 rounded-lg mt-5">
+        <div class="card-header">
+            <h3 class="text-center font-weight-light my-4">Novo Usuário</h3>
+        </div>
+        <div class="card-body">
 
-    <!-- Campo oculto para o token CSRF para proteger o formulário contra ataques de falsificação de solicitação entre sites -->
-    <input type="hidden" name="csrf_token" value="<?php echo CSRFHelper::generateCSRFToken('form_new_user'); ?>">
+            <?php
 
-    <!-- Campo para o nome do usuário -->
-    <label for="name">Nome: </label>
-    <input type="text" name="name" id="name" placeholder="Nome completo" value="<?php echo $this->data['form']['name'] ?? ''; ?>"><br><br>
+            // Inclui o arquivo que exibe mensagens de sucesso e erro
+            include './app/adms/Views/partials/alerts.php';
 
-    <!-- Campo para o e-mail do usuário -->
-    <label for="email">Email: </label>
-    <input type="email" name="email" id="email" placeholder="Digite o email" value="<?php echo $this->data['form']['email'] ?? ''; ?>"><br><br>
+            ?>
 
-    <!-- Campo para a senha do usuário -->
-    <label for="username">Usuário: </label>
-    <input type="text" name="username" id="username" placeholder="Digite o usuário" value="<?php echo $this->data['form']['username'] ?? ''; ?>"><br><br>
+            <form method="POST" action="">
 
-    <!-- Campo para a senha do usuário -->
-    <label for="password">Senha: </label>
-    <input type="password" name="password" id="password" placeholder="Senha minímo 6 caracteres" value="<?php echo $this->data['form']['password'] ?? ''; ?>"><br><br>
+                <!-- Campo oculto para o token CSRF para proteger o formulário contra ataques de falsificação de solicitação entre sites -->
+                <input type="hidden" name="csrf_token" value="<?php echo CSRFHelper::generateCSRFToken('form_new_user'); ?>">
 
-    <!-- Campo para confirmar a senha -->
-    <label for="confirm_password">Confirmar Senha: </label>
-    <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirmar a senha." value="<?php echo $this->data['form']['confirm_password'] ?? ''; ?>"><br><br>
+                <div class="form-floating mb-3">
+                    <input type="text" name="name" class="form-control" id="name"
+                        placeholder="Nome completo" value="<?php echo $this->data['form']['name'] ?? ''; ?>">
+                    <label for="email">Nome</label>
+                </div>
 
-    <!-- Botão para submeter o formulário -->
-    <button type="submit">Cadastrar</button><br><br>
+                <div class="form-floating mb-3">
+                    <input type="email" name="email" class="form-control" id="email"
+                        placeholder="Melhor e-mail" value="<?php echo $this->data['form']['email'] ?? ''; ?>">
+                    <label for="email">E-mail</label>
+                </div>
 
-</form>
+                <div class="form-floating mb-3">
+                    <input type="text" name="username" class="form-control" id="username"
+                        placeholder="Cadastre um usuário dispovível." value="<?php echo $this->data['form']['username'] ?? ''; ?>">
+                    <label for="username">Usuário</label>
+                </div>
 
-<a href="<?php echo $_ENV['URL_ADM']; ?>login">Login</a><br><br>
+                <div class="form-floating mb-3">
+                    <input type="password" name="password" class="form-control" id="password"
+                        placeholder="Senha com mínimo 6 caracteres" value="<?php echo $this->data['form']['password'] ?? ''; ?>">
+                    <label for="password">Senha</label>
+                </div>
 
+                <div class="form-floating mb-3">
+                    <input type="password" name="confirm_password" class="form-control" id="confirm_password"
+                        placeholder="Confirmar a Senha" value="<?php echo $this->data['form']['confirm_password'] ?? ''; ?>">
+                    <label for="password">Confirmar a Senha</label>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                    <button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="card-footer text-center py-3">
+            <div class="small">
+                <a href="<?php echo $_ENV['URL_ADM']; ?>login" class="text-decoration-none">Clique aqui</a> para acessar.
+            </div>
+        </div>
+
+    </div>
+</div>
