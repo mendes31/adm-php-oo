@@ -5,13 +5,17 @@
 
     </div>
 
-    <div class="card border-light shadow">
+    <div class="card mb-4 border-light shadow">
 
         <div class="card-header hstack gap-2">
             <span>Dashboard</span>
         </div>
 
         <div class="card-body">
+            <?php
+            // Inclui o arquivo que exibe mensagens de sucesso e erro
+            include './app/adms/Views/partials/alerts.php';
+            ?>
             <div class="row">
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
