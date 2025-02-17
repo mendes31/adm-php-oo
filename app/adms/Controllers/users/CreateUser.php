@@ -59,6 +59,9 @@ class CreateUser
         // Criar o título da página
         $this->data['title_head'] =  "Cadastrar Usuários";
 
+        // Ativar o item de menu
+        $this->data['menu'] = "list-users";
+
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/users/create", $this->data);
         $loadView->loadView();

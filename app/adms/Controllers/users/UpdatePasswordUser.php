@@ -85,6 +85,9 @@ class UpdatePasswordUser
         // Criar o título da página
         $this->data['title_head'] =  "Editar Senha do Usuário";
 
+        // Ativar o item de menu
+        $this->data['menu'] = "list-users";
+
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/users/updatePassword", $this->data);
         $loadView->loadView();

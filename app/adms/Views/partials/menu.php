@@ -3,12 +3,12 @@
         <div class="sb-sidenav-menu">
             <div class="nav">
                 
-                <a class="nav-link" href="<?php echo $_ENV['URL_ADM']; ?>dashboard">
+                <a class="nav-link <?php echo (($this->data['menu'] ?? false) and ($this->data['menu'] == 'dashboard')) ? 'active' : '' ?>" href="<?php echo $_ENV['URL_ADM']; ?>dashboard">
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                     Dashboard
                 </a>
                 
-                <a class="nav-link" href="<?php echo $_ENV['URL_ADM']; ?>list-users">
+                <a class="nav-link <?php echo (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-users')) ? 'active' : '' ?>" href="<?php echo $_ENV['URL_ADM']; ?>list-users">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-users"></i></div>
                     Usuários
                 </a>
