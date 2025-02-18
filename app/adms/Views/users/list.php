@@ -68,7 +68,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
                                     <a href='<?php echo "{$_ENV['URL_ADM']}update-user/$id"; ?>' class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-regular fa-pen-to-square"></i> Editar</a>
 
                                     <!-- Formulário para deletar usuário -->
-                                    <form action="delete-user" method="POST">
+                                    <form action="<?php echo $_ENV['URL_ADM']; ?>delete-user" method="POST">
 
                                         <!-- Campo oculto para o token CSRF -->
                                         <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
