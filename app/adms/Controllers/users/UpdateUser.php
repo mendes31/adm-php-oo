@@ -43,7 +43,7 @@ class UpdateUser
         $this->data['form'] = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
         // Acessar o IF se existir o CSRF e for valido o CSRF
-        if (isset($this->data['form']['csrf_token']) and CSRFHelper::validateCSRFToken('form_create_user', $this->data['form']['csrf_token'])) {
+        if (isset($this->data['form']['csrf_token']) and CSRFHelper::validateCSRFToken('form_update_user', $this->data['form']['csrf_token'])) {
 
             // Chamar o método editar
             $this->editUser();

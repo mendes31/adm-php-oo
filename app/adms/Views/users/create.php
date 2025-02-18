@@ -10,10 +10,7 @@ use App\adms\Helpers\CSRFHelper;
         <h2 class="mt-3">Usuários</h2>
 
         <ol class="breadcrumb  mb-3 ms-auto">
-            <li class="breadcrumb-item"><a href="<?php
-
-
-                                                    echo $_ENV['URL_ADM']; ?>dashboard" class="text-decoration-none">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo $_ENV['URL_ADM']; ?>dashboard" class="text-decoration-none">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="<?php echo $_ENV['URL_ADM']; ?>list-users" class="text-decoration-none">Usuários</a></li>
             <li class="breadcrumb-item">Cadastrar</li>
         </ol>
