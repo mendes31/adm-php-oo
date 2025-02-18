@@ -2,46 +2,78 @@
 
 use App\adms\Helpers\CSRFHelper;
 
-// Exibe o título da página de cadastro de usuário
-echo "<h3>Cadastrar Usuário</h3>";
-
-// Exibe um link para listar usuários
-echo "<a href='{$_ENV['URL_ADM']}list-users'>Listar Usuários</a><br><br>";
-
-// Inclui o arquivo que exibe mensagens de sucesso e erro
-include './app/adms/Views/partials/alerts.php';
-
 ?>
 
-<!-- Formulário para cadastrar um novo usuário -->
-<form action="" method="POST">
+<div class="container-fluid px-4">
 
-    <!-- Campo oculto para o token CSRF para proteger o formulário contra ataques de falsificação de solicitação entre sites -->
-    <input type="hidden" name="csrf_token" value="<?php echo CSRFHelper::generateCSRFToken('form_create_user'); ?>">
+    <div class="mb-1 hstack gap-2">
+        <h2 class="mt-3">Usuários</h2>
 
-    <!-- Operador de coalescência nula em PHP (??) - Serve para fornecer um valor padrão se uma determinada chave não estiver presente ou for nula. -->
-    <!-- Campo para o nome do usuário -->
-    <label for="name">Nome: </label>
-    <input type="text" name="name" id="name" placeholder="Nome completo" value="<?php echo $this->data['form']['name'] ?? ''; ?>"><br><br>
+        <ol class="breadcrumb  mb-3 ms-auto">
+            <li class="breadcrumb-item"><a href="<?php
 
-    <!-- Campo para o e-mail do usuário -->
-    <label for="email">Email: </label>
-    <input type="email" name="email" id="email" placeholder="Digite o email" value="<?php echo $this->data['form']['email'] ?? ''; ?>"><br><br>
 
-    <!-- Campo para a senha do usuário -->
-    <label for="username">Usuário: </label>
-    <input type="text" name="username" id="username" placeholder="Digite o usuário" value="<?php echo $this->data['form']['username'] ?? ''; ?>"><br><br>
+                                                    echo $_ENV['URL_ADM']; ?>dashboard" class="text-decoration-none">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo $_ENV['URL_ADM']; ?>list-users" class="text-decoration-none">Usuários</a></li>
+            <li class="breadcrumb-item">Cadastrar</li>
+        </ol>
+    </div>
 
-    <!-- Campo para a senha do usuário -->
-    <label for="password">Senha: </label>
-    <input type="password" name="password" id="password" placeholder="Senha minímo 6 caracteres" value="<?php echo $this->data['form']['password'] ?? ''; ?>"><br><br>
+    <div class="card mb-4 border-light shadow">
+        <div class="card-header hstack gap-2">
+            <span>
+                Cadastrar
+            </span>
 
-    <!-- Campo para confirmar a senha -->
-    <label for="confirm_password">Confirmar Senha: </label>
-    <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirmar a senha." value="<?php echo $this->data['form']['confirm_password'] ?? ''; ?>"><br><br>
+            <span class="ms-auto d-sm-flex flex-row">
+                <a href="<?php echo $_ENV['URL_ADM']; ?>list-users" class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-list-ul"></i> Listar</a>
+            </span>
+        </div>
 
-    <!-- Botão para submeter o formulário -->
-    <button type="submit">Cadastrar</button>
+        <div class="card-body">
+            <?php
+            // Inclui o arquivo que exibe mensagens de sucesso e erro
+            include './app/adms/Views/partials/alerts.php';
+            ?>
 
-</form>
+            <!-- Formulário para cadastrar um novo usuário -->
+            <form action="" method="POST" class="row g-3">
 
+                <!-- Campo oculto para o token CSRF para proteger o formulário contra ataques de falsificação de solicitação entre sites -->
+                <input type="hidden" name="csrf_token" value="<?php echo CSRFHelper::generateCSRFToken('form_create_user'); ?>">
+
+                <div class="col-md-12">
+                    <label for="name" class="form-label">Nome</label>
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Nome completo" value="<?php echo $this->data['form']['name'] ?? ''; ?>">
+                </div>
+
+                <div class="col-md-12">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" id="email" placeholder="Digite o seu melhor email" value="<?php echo $this->data['form']['email'] ?? ''; ?>">
+                </div>
+
+                <div class="col-md-12">
+                    <label for="username" class="form-label">Usuário</label>
+                    <input type="text" name="username" class="form-control" id="username" placeholder="Digite um usuário disponível" value="<?php echo $this->data['form']['username'] ?? ''; ?>">
+                </div>
+
+
+                <div class="col-md-6">
+                    <label for="password" class="form-label">Senha</label>
+                    <input type="password" name="password" class="form-control" id="password" placeholder="Senha minímo 6 caracteres e deve conter letra, número e caractere especial." value="<?php echo $this->data['form']['password'] ?? ''; ?>">
+                </div>
+
+                <div class="col-md-6">
+                    <label for="confirm_password" class="form-label">Confirmar Senha</label>
+                    <input type="password" name="confirm_password" class="form-control" id="confirm_password" placeholder="Confirmar a senha." value="<?php echo $this->data['form']['confirm_password'] ?? ''; ?>">
+                </div>
+
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success">Cadastrar</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
