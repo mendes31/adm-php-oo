@@ -32,7 +32,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
                 <a href="<?php echo $_ENV['URL_ADM'] . 'update-password-user/' . ($this->data['user']['id'] ?? ''); ?>" class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-solid fa-key"></i> Editar Senha</a>
 
                 <!-- Formulário para deletar usuário -->
-                <form action="<?php echo $_ENV['URL_ADM']; ?>delete-user" method="POST">
+                <form id="formDelete<?php echo ($this->data['user']['id'] ?? ''); ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-user" method="POST">
 
                     <!-- Campo oculto para o token CSRF -->
                     <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
@@ -41,7 +41,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
                     <input type="hidden" name="id" id="id" value="<?php echo ($this->data['user']['id'] ?? ''); ?>">
 
                     <!-- Botão para submeter o formulário -->
-                    <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="return confirm('Tem certeza que deseja apagar este registro?')"><i class="fa-regular fa-trash-can"></i> Apagar</button>
+                    <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo ($this->data['user']['id'] ?? ''); ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
 
                 </form>
 
