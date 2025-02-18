@@ -8,10 +8,10 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
 ?>
 
 <div class="container-fluid px-4">
-    <div class="mb-1 hstack gap-2">
+    <div class="mb-1 d-flex flex-column flex-sm-row gap-2">
         <h2 class="mt-3">Usuários</h2>
 
-        <ol class="breadcrumb  mb-3 ms-auto">
+        <ol class="breadcrumb  mb-3 mt-0 mt-sm-3 ms-auto">
             <li class="breadcrumb-item"><a href="<?php echo $_ENV['URL_ADM']; ?>dashboard" class="text-decoration-none">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="<?php echo $_ENV['URL_ADM']; ?>list-users" class="text-decoration-none">Usuários</a></li>
             <li class="breadcrumb-item">Visualizar</li>
@@ -19,12 +19,12 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
     </div>
 
     <div class="card mb-4 border-light shadow">
-        <div class="card-header hstack gap-2">
+        <div class="card-header d-flex flex-column flex-sm-row gap-2">
             <span>
                 Visulaizar
             </span>
 
-            <span class="ms-auto d-sm-flex flex-row">
+            <span class="ms-sm-auto d-sm-flex flex-row">
                 <a href="<?php echo $_ENV['URL_ADM']; ?>list-users" class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-list-ul"></i> Listar</a>
 
                 <a href="<?php echo $_ENV['URL_ADM'] . 'update-user/' . ($this->data['user']['id'] ?? ''); ?>" class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-regular fa-pen-to-square"></i> Editar</a>

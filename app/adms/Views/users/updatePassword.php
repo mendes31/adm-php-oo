@@ -6,10 +6,10 @@ use App\adms\Helpers\CSRFHelper;
 
 <div class="container-fluid px-4">
 
-    <div class="mb-1 hstack gap-2">
+    <div class="mb-1 d-flex flex-column flex-sm-row gap-2">
         <h2 class="mt-3">Usuários</h2>
 
-        <ol class="breadcrumb  mb-3 ms-auto">
+        <ol class="breadcrumb mb-3 mt-0 mt-sm-3 ms-auto">
             <li class="breadcrumb-item"><a href="<?php echo $_ENV['URL_ADM']; ?>dashboard" class="text-decoration-none">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="<?php echo $_ENV['URL_ADM']; ?>list-users" class="text-decoration-none">Usuários</a></li>
             <li class="breadcrumb-item">Editar Senha</li>
@@ -43,7 +43,7 @@ use App\adms\Helpers\CSRFHelper;
                 <input type="hidden" name="id" id="id" value="<?php echo $this->data['form']['id'] ?? ''; ?>">
 
                 <input type="hidden" name="email" id="email" value="<?php echo $this->data['form']['email'] ?? ''; ?>">
-                
+
                 <div class="col-md-6">
                     <label for="password" class="form-label">Senha</label>
                     <input type="password" name="password" class="form-control" id="password" placeholder="Senha minímo 6 caracteres e deve conter letra, número e caractere especial." value="<?php echo $this->data['form']['password'] ?? ''; ?>">
