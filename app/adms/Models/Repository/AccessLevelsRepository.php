@@ -112,45 +112,22 @@ class AccessLevelsRepository extends DbConnection
     {
         try {
 
-            // QUERY para recuperar o nível de acesso com permissão menor
-            $sql = 'SELECT id
-                    FROM adms_access_levels
-                    ORDER BY id DESC
-                    LIMIT 1';
-
-            // Preparar a QUERY
-            $stmt = $this->getConnection()->prepare($sql);
-
-            // Executar a QUERY
-            $stmt->execute();
-
-            // Ler o registro e retornar
-            $lastAccessLevel = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            // Acessar o IF quando não encontrar nível de acesso
-            if (!$lastAccessLevel) {
-
-                // Gerar log de erro
-                GenerateLog::generateLog("error", "Não existe nenhum nível de acesso para usar como última ordem.", ['name' => $data['name']]);
-
-                return false;
-            }
-
             // QUERY para cadastrar nível de acesso
-            $sql = 'INSERT INTO adms_access_levels (name, created_at) VALUES (:name, :created_at)';
+            $sql = 'INSERT INTO adms_access_levels (name, create_at) VALUES (:name, :create_at)';
 
             // Preparar a QUERY
             $stmt = $this->getConnection()->prepare($sql);
 
             // Substituir os parâmetros da QUERY pelos valores
             $stmt->bindValue(':name', $data['name'], PDO::PARAM_STR);
-            $stmt->bindValue(':created_at', date("Y-m-d H:i:s"));
+            $stmt->bindValue(':create_at', date("Y-m-d H:i:s"));
 
             // Executar a QUERY
             $stmt->execute();
 
-            // Retornar o ID do nível de acesso recém-cadastrado
+            // Retornar o ID do nivel recém cadastrado
             return $this->getConnection()->lastInsertId();
+
         } catch (Exception $e) {
             // Gerar log de erro
             GenerateLog::generateLog("error", "Nível de acesso não cadastrado.", ['name' => $data['name'], 'error' => $e->getMessage()]);
