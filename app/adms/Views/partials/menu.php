@@ -13,6 +13,16 @@
                     Usuários
                 </a>
 
+                <a class="nav-link <?php echo (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-departments')) ? 'active' : '' ?>" href="<?php echo $_ENV['URL_ADM']; ?>list-departments">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-building-user"></i></div>
+                    Departamentos
+                </a>
+
+                <a class="nav-link <?php echo (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-access-levels')) ? 'active' : '' ?>" href="<?php echo $_ENV['URL_ADM']; ?>list-access-levels">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-network-wired"></i></div>
+                    Niveis de Acesso
+                </a>
+
                 <a class="nav-link" href="<?php echo $_ENV['URL_ADM']; ?>logout">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
                     Sair
