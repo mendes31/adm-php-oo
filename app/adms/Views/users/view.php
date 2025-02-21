@@ -55,7 +55,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
             include './app/adms/Views/partials/alerts.php';
 
             // Verifica se há usuários no array
-            if (isset($this->data['user'])) {
+            if ($this->data['user'] ?? false) {
 
                 // Extrai variáveis do array $this->data['user'] para fácil acesso
                 extract($this->data['user']);
@@ -86,6 +86,83 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
             } else {
                 // Acessa o ELSE quando o elemento não existir registros
                 echo "<div class='alert alert-danger' role='alert'>Usuário não encontrado.</div>";
+            }
+            ?>
+        </div>
+
+    </div>
+
+    <div class="card mb-4 border-light shadow">
+        <div class="card-header d-flex flex-column flex-sm-row gap-2">
+            <span>Departamento</span>
+
+            <span class="ms-sm-auto d-sm-flex flex-row">
+
+
+            </span>
+        </div>
+
+
+        <div class="card-body">
+            <?php
+
+            // Verifica se há niveis de acesso para o usuários no array
+            if ($this->data['userDepartments'] ?? false) {
+
+                echo "<dl class='row'>";
+                echo "<dt class='col-sm-3'>Departamento: </dt>";
+                echo "<dd class='col-sm-9'>";
+
+                //Perceorre o array de usuários
+                foreach ($this->data['userDepartments'] as $userDepartment) {
+                    // Extrai variáveis do array de usuário
+                    extract($userDepartment);
+                    echo $name; 
+                }
+                echo '</dd>';
+                echo '</dl>';
+            } else {
+                // Acessa o ELSE quando o elemento não existir registros
+                echo "<div class='alert alert-danger' role='alert'>Usuário não possui departamento vinculado.</div>";
+            }
+            ?>
+        </div>
+
+    </div>
+
+
+    <div class="card mb-4 border-light shadow">
+        <div class="card-header d-flex flex-column flex-sm-row gap-2">
+            <span>Permissões</span>
+
+            <span class="ms-sm-auto d-sm-flex flex-row">
+
+
+            </span>
+        </div>
+
+
+        <div class="card-body">
+            <?php
+
+            // Verifica se há niveis de acesso para o usuários no array
+            if ($this->data['userAccessLevels'] ?? false) {
+
+                echo "<dl class='row'>";
+                echo "<dt class='col-sm-3'>Niveis de Acesso: </dt>";
+                echo "<dd class='col-sm-9'>";
+
+                //Perceorre o array de usuários
+                foreach ($this->data['userAccessLevels'] as $userAccessLevel) {
+                    // Extrai variáveis do array de usuário
+                    extract($userAccessLevel);
+                    echo $name; 
+                }
+                echo '</dd>';
+                echo '</dl>';
+            } else {
+                // Acessa o ELSE quando o elemento não existir registros
+                echo "<div class='alert alert-danger' role='alert'>Usuário não possui nivel de acesso.</div>";
             }
             ?>
         </div>

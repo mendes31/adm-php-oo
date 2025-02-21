@@ -3,6 +3,8 @@
 namespace App\adms\Controllers\users;
 
 use App\adms\Helpers\GenerateLog;
+use App\adms\Models\Repository\UsersAccessLevelsRepository;
+use App\adms\Models\Repository\UsersDepartmentsRepository;
 use App\adms\Models\Repository\UsersRepository;
 use App\adms\Views\Services\LoadViewService;
 
@@ -66,6 +68,14 @@ class ViewUser
             header("Location: {$_ENV['URL_ADM']}list-users");
             return;
         }
+
+        // Instanciar o Repository para recuperar os niveis de acesso do usuário
+        $viewUserAccessLevels = new UsersAccessLevelsRepository();
+        $this->data['userAccessLevels'] = $viewUserAccessLevels->getUserAccessLevel((int) $id);
+
+        // Instanciar o Repository para recuperar os niveis de acesso do usuário
+        $viewUserDepartments = new UsersDepartmentsRepository();
+        $this->data['userDepartments'] = $viewUserDepartments->getUserDepartments((int) $id);
 
         // Chamar o método para salvar o log
         GenerateLog::generateLog("error", "Usuário não encontrado.", ['id' => (int) $id]);
