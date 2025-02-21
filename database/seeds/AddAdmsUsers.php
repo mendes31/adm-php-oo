@@ -51,39 +51,37 @@ class AddAdmsUsers extends AbstractSeed
             ];
         }
 
-                // Verificar se o registro já existe no banco de dados
-       $existingRecord = $this->query('SELECT id FROM adms_users WHERE username=:username', ['username' => 'wladimir.souza'])->fetch();
+        // Verificar se o registro já existe no banco de dados
+        $existingRecord = $this->query('SELECT id FROM adms_users WHERE username=:username', ['username' => 'wladimir.souza'])->fetch();
 
-       // Se o registro não existir, insere os dados na veriável $data para em seguida cadastrar na tabela
-       if(!$existingRecord){
+        // Se o registro não existir, insere os dados na veriável $data para em seguida cadastrar na tabela
+        if (!$existingRecord) {
 
-                // Criar o array com os dados do usuário
-                $data[] = [
-                    'name' => 'Wladimir Ribeiro de Souza',
-                    'email' => 'wladimir.souza@tiaraju.com.br',
-                    'username' => 'wladimir.souza',
-                    'password' => password_hash('admin25*', PASSWORD_DEFAULT),
-                    'created_at'=> date("Y-m-d H:i:s"),
-                ];
+            // Criar o array com os dados do usuário
+            $data[] = [
+                'name' => 'Wladimir Ribeiro de Souza',
+                'email' => 'wladimir.souza@tiaraju.com.br',
+                'username' => 'wladimir.souza',
+                'password' => password_hash('admin25*', PASSWORD_DEFAULT),
+                'created_at' => date("Y-m-d H:i:s"),
+            ];
+        }
+        // Verificar se o registro já existe no banco de dados
+        $existingRecord = $this->query('SELECT id FROM adms_users WHERE username=:username', ['username' => 'marciane.meotti'])->fetch();
 
-       }
-                // Verificar se o registro já existe no banco de dados
-                $existingRecord = $this->query('SELECT id FROM adms_users WHERE username=:username', ['username' => 'marciane.meotti'])->fetch();
+        // Se o registro não existir, insere os dados na veriável $data para em seguida cadastrar na tabela
+        if (!$existingRecord) {
 
-                // Se o registro não existir, insere os dados na veriável $data para em seguida cadastrar na tabela
-                if(!$existingRecord){
-         
-                         // Criar o array com os dados do usuário
-                         $data[] = [
-                             'name' => 'Marciane Meotti',
-                             'email' => 'marciane.meotti@tiaraju.com.br',
-                             'username' => 'marciane.meotti',
-                             'password' => password_hash('admin25*', PASSWORD_DEFAULT),
-                             'created_at'=> date("Y-m-d H:i:s"),
-                         ];
-         
-                }
-         
+            // Criar o array com os dados do usuário
+            $data[] = [
+                'name' => 'Marciane Meotti',
+                'email' => 'marciane.meotti@tiaraju.com.br',
+                'username' => 'marciane.meotti',
+                'password' => password_hash('admin25*', PASSWORD_DEFAULT),
+                'created_at' => date("Y-m-d H:i:s"),
+            ];
+        }
+
 
         // Indicar em qual tabela deve salvar
         $adms_users = $this->table('adms_users');
