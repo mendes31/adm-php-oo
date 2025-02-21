@@ -33,19 +33,19 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_departments');
             <span class="ms-sm-auto d-sm-flex flex-row">
                 <a href="<?php echo $_ENV['URL_ADM']; ?>list-departments" class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-list"></i> Listar</a>
 
-                <a href="<?php echo $_ENV['URL_ADM'] . 'update-departments/' . ($this->data['department']['id'] ?? ''); ?>" class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+                <a href="<?php echo $_ENV['URL_ADM'] . 'update-departments/' . ($this->data['departments']['id'] ?? ''); ?>" class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
 
                 <!-- Formulário para deletar nível de acesso -->
-                <form id="formDelete<?php echo ($this->data['department']['id'] ?? ''); ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-departments" method="POST">
+                <form id="formDelete<?php echo ($this->data['departments']['id'] ?? ''); ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-department" method="POST">
 
                     <!-- Campo oculto para o token CSRF -->
                     <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
 
                     <!-- Campo oculto para o ID do nível de acesso -->
-                    <input type="hidden" name="id" id="id" value="<?php echo ($this->data['department']['id'] ?? ''); ?>">
+                    <input type="hidden" name="id" id="id" value="<?php echo ($this->data['departments']['id'] ?? ''); ?>">
 
                     <!-- Botão para submeter o formulário -->
-                    <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo ($this->data['department']['id'] ?? ''); ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
+                    <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo ($this->data['departments']['id'] ?? ''); ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
 
                 </form>
 
@@ -58,10 +58,10 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_departments');
             include './app/adms/Views/partials/alerts.php';
 
             // Verifica se há usuários no array
-            if (isset($this->data['department'])) {
+            if (isset($this->data['departments'])) {
 
                 // Extrai variáveis do array $this->data['acessLevel'] para fácil acesso
-                extract($this->data['department']);
+                extract($this->data['departments']);
             ?>
 
                 <dl class="row">

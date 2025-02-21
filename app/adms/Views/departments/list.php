@@ -63,11 +63,11 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_departments');
                                 <td><?php echo $name; ?></td>
                                 <td class="d-md-flex flex-row justify-content-center">
 
-                                    <a href='<?php echo "{$_ENV['URL_ADM']}view-access-level/$id"; ?>' class="btn btn-primary btn-sm me-1 mb-1"><i class="fa-regular fa-eye"></i> Visualizar</a>
+                                    <a href='<?php echo "{$_ENV['URL_ADM']}view-department/$id"; ?>' class="btn btn-primary btn-sm me-1 mb-1"><i class="fa-regular fa-eye"></i> Visualizar</a>
 
-                                    <a href='<?php echo "{$_ENV['URL_ADM']}update-access-level/$id"; ?>' class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+                                    <a href='<?php echo "{$_ENV['URL_ADM']}update-departments/$id"; ?>' class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
 
-                                    <form id="formDelete<?php echo $id; ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-access-level" method="POST">
+                                    <form id="formDelete<?php echo $id; ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-department" method="POST">
 
                                         <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
 

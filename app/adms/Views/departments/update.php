@@ -31,7 +31,7 @@ use App\adms\Helpers\CSRFHelper;
             <span class="ms-auto d-sm-flex flex-row">
                 <a href="<?php echo $_ENV['URL_ADM']; ?>list-departments" class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-list"></i> Listar</a>
 
-                <a href="<?php echo $_ENV['URL_ADM'] . 'view-departments/' . ($this->data['form']['id'] ?? ''); ?>" class="btn btn-primary btn-sm me-1 mb-1"><i class="fa-regular fa-eye"></i> Visualizar</a>
+                <a href="<?php echo $_ENV['URL_ADM'] . 'view-department/' . ($this->data['form']['id'] ?? ''); ?>" class="btn btn-primary btn-sm me-1 mb-1"><i class="fa-regular fa-eye"></i> Visualizar</a>
 
             </span>
 

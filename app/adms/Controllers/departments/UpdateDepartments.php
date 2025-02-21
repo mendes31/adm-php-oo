@@ -111,7 +111,7 @@ class UpdateDepartments
         // Verificar o resultado da atualização
         if ($result) {
             $_SESSION['success'] = "Departamento editado com sucesso!";
-            header("Location: {$_ENV['URL_ADM']}view-departments/{$this->data['form']['id']}");
+            header("Location: {$_ENV['URL_ADM']}view-department/{$this->data['form']['id']}");
         } else {
             $this->data['errors'][] = "Departamento não editado!";
             $this->viewDepartment();
