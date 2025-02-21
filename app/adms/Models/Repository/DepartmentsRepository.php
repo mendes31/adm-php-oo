@@ -8,35 +8,35 @@ use Exception;
 use PDO;
 
 /**
- * Repository responsável em buscar e manipular níveis de acesso no banco de dados.
+ * Repository responsável em buscar e manipular departamentos no banco de dados.
  *
- * Esta classe fornece métodos para recuperar, criar, atualizar e deletar níveis de acesso no banco de dados.
+ * Esta classe fornece métodos para recuperar, criar, atualizar e deletar departamentos no banco de dados.
  * Ela estende a classe `DbConnection` para gerenciar conexões com o banco de dados e utiliza o `GenerateLog`
  * para registrar erros que ocorrem durante as operações.
  *
  * @package App\adms\Models\Repository
- * @author Cesar <cesar@celke.com.br>
+ * @author Rafael Mendes
  */
-class AccessLevelsRepository extends DbConnection
+class DepartmentsRepository extends DbConnection
 {
 
     /**
-     * Recuperar todos os níveis de acesso com paginação.
+     * Recuperar todos os departamentos com paginação.
      *
-     * Este método retorna uma lista de níveis de acesso da tabela `adms_access_levels`, com suporte à paginação.
+     * Este método retorna uma lista de departamentos da tabela `adms_departments`, com suporte à paginação.
      *
-     * @param int $page Número da página para recuperação de níveis de acesso (começa do 1).
+     * @param int $page Número da página para recuperação de departamentos (começa do 1).
      * @param int $limitResult Número máximo de resultados por página.
-     * @return array Lista de níveis de acesso recuperados do banco de dados.
+     * @return array Lista de depasrtamentos recuperados do banco de dados.
      */
-    public function getAllAccessLevels(int $page = 1, int $limitResult = 10): array
+    public function getAllDepartments(int $page = 1, int $limitResult = 10): array
     {
         // Calcular o registro inicial, função max para garantir valor mínimo 0
         $offset = max(0, ($page - 1) * $limitResult);
 
         // QUERY para recuperar os registros do banco de dados
         $sql = 'SELECT id, name
-                FROM adms_access_levels                
+                FROM adms_departments               
                 ORDER BY id ASC
                 LIMIT :limit OFFSET :offset';
 
@@ -55,17 +55,17 @@ class AccessLevelsRepository extends DbConnection
     }
 
     /**
-     * Recuperar a quantidade total de níveis de acesso para paginação.
+     * Recuperar a quantidade total de departamentos para paginação.
      *
-     * Este método retorna a quantidade total de níveis de acesso na tabela `adms_access_levels`, útil para a paginação.
+     * Este método retorna a quantidade total de departamentos na tabela `adms_departments`, útil para a paginação.
      *
-     * @return int Quantidade total de níveis de acesso encontrados no banco de dados.
+     * @return int Quantidade total de departamentos encontrados no banco de dados.
      */
-    public function getAmountAccessLevels(): int
+    public function getAmountDepartments(): int
     {
         // QUERY para recuperar a quantidade de registros
         $sql = 'SELECT COUNT(id) as amount_records
-                FROM adms_access_levels';
+                FROM adms_departments';
 
         $stmt = $this->getConnection()->prepare($sql);
         $stmt->execute();
@@ -74,18 +74,18 @@ class AccessLevelsRepository extends DbConnection
     }
 
     /**
-     * Recuperar um nível de acesso específico pelo ID.
+     * Recuperar um departmento específico pelo ID.
      *
-     * Este método retorna os detalhes de um nível de acesso específico identificado pelo ID.
+     * Este método retorna os detalhes de um departmento específico identificado pelo ID.
      *
-     * @param int $id ID do nível de acesso a ser recuperado.
-     * @return array|bool Detalhes do nível de acesso recuperado ou `false` se não encontrado.
+     * @param int $id ID do departmento a ser recuperado.
+     * @return array|bool Detalhes do departmento recuperado ou `false` se não encontrado.
      */
-    public function getAccessLevel(int $id): array|bool
+    public function getDepartment(int $id): array|bool
     {
         // QUERY para recuperar o registro do banco de dados
         $sql = 'SELECT id, name, create_at, update_at
-                FROM adms_access_levels
+                FROM adms_departments
                 WHERE id = :id
                 ORDER BY id DESC';
 
@@ -101,19 +101,19 @@ class AccessLevelsRepository extends DbConnection
     }
 
     /**
-     * Cadastrar um novo nível de acesso
+     * Cadastrar um novo departamento
      *
-     * Este método insere um novo nível de acessona tabela `adms_acess_levels`. Em caso de erro, um log é gerado.
+     * Este método insere um novo departamento na tabela `adms_departments`. Em caso de erro, um log é gerado.
      *
-     * @param array $data Dados do nível de acessoa ser cadastrado, incluindo `name`.
-     * @return bool|int `true` se o nível de acesso foi criado com sucesso ou `false` em caso de erro.
+     * @param array $data Dados do departamento a ser cadastrado, incluindo `name`.
+     * @return bool|int `true` se o departamento foi criado com sucesso ou `false` em caso de erro.
      */
-    public function createAccessLevel(array $data): bool|int
+    public function createDepartment(array $data): bool|int
     {
         try {
 
-            // QUERY para cadastrar nível de acesso
-            $sql = 'INSERT INTO adms_access_levels (name, create_at) VALUES (:name, :create_at)';
+            // QUERY para cadastrar departamento
+            $sql = 'INSERT INTO adms_departments (name, create_at) VALUES (:name, :create_at)';
 
             // Preparar a QUERY
             $stmt = $this->getConnection()->prepare($sql);
@@ -125,31 +125,31 @@ class AccessLevelsRepository extends DbConnection
             // Executar a QUERY
             $stmt->execute();
 
-            // Retornar o ID do nivel recém cadastrado
+            // Retornar o ID do departamento recém cadastrado
             return $this->getConnection()->lastInsertId();
 
         } catch (Exception $e) {
             // Gerar log de erro
-            GenerateLog::generateLog("error", "Nível de acesso não cadastrado.", ['name' => $data['name'], 'error' => $e->getMessage()]);
+            GenerateLog::generateLog("error", "Departamento não cadastrado.", ['name' => $data['name'], 'error' => $e->getMessage()]);
 
             return false;
         }
     }
 
     /**
-     * Atualizar os dados de um nível de acesso existente.
+     * Atualizar os dados de um departamento existente.
      *
-     * Este método atualiza as informações de um nível de acesso existente. Se a senha for fornecida, ela também será atualizada.
+     * Este método atualiza as informações de um departamento existente. Se a senha for fornecida, ela também será atualizada.
      * Em caso de erro, um log é gerado.
      *
-     * @param array $data Dados atualizados do nível de acesso, incluindo `id`, `name`.
+     * @param array $data Dados atualizados do departamento, incluindo `id`, `name`.
      * @return bool `true` se a atualização foi bem-sucedida ou `false` em caso de erro.
      */
-    public function updateAccessLevel(array $data): bool
+    public function updateDepartment(array $data): bool
     {
         try {
-            // QUERY para atualizar nível de acesso
-            $sql = 'UPDATE adms_access_levels SET name = :name, update_at = :update_at';
+            // QUERY para atualizar departamento
+            $sql = 'UPDATE adms_departments SET name = :name, update_at = :update_at';
 
             // Condição para indicar qual registro editar
             $sql .= ' WHERE id = :id';
@@ -166,25 +166,25 @@ class AccessLevelsRepository extends DbConnection
             return $stmt->execute();
         } catch (Exception $e) {
             // Gerar log de erro
-            GenerateLog::generateLog("error", "Nível de acesso não editado.", ['id' => $data['id'], 'error' => $e->getMessage()]);
+            GenerateLog::generateLog("error", "Departamento não editado.", ['id' => $data['id'], 'error' => $e->getMessage()]);
 
             return false;
         }
     }
 
     /**
-     * Deletar um nível de acesso pelo ID.
+     * Deletar um departamento pelo ID.
      *
-     * Este método remove um nível de acesso específico da tabela `adms_access_levels`. Em caso de erro, um log é gerado.
+     * Este método remove um nível de acesso específico da tabela `adms_departments`. Em caso de erro, um log é gerado.
      *
-     * @param int $id ID do nível de acesso a ser deletado.
-     * @return bool `true` se o nível de acesso foi deletado com sucesso ou `false` em caso de erro.
+     * @param int $id ID do Departamento a ser deletado.
+     * @return bool `true` se o Departamento foi deletado com sucesso ou `false` em caso de erro.
      */
-    public function deleteAccessLevel(int $id): bool
+    public function deleteDepartment(int $id): bool
     {
         try {
-            // QUERY para deletar nível de acesso
-            $sql = 'DELETE FROM adms_access_levels WHERE id = :id LIMIT 1';
+            // QUERY para deletar departamento
+            $sql = 'DELETE FROM adms_departments WHERE id = :id LIMIT 1';
 
             // Preparar a QUERY
             $stmt = $this->getConnection()->prepare($sql);
@@ -200,13 +200,13 @@ class AccessLevelsRepository extends DbConnection
                 return true;
             } else {
                 // Gerar log de erro
-                GenerateLog::generateLog("error", "Nível de acesso não apagado.", ['id' => $id]);
+                GenerateLog::generateLog("error", "Departamento não apagado.", ['id' => $id]);
 
                 return false;
             }
         } catch (Exception $e) {
             // Gerar log de erro
-            GenerateLog::generateLog("error", "Nível de acesso não apagado.", ['id' => $id, 'error' => $e->getMessage()]);
+            GenerateLog::generateLog("error", "Departamento não apagado.", ['id' => $id, 'error' => $e->getMessage()]);
 
             return false;
         }

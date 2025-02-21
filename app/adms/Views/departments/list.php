@@ -3,20 +3,20 @@
 use App\adms\Helpers\CSRFHelper;
 
 // Gera o token CSRF para proteger o formulário de deleção
-$csrf_token = CSRFHelper::generateCSRFToken('form_delete_access_level');
+$csrf_token = CSRFHelper::generateCSRFToken('form_delete_departments');
 
 ?>
 
 <div class="container-fluid px-4">
 
     <div class="mb-1 hstack gap-2">
-        <h2 class="mt-3">Níveis de Acesso</h2>
+        <h2 class="mt-3">Departamentos</h2>
 
         <ol class="breadcrumb mb-3 mt-3 ms-auto">
             <li class="breadcrumb-item">
                 <a href="<?php echo $_ENV['URL_ADM']; ?>dashboard" class="text-decoration-none">Dashboard</a>
             </li>
-            <li class="breadcrumb-item">Níveis de Acesso</li>
+            <li class="breadcrumb-item">Departamentos</li>
 
         </ol>
 
@@ -28,7 +28,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_access_level');
             <span>Listar</span>
 
             <span class="ms-auto">
-                <a href="<?php echo $_ENV['URL_ADM']; ?>create-access-level" class="btn btn-success btn-sm"><i class="fa-regular fa-square-plus"></i> Cadastrar</a>
+                <a href="<?php echo $_ENV['URL_ADM']; ?>create-department" class="btn btn-success btn-sm"><i class="fa-regular fa-square-plus"></i> Cadastrar</a>
             </span>
         </div>
 
@@ -37,8 +37,8 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_access_level');
             <?php // Inclui o arquivo que exibe mensagens de sucesso e erro
             include './app/adms/Views/partials/alerts.php';
 
-            // Verifica se há níveis de acesso no array
-            if ($this->data['accessLevels'] ?? false) {
+            // Verifica se há departamento no array
+            if ($this->data['departments'] ?? false) {
             ?>
 
                 <table class="table table-striped table-hover">
@@ -53,11 +53,11 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_access_level');
                     <tbody>
 
                         <?php
-                        // Percorre o array de níveis de acesso
-                        foreach ($this->data['accessLevels'] as $accessLevel) {
+                        // Percorre o array de Departamento
+                        foreach ($this->data['departments'] as $department) {
 
-                            // Extrai variáveis do array de níveis de acesso
-                            extract($accessLevel); ?>
+                            // Extrai variáveis do array de departamentos
+                            extract($department); ?>
                             <tr>
                                 <td><?php echo $id; ?></td>
                                 <td><?php echo $name; ?></td>
@@ -90,7 +90,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_access_level');
                 // Inclui o arquivo de paginação
                 include_once './app/adms/Views/partials/pagination.php';
             } else { // Exibe mensagem se nenhum nível de acesso for encontrado
-                echo "<div class='alert alert-danger' role='alert'>Nenhum nível de acesso encontrado!</div>";
+                echo "<div class='alert alert-danger' role='alert'>Nenhum departamento encontrado!</div>";
             } ?>
 
         </div>
