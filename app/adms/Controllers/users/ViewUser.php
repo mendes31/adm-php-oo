@@ -72,8 +72,15 @@ class ViewUser
         // Instanciar o Repository para recuperar os niveis de acesso do usuário
         $viewUserAccessLevels = new UsersAccessLevelsRepository();
         $this->data['userAccessLevels'] = $viewUserAccessLevels->getUserAccessLevel((int) $id);
+        
+        // Instanciar o Repository para recuperar os niveis de acesso do usuário no formato de array
+        $this->data['userAccessLevelsArray'] = $viewUserAccessLevels->getUserAccessLevelArray((int) $id);
 
-        // Instanciar o Repository para recuperar os niveis de acesso do usuário
+        // Instanciar o Repository para recuperar todos os niveis de acesso no formato de array
+        $this->data['userAllAccessLevelsArray'] = $viewUserAccessLevels->getAllAccessLevels();
+
+
+        // Instanciar o Repository para recuperar os departamentos do usuário
         $viewUserDepartments = new UsersDepartmentsRepository();
         $this->data['userDepartments'] = $viewUserDepartments->getUserDepartments((int) $id);
 

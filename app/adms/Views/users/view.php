@@ -117,7 +117,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
                 foreach ($this->data['userDepartments'] as $userDepartment) {
                     // Extrai variáveis do array de usuário
                     extract($userDepartment);
-                    echo $name; 
+                    echo $name;
                 }
                 echo '</dd>';
                 echo '</dl>';
@@ -145,21 +145,62 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
         <div class="card-body">
             <?php
 
+            // // Verifica se há niveis de acesso para o usuários no array
+            // if ($this->data['userAccessLevels'] ?? false) {
+
+            //     echo "<dl class='row'>";
+            //     echo "<dt class='col-sm-3'>Niveis de Acesso: </dt>";
+            //     echo "<dd class='col-sm-9'>";
+
+            //     //Perceorre o array de usuários
+            //     foreach ($this->data['userAccessLevels'] as $userAccessLevel) {
+            //         // Extrai variáveis do array de usuário
+            //         extract($userAccessLevel);
+            //         echo $name; 
+            //     }
+            //     echo '</dd>';
+            //     echo '</dl>';
+            // } else {
+            //     // Acessa o ELSE quando o elemento não existir registros
+            //     echo "<div class='alert alert-danger' role='alert'>Usuário não possui nivel de acesso.</div>";
+            // }
+
             // Verifica se há niveis de acesso para o usuários no array
-            if ($this->data['userAccessLevels'] ?? false) {
 
-                echo "<dl class='row'>";
-                echo "<dt class='col-sm-3'>Niveis de Acesso: </dt>";
-                echo "<dd class='col-sm-9'>";
+            if ($this->data['userAllAccessLevelsArray'] ?? false) { ?>
 
+                <dl class='row'>
+                    <dt class='col-sm-3'>Niveis de Acesso: </dt>
+                    <dd class='col-sm-9'></dd>
+                </dl>
+
+                <form action="#" method="POST">
+                    <input type="hidden" name="adms_user_id" value="<?php echo ($this->data['user']['id'] ?? ''); ?>">
+
+                </form>
+
+                <?php
                 //Perceorre o array de usuários
-                foreach ($this->data['userAccessLevels'] as $userAccessLevel) {
+                foreach ($this->data['userAllAccessLevelsArray'] as $userAllAccessLevelsArray) {
                     // Extrai variáveis do array de usuário
-                    extract($userAccessLevel);
-                    echo $name; 
-                }
-                echo '</dd>';
-                echo '</dl>';
+                    extract($userAllAccessLevelsArray);
+
+                    // Verifica se o nível de acesso atual ($id) está no array de níveis de acesso do usuário
+                    $userAccessLevels = $this->data['userAccessLevelsArray'] ? $this->data['userAccessLevelsArray'] : [];
+                    $checked = in_array($id, $userAccessLevels) ? 'checked' : '';
+
+                    echo "<div class='form-check form-switch'>";
+
+                    echo "<input type='checkbox' name='userAccessLevelsArray $id' class='form-check-input' role='switch' id='userAccessLevelsArray $id' $checked>";
+
+                    echo "<label class='form-check-label' for='userAccessLevelsArray$id'>$name</label>";
+                    echo "</div>";
+                } ?>
+
+                <div class="col-12">
+                    <button type="submit" class="btn btn-warning btn-sm">Salvar</button>
+                </div>
+            <?php
             } else {
                 // Acessa o ELSE quando o elemento não existir registros
                 echo "<div class='alert alert-danger' role='alert'>Usuário não possui nivel de acesso.</div>";
