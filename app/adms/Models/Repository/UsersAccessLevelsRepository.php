@@ -73,4 +73,11 @@ class UsersAccessLevelsRepository extends DbConnection
         return $result;
     }
 
+    public function updateUserAccessLevel(array $data): bool 
+    {
+        var_dump($data);
+       
+        return true;
+    }
+
 }
