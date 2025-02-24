@@ -19,6 +19,9 @@ class AAADatabaseSeeder extends AbstractSeed
             'AddAccessLevels',
             'AddAdmsUsersAccessLevels',
             'AddAdmsUsersDepartments',
+            'AddAdmsPackagesPages',
+            'AddAdmsGroupsPages',
+            'AddAdmsPages',
         ];
     }
 }
