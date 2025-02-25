@@ -87,12 +87,54 @@ use App\adms\Helpers\CSRFHelper;
 
                 <div class="col-md-6 col-sm-12">
                     <label for="adms_packages_page_id" class="form-label">Pacote</label>
-                    <input type="text" name="adms_packages_page_id" class="form-control" id="adms_packages_page_id" placeholder="Pacote que está a página" value="<?php echo $this->data['form']['adms_packages_page_id'] ?? ''; ?>">
+                    <select name="adms_packages_page_id" class="form-select" id="adms_packages_page_id">
+                        <option value="" selected>Selecione</option>
+
+                        <?php
+                        // Verificar se existe pacotes
+                        if ($this->data['listPackagesPages'] ?? false) {
+
+                            // percorrer o array de pacotes
+                            foreach ($this->data['listPackagesPages'] as $listPackagePage) {
+
+                                // Extrari as variáveis do array
+                                extract($listPackagePage);
+
+                                // Verificar se deve manter selecionado a opção
+                                $selected = isset($this->data['form']['adms_packages_page_id']) && $this->data['form']['adms_packages_page_id'] == $id ? 'selected' : '';
+
+                                echo "<option value='$id' $selected >$name</option>";
+                            }
+                        }
+
+                        ?>
+                    </select>
                 </div>
 
                 <div class="col-md-6 col-sm-12">
                     <label for="adms_groups_page_id" class="form-label">Grupo</label>
-                    <input type="text" name="adms_groups_page_id" class="form-control" id="adms_groups_page_id" placeholder="Grupo que a página pertence" value="<?php echo $this->data['form']['adms_groups_page_id'] ?? ''; ?>">
+                    <select name="adms_groups_page_id" class="form-select" id="adms_groups_page_id">
+                        <option value="" selected>Selecione</option>
+
+                        <?php
+                        // Verificar se existe grupos
+                        if ($this->data['listgroupsPages'] ?? false) {
+
+                            // percorrer o array de pacotes
+                            foreach ($this->data['listgroupsPages'] as $listGroupPage) {
+
+                                // Extrari as variáveis do array
+                                extract($listGroupPage);
+
+                                // Verificar se deve manter selecionado a opção
+                                $selected = isset($this->data['form']['adms_groups_page_id']) && $this->data['form']['adms_groups_page_id'] == $id ? 'selected' : '';
+
+                                echo "<option value='$id' $selected >$name</option>";
+                            }
+                        }
+
+                        ?>
+                    </select>
                 </div>
 
                 <div class="col-12">

@@ -211,4 +211,23 @@ class GroupsPagesRepository extends DbConnection
             return false;
         }
     }
+
+    public function getAllGroupsPagesSelect(): array
+    {
+
+        // QUERY para recuperar os registros do banco de dados
+        $sql = 'SELECT id, name 
+                FROM adms_groups_pages                
+                ORDER BY name ASC';
+
+        // Preparar a QUERY
+        $stmt = $this->getConnection()->prepare($sql);
+
+
+        // Executar a QUERY
+        $stmt->execute();
+
+        // Ler os registros e retornar
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

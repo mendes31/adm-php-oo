@@ -5,6 +5,8 @@ namespace App\adms\Controllers\pages;
 use App\adms\Controllers\Services\Validation\ValidationPageService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
+use App\adms\Models\Repository\GroupsPagesRepository;
+use App\adms\Models\Repository\PackagesRepository;
 use App\adms\Models\Repository\PagesRepository;
 use App\adms\Views\Services\LoadViewService;
 
@@ -72,6 +74,14 @@ class UpdatePage
      */
     private function viewPage(): void
     {
+        // Instanciar o repositório para recuperar os pacotes
+        $listPackagesPages = new PackagesRepository();
+        $this->data['listPackagesPages'] = $listPackagesPages->getAllPackagesSelect();
+
+        // Instanciar o repositório para recuperar os grupos
+        $listgroupsPages = new GroupsPagesRepository();
+        $this->data['listgroupsPages'] = $listgroupsPages->getAllGroupsPagesSelect();
+        
         // Definir o título da página
         $this->data['title_head'] = "Editar Página";
 
