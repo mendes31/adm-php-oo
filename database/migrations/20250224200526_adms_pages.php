@@ -37,9 +37,9 @@ final class AdmsPages extends AbstractMigration
 
                 ->addColumn('obs', 'text', ['null' => true])
 
-                ->addColumn('page_status', 'boolean', ['null' => false, 'default' => 0])
+                ->addColumn('page_status', 'boolean', ['null' => false, 'default' => 0, 'comment' => 'Página ativa 1 e página inativa 0'])
 
-                ->addColumn('public_page', 'boolean', ['null' => false, 'default' => 0])
+                ->addColumn('public_page', 'boolean', ['null' => false, 'default' => 0, 'comment' => 'Página publica 1 e página privada 0'])
 
                 ->addColumn('adms_packages_page_id', 'integer', ['null' => false, 'signed' => false])
                 ->addForeignKey('adms_packages_page_id', 'adms_packages_pages', 'id', ['delete' => 'RESTRICT', 'update' => 'CASCADE'])

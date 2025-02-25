@@ -68,12 +68,21 @@ use App\adms\Helpers\CSRFHelper;
 
                 <div class="col-md-6 col-sm-12">
                     <label for="page_status" class="form-label">Status</label>
-                    <input type="text" name="page_status" class="form-control" id="page_status" placeholder="Página ativa 1 e página inativa 0" value="<?php echo $this->data['form']['page_status'] ?? ''; ?>">
+                    <select name="page_status" class="form-select" id="page_status">
+                        <option value="" selected>Selecione</option>
+                        <option value="1" <?php echo isset($this->data['form']['page_status']) && $this->data['form']['page_status'] == 1 ? 'selected' : ''; ?>>Ativa</option>
+                        <option value="0" <?php echo isset($this->data['form']['page_status']) && $this->data['form']['page_status'] == 0 ? 'selected' : ''; ?>>Inativa</option>
+                    </select>
+
                 </div>
 
                 <div class="col-md-6 col-sm-12">
                     <label for="public_page" class="form-label">Pública</label>
-                    <input type="text" name="public_page" class="form-control" id="public_page" placeholder="Página publica 1 e página privada 0" value="<?php echo $this->data['form']['public_page'] ?? ''; ?>">
+                    <select name="public_page" class="form-select" id="public_page">
+                        <option value="" selected>Selecione</option>
+                        <option value="1" <?php echo isset($this->data['form']['public_page']) && $this->data['form']['public_page'] == 1 ? 'selected' : ''; ?>>Sim</option>
+                        <option value="0" <?php echo isset($this->data['form']['public_page']) && $this->data['form']['public_page'] == 0 ? 'selected' : ''; ?>>Não</option>
+                    </select>
                 </div>
 
                 <div class="col-md-6 col-sm-12">

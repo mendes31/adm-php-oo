@@ -89,7 +89,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_page');
                         <?php echo $page_status ? "<span class='badge text-bg-success'>Ativa</span>" : "<span class='badge text-bg-danger'>Inativa</span>"; ?>
                     </dd>
 
-                    <dt class="col-sm-3">Ativa: </dt>
+                    <dt class="col-sm-3">Pública: </dt>
                     <dd class="col-sm-9">
                         <?php echo $public_page ? "<span class='badge text-bg-success'>Sim</span>" : "<span class='badge text-bg-danger'>Não</span>";; ?>
                     </dd>
