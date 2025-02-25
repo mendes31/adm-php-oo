@@ -23,6 +23,21 @@
                     Niveis de Acesso
                 </a>
 
+                <a class="nav-link <?php echo (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-packages')) ? 'active' : '' ?>" href="<?php echo $_ENV['URL_ADM']; ?>list-packages">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-cubes"></i></i></div>
+                    Pacotes
+                </a>
+
+                <a class="nav-link <?php echo (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-groups-pages')) ? 'active' : '' ?>" href="<?php echo $_ENV['URL_ADM']; ?>list-groups-pages">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-layer-group"></i></div>
+                    Grupos
+                </a>
+                
+                <a class="nav-link <?php echo (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-pages')) ? 'active' : '' ?>" href="<?php echo $_ENV['URL_ADM']; ?>list-pages">
+                    <div class="sb-nav-link-icon"><i class="fa-regular fa-file"></i></div>
+                    Páginas
+                </a>
+
                 <a class="nav-link" href="<?php echo $_ENV['URL_ADM']; ?>logout">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
                     Sair
