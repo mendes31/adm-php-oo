@@ -14,14 +14,16 @@ class AAADatabaseSeeder extends AbstractSeed
     public function getDependencies(): array
     {
         return [
-            'AddAdmsUsers',
             'AddDepartments',
+            'AddAdmsPositions',
+            'AddAdmsUsers',                                  
             'AddAccessLevels',
             'AddAdmsUsersAccessLevels',
             'AddAdmsUsersDepartments',
             'AddAdmsPackagesPages',
             'AddAdmsGroupsPages',
             'AddAdmsPages',
+            
         ];
     }
 }

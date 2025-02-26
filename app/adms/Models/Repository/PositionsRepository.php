@@ -8,35 +8,35 @@ use Exception;
 use PDO;
 
 /**
- * Repository responsável em buscar e manipular departamentos no banco de dados.
+ * Repository responsável em buscar e manipular cargos no banco de dados.
  *
- * Esta classe fornece métodos para recuperar, criar, atualizar e deletar departamentos no banco de dados.
+ * Esta classe fornece métodos para recuperar, criar, atualizar e deletar cargos no banco de dados.
  * Ela estende a classe `DbConnection` para gerenciar conexões com o banco de dados e utiliza o `GenerateLog`
  * para registrar erros que ocorrem durante as operações.
  *
  * @package App\adms\Models\Repository
  * @author Rafael Mendes
  */
-class DepartmentsRepository extends DbConnection
+class PositionsRepository extends DbConnection
 {
 
     /**
-     * Recuperar todos os departamentos com paginação.
+     * Recuperar todos os cargos com paginação.
      *
-     * Este método retorna uma lista de departamentos da tabela `adms_departments`, com suporte à paginação.
+     * Este método retorna uma lista de cargos da tabela `adms_positions`, com suporte à paginação.
      *
-     * @param int $page Número da página para recuperação de departamentos (começa do 1).
+     * @param int $page Número da página para recuperação de cargos (começa do 1).
      * @param int $limitResult Número máximo de resultados por página.
-     * @return array Lista de depasrtamentos recuperados do banco de dados.
+     * @return array Lista de cargos recuperados do banco de dados.
      */
-    public function getAllDepartments(int $page = 1, int $limitResult = 10): array
+    public function getAllPositions(int $page = 1, int $limitResult = 10): array
     {
         // Calcular o registro inicial, função max para garantir valor mínimo 0
         $offset = max(0, ($page - 1) * $limitResult);
 
         // QUERY para recuperar os registros do banco de dados
         $sql = 'SELECT id, name
-                FROM adms_departments               
+                FROM adms_positions               
                 ORDER BY id ASC
                 LIMIT :limit OFFSET :offset';
 
@@ -55,17 +55,17 @@ class DepartmentsRepository extends DbConnection
     }
 
     /**
-     * Recuperar a quantidade total de departamentos para paginação.
+     * Recuperar a quantidade total de cargos para paginação.
      *
-     * Este método retorna a quantidade total de departamentos na tabela `adms_departments`, útil para a paginação.
+     * Este método retorna a quantidade total de cargos na tabela `adms_positions`, útil para a paginação.
      *
-     * @return int Quantidade total de departamentos encontrados no banco de dados.
+     * @return int Quantidade total de cargos encontrados no banco de dados.
      */
-    public function getAmountDepartments(): int
+    public function getAmountPositions(): int
     {
         // QUERY para recuperar a quantidade de registros
         $sql = 'SELECT COUNT(id) as amount_records
-                FROM adms_departments';
+                FROM adms_positions';
 
         $stmt = $this->getConnection()->prepare($sql);
         $stmt->execute();
@@ -74,18 +74,18 @@ class DepartmentsRepository extends DbConnection
     }
 
     /**
-     * Recuperar um departmento específico pelo ID.
+     * Recuperar um cargo específico pelo ID.
      *
-     * Este método retorna os detalhes de um departmento específico identificado pelo ID.
+     * Este método retorna os detalhes de um cargo específico identificado pelo ID.
      *
-     * @param int $id ID do departmento a ser recuperado.
-     * @return array|bool Detalhes do departmento recuperado ou `false` se não encontrado.
+     * @param int $id ID do cargo a ser recuperado.
+     * @return array|bool Detalhes do cargo recuperado ou `false` se não encontrado.
      */
-    public function getDepartment(int $id): array|bool
+    public function getPosition(int $id): array|bool
     {
         // QUERY para recuperar o registro do banco de dados
-        $sql = 'SELECT id, name, create_at, update_at
-                FROM adms_departments
+        $sql = 'SELECT id, name, created_at, updated_at
+                FROM adms_positions
                 WHERE id = :id
                 ORDER BY id DESC';
 
@@ -101,55 +101,55 @@ class DepartmentsRepository extends DbConnection
     }
 
     /**
-     * Cadastrar um novo departamento
+     * Cadastrar um novo cargo
      *
-     * Este método insere um novo departamento na tabela `adms_departments`. Em caso de erro, um log é gerado.
+     * Este método insere um novo cargo na tabela `adms_positions`. Em caso de erro, um log é gerado.
      *
-     * @param array $data Dados do departamento a ser cadastrado, incluindo `name`.
-     * @return bool|int `true` se o departamento foi criado com sucesso ou `false` em caso de erro.
+     * @param array $data Dados do cargo a ser cadastrado, incluindo `name`.
+     * @return bool|int `true` se o cargo foi criado com sucesso ou `false` em caso de erro.
      */
-    public function createDepartment(array $data): bool|int
+    public function createPosition(array $data): bool|int
     {
         try {
 
-            // QUERY para cadastrar departamento
-            $sql = 'INSERT INTO adms_departments (name, create_at) VALUES (:name, :create_at)';
+            // QUERY para cadastrar cargo
+            $sql = 'INSERT INTO adms_positions (name, created_at) VALUES (:name, :created_at)';
 
             // Preparar a QUERY
             $stmt = $this->getConnection()->prepare($sql);
 
             // Substituir os parâmetros da QUERY pelos valores
             $stmt->bindValue(':name', $data['name'], PDO::PARAM_STR);
-            $stmt->bindValue(':create_at', date("Y-m-d H:i:s"));
+            $stmt->bindValue(':created_at', date("Y-m-d H:i:s"));
 
             // Executar a QUERY
             $stmt->execute();
 
-            // Retornar o ID do departamento recém cadastrado
+            // Retornar o ID do cargo recém cadastrado
             return $this->getConnection()->lastInsertId();
 
         } catch (Exception $e) {
             // Gerar log de erro
-            GenerateLog::generateLog("error", "Departamento não cadastrado.", ['name' => $data['name'], 'error' => $e->getMessage()]);
+            GenerateLog::generateLog("error", "Cargo não cadastrado.", ['name' => $data['name'], 'error' => $e->getMessage()]);
 
             return false;
         }
     }
 
     /**
-     * Atualizar os dados de um departamento existente.
+     * Atualizar os dados de um cargo existente.
      *
-     * Este método atualiza as informações de um departamento existente. Se a senha for fornecida, ela também será atualizada.
+     * Este método atualiza as informações de um cargo existente. Se a senha for fornecida, ela também será atualizada.
      * Em caso de erro, um log é gerado.
      *
-     * @param array $data Dados atualizados do departamento, incluindo `id`, `name`.
+     * @param array $data Dados atualizados do cargo, incluindo `id`, `name`.
      * @return bool `true` se a atualização foi bem-sucedida ou `false` em caso de erro.
      */
-    public function updateDepartment(array $data): bool
+    public function updatePosition(array $data): bool
     {
         try {
-            // QUERY para atualizar departamento
-            $sql = 'UPDATE adms_departments SET name = :name, update_at = :update_at';
+            // QUERY para atualizar cargo
+            $sql = 'UPDATE adms_positions SET name = :name, updated_at = :updated_at';
 
             // Condição para indicar qual registro editar
             $sql .= ' WHERE id = :id';
@@ -159,32 +159,32 @@ class DepartmentsRepository extends DbConnection
 
             // Substituir os parâmetros da QUERY pelos valores
             $stmt->bindValue(':name', $data['name'], PDO::PARAM_STR);
-            $stmt->bindValue(':update_at', date("Y-m-d H:i:s"));
+            $stmt->bindValue(':updated_at', date("Y-m-d H:i:s"));
             $stmt->bindValue(':id', $data['id'], PDO::PARAM_INT);
 
             // Executar a QUERY
             return $stmt->execute();
         } catch (Exception $e) {
             // Gerar log de erro
-            GenerateLog::generateLog("error", "Departamento não editado.", ['id' => $data['id'], 'error' => $e->getMessage()]);
+            GenerateLog::generateLog("error", "Cargo não editado.", ['id' => $data['id'], 'error' => $e->getMessage()]);
 
             return false;
         }
     }
 
     /**
-     * Deletar um departamento pelo ID.
+     * Deletar um Cargo pelo ID.
      *
-     * Este método remove um nível de acesso específico da tabela `adms_departments`. Em caso de erro, um log é gerado.
+     * Este método remove um cargo específico da tabela `adms_positions`. Em caso de erro, um log é gerado.
      *
-     * @param int $id ID do Departamento a ser deletado.
-     * @return bool `true` se o Departamento foi deletado com sucesso ou `false` em caso de erro.
+     * @param int $id ID do Cargo a ser deletado.
+     * @return bool `true` se o Cargo foi deletado com sucesso ou `false` em caso de erro.
      */
-    public function deleteDepartment(int $id): bool
+    public function deletePosition(int $id): bool
     {
         try {
-            // QUERY para deletar departamento
-            $sql = 'DELETE FROM adms_departments WHERE id = :id LIMIT 1';
+            // QUERY para deletar cargo
+            $sql = 'DELETE FROM adms_positions WHERE id = :id LIMIT 1';
 
             // Preparar a QUERY
             $stmt = $this->getConnection()->prepare($sql);
@@ -200,23 +200,23 @@ class DepartmentsRepository extends DbConnection
                 return true;
             } else {
                 // Gerar log de erro
-                GenerateLog::generateLog("error", "Departamento não apagado.", ['id' => $id]);
+                GenerateLog::generateLog("error", "Cargo não apagado.", ['id' => $id]);
 
                 return false;
             }
         } catch (Exception $e) {
             // Gerar log de erro
-            GenerateLog::generateLog("error", "Departamento não apagado.", ['id' => $id, 'error' => $e->getMessage()]);
+            GenerateLog::generateLog("error", "Cargo não apagado.", ['id' => $id, 'error' => $e->getMessage()]);
 
             return false;
         }
     }
 
-    public function getAllDepartmentsSelect(): array
+    public function getAllPositionsSelect(): array
     {
         // QUERY para recuperar os registros do banco de dados
         $sql = 'SELECT id, name 
-                FROM adms_departments                
+                FROM adms_positions                
                 ORDER BY name ASC';
 
         // Preparar a QUERY

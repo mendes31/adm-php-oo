@@ -119,7 +119,7 @@ class UsersRepository extends DbConnection
         try { // Permanece no try se não houver erro
 
             // QUERY cadastrar usuários
-            $sql = 'INSERT INTO adms_users (name, email, username, password, created_at ) VALUES (:name, :email, :username, :password, :created_at)';
+            $sql = 'INSERT INTO adms_users (name, email, username, user_department_id, user_position_id,  password, created_at ) VALUES (:name, :email, :username, user_department_id = :user_department_id, user_position_id = :user_position_id, :password, :created_at)';
 
             // Preparar a QUERY
             $stmt = $this->getConnection()->prepare($sql);
@@ -128,6 +128,8 @@ class UsersRepository extends DbConnection
             $stmt->bindValue(':name', $data['name'], PDO::PARAM_STR);
             $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
             $stmt->bindValue(':username', $data['username'], PDO::PARAM_STR);
+            $stmt->bindValue(':user_department_id', $data['user_department_id'], PDO::PARAM_INT);
+            $stmt->bindValue(':user_position_id', $data['user_position_id'], PDO::PARAM_INT);
             $stmt->bindValue(':password', password_hash($data['password'], PASSWORD_DEFAULT));
             $stmt->bindValue(':created_at', date("Y-m-d H:i:s"));
 
@@ -161,7 +163,7 @@ class UsersRepository extends DbConnection
         try { // Permanece no try se não houver nenhum erro
 
             // QUERY para atualizar o usuário
-            $sql = 'UPDATE adms_users SET name = :name, email = :email, username = :username, updated_at = :updated_at';
+            $sql = 'UPDATE adms_users SET name = :name, email = :email, username = :username, user_department_id = :user_department_id, user_position_id = :user_position_id, updated_at = :updated_at';
 
             // Verificar se a senha está incluida nos dados e, se sim, adicionar ao SQL
             if (!empty($data['password'])) {
@@ -178,6 +180,8 @@ class UsersRepository extends DbConnection
             $stmt->bindValue(':name', $data['name'], PDO::PARAM_STR);
             $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
             $stmt->bindValue(':username', $data['username'], PDO::PARAM_STR);
+            $stmt->bindValue(':user_department_id', $data['user_department_id'], PDO::PARAM_INT);
+            $stmt->bindValue(':user_position_id', $data['user_position_id'], PDO::PARAM_INT);
             $stmt->bindValue(':updated_at', date("Y-m-d H:i:s"));
             $stmt->bindValue(':id', $data['id'], PDO::PARAM_INT);
 

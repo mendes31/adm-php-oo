@@ -54,6 +54,45 @@ use App\adms\Helpers\CSRFHelper;
                     <input type="text" name="username" class="form-control" id="username" placeholder="Digite um usuário disponível" value="<?php echo $this->data['form']['username'] ?? ''; ?>">
                 </div>
 
+                <div class="col-md-6">
+                    <label for="username" class="form-label">Departamento</label>
+                    <select name="department_id" class="form-select" id="department_id">
+                        <option value="" selected>Selecione</option>
+                        <?php
+                        // Verificar se existe pacotes
+                        if ($this->data['listDepartments'] ?? false) {
+                            // percorrer o array de pacotes
+                            foreach ($this->data['listDepartments'] as $listDepartment) {
+                                // Extrari as variáveis do array
+                                extract($listDepartment);
+                                // Verificar se deve manter selecionado a opção
+                                $selected = isset($this->data['form']['department_id']) && $this->data['form']['department_id'] == $id ? 'selected' : '';
+                                echo "<option value='$id' $selected >$name</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="" class="form-label">Cargo</label>
+                    <select name="position_id" class="form-select" id="position_id">
+                        <option value="" selected>Selecione</option>
+                        <?php
+                        // Verificar se existe o cargo 
+                        if ($this->data['listPositions'] ?? false) {
+                            // percorrer o array de cargo
+                            foreach ($this->data['listPositions'] as $listPosition) {
+                                // Extrari as variáveis do array
+                                extract($listPosition);
+                                // Verificar se deve manter selecionado a opção
+                                $selected = isset($this->data['form']['position_id']) && $this->data['form']['position_id'] == $id ? 'selected' : '';
+                                echo "<option value='$id' $selected >$name</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
 
                 <div class="col-md-6">
                     <label for="password" class="form-label">Senha</label>

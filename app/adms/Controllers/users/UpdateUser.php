@@ -5,6 +5,8 @@ namespace App\adms\Controllers\users;
 use App\adms\Controllers\Services\Validation\ValidationUserRakitService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
+use App\adms\Models\Repository\DepartmentsRepository;
+use App\adms\Models\Repository\PositionsRepository;
 use App\adms\Models\Repository\UsersRepository;
 use App\adms\Views\Services\LoadViewService;
 
@@ -83,6 +85,14 @@ class UpdateUser
      */
     private function viewUser(): void
     {
+        // Instanciar o repositório para recuperar os departamentos
+        $listDepartments = new DepartmentsRepository();
+        $this->data['listDepartments'] = $listDepartments->getAllDepartmentsSelect();
+
+        // Instanciar o repositório para recuperar os cargos
+        $listPositions = new PositionsRepository();
+        $this->data['listPositions'] = $listPositions->getAllPositionsSelect();
+        
         // Criar o título da página
         $this->data['title_head'] =  "Editar Usuário";
 

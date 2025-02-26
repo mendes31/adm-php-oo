@@ -18,6 +18,11 @@
                     Departamentos
                 </a>
 
+                <a class="nav-link <?php echo (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-positions')) ? 'active' : '' ?>" href="<?php echo $_ENV['URL_ADM']; ?>list-positions">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-briefcase"></i></div>
+                    Cargos
+                </a>
+
                 <a class="nav-link <?php echo (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-access-levels')) ? 'active' : '' ?>" href="<?php echo $_ENV['URL_ADM']; ?>list-access-levels">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-network-wired"></i></div>
                     Niveis de Acesso

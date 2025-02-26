@@ -31,6 +31,8 @@ class AddAdmsUsers extends AbstractSeed
                 'name' => 'Manager',
                 'email' => 'manager@tiaraju.com.br',
                 'username' => 'manager',
+                'user_department_id' => 18,
+                'user_position_id' => 1,
                 'password' => password_hash('admin25*', PASSWORD_DEFAULT),
                 'created_at' => date("Y-m-d H:i:s"),
             ];
@@ -46,6 +48,8 @@ class AddAdmsUsers extends AbstractSeed
                 'name' => 'Rafael Mendes de Oliveira',
                 'email' => 'rafael.oliveira@tiaraju.com.br',
                 'username' => 'rafael.oliveira',
+                'user_department_id' => 18,
+                'user_position_id' => 1,
                 'password' => password_hash('admin25*', PASSWORD_DEFAULT),
                 'created_at' => date("Y-m-d H:i:s"),
             ];
@@ -62,6 +66,8 @@ class AddAdmsUsers extends AbstractSeed
                 'name' => 'Wladimir Ribeiro de Souza',
                 'email' => 'wladimir.souza@tiaraju.com.br',
                 'username' => 'wladimir.souza',
+                'user_department_id' => 18,
+                'user_position_id' => 2,
                 'password' => password_hash('admin25*', PASSWORD_DEFAULT),
                 'created_at' => date("Y-m-d H:i:s"),
             ];
@@ -77,6 +83,8 @@ class AddAdmsUsers extends AbstractSeed
                 'name' => 'Marciane Meotti',
                 'email' => 'marciane.meotti@tiaraju.com.br',
                 'username' => 'marciane.meotti',
+                'user_department_id' => 9,
+                'user_position_id' => 8,
                 'password' => password_hash('admin25*', PASSWORD_DEFAULT),
                 'created_at' => date("Y-m-d H:i:s"),
             ];
