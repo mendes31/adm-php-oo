@@ -40,49 +40,78 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_update_access_level_permission
             <?php // Inclui o arquivo que exibe mensagens de sucesso e erro
             include './app/adms/Views/partials/alerts.php';
 
-            var_dump($this->data['accessLevelsPages']);
+            // var_dump($this->data['accessLevelsPages']);
 
-            var_dump($this->data['pages']);
+            // var_dump($this->data['pages']);
 
             // Verifica se há páginas no array
             if ($this->data['pages'] ?? false) {
             ?>
 
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Liberado</th>
-                            <th scope="col">Página</th>
-                            <th scope="col">Nome</th>
-                            <th scope="col" class="d-none d-md-table-cell">Observação</th>
-                            <th scope="col" class="d-none d-md-table-cell">Pública / Privada</th>
-                        </tr>
-                    </thead>
+                <form action="<?php echo $_ENV['URL_ADM']; ?>list-access-levels-permissions/<?php echo $this->data['accessLevel']['id'] ?? ''; ?>" method="POST">
 
-                    <tbody>
+                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
 
-                        <?php
-                        // Percorre o array de páginas
-                        foreach ($this->data['pages'] as $page) {
+                    <input type="hidden" name="adms_access_level_id" value="<?php echo ($this->data['accessLevel']['id'] ?? ''); ?>">
 
-                            // Extrai variáveis do array de página
-                            extract($page); ?>
+                    <table class="table table-striped table-hover">
+                        <thead>
                             <tr>
-                                <td>opção</td>
-                                <td><?php echo $id; ?></td>
-                                <td><?php echo $name; ?></td>
-                                <td class="d-none d-md-table-cell"><?php echo $obs; ?></td>
-                                <td class="d-none d-md-table-cell">
-                                    <?php echo $public_page ? "<span class='badge text-bg-success'>Pública</span>" : "<span class='badge text-bg-danger'>Privada</span>";; ?>
-                                </td>
+                                <th scope="col">Liberado</th>
+                                <th scope="col">Página</th>
+                                <th scope="col">Nome</th>
+                                <th scope="col" class="d-none d-md-table-cell">Observação</th>
+                                <th scope="col" class="d-none d-md-table-cell">Pública / Privada</th>
                             </tr>
+                        </thead>
 
-                        <?php } ?>
+                        <tbody>
 
-                    </tbody>
-                </table>
+                            <?php
+                            // Percorre o array de páginas
+                            foreach ($this->data['pages'] as $page) {
 
+                                // Extrai variáveis do array de página
+                                extract($page); ?>
+                                <tr>
+                                    <td>
+                                        <?php
+                                        // Verifica se a página atual ($id) está no array de páginas
+                                        $accessLevelsPages = $this->data['accessLevelsPages'] ? $this->data['accessLevelsPages'] : [];
+                                        $checked = in_array($id, $accessLevelsPages) || $public_page ? 'checked' : '';
 
+                                        $disabled = $public_page ? 'disabled' : '';
+
+                                        echo "<div class='form-check form-switch'>";
+
+                                        echo "<input type='checkbox' name='accessLevelPage[$id]' class='form-check-input' role='switch' id='accessLevelPage$id' value='$id' $checked $disabled>";
+
+                                        echo "<label class='form-check-label' for='accessLevelPage$id'></label>";
+
+                                        echo "</div>";
+
+                                        ?>
+                                    </td>
+                                    <td><?php echo $id; ?></td>
+                                    <td><?php echo $name; ?></td>
+                                    <td class="d-none d-md-table-cell"><?php echo $obs; ?></td>
+                                    <td class="d-none d-md-table-cell">
+                                        <?php echo $public_page ? "<span class='badge text-bg-success'>Pública</span>" : "<span class='badge text-bg-danger'>Privada</span>";; ?>
+                                    </td>
+                                </tr>
+
+                            <?php } ?>
+
+                        </tbody>
+                    </table>
+
+                
+                    <div class="col-12">
+                        <!-- <button type="submit" class="btn btn-warning btn-sm" onclick="showLoading()">Salvar</button> -->
+                        <button type="submit" class="btn btn-warning btn-sm">Salvar</button>
+                    </div>
+
+                </form>
             <?php
             } else { // Exibe mensagem se nenhuma página for encontrada
                 echo "<div class='alert alert-danger' role='alert'>Nenhuma página encontrada!</div>";

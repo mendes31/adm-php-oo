@@ -34,6 +34,7 @@ class ListAccessLevelsPermissions
         ) {
             // Editar o nível de acesso
             //$this->editAccessLevelPermissions();
+            var_dump($this->data['form']);
         } else {
             // Carregar a visualização para edição do nível de acesso
             $this->viewAccessLevelPermissions();
