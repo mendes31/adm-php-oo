@@ -51,7 +51,9 @@
         </div>
         <div class="sb-sidenav-footer">
             <div class="small">Logado:</div>
-            <?php echo ($_SESSION['user_name'] ?? ''); ?>
+            <?php echo ($_SESSION['user_name'] ?? ''); ?><br>
+            <?php echo ($_SESSION['user_department'] ?? ''); ?><br>
+            <?php echo ($_SESSION['user_position'] ?? ''); ?>
         </div>
     </nav>
 </div>

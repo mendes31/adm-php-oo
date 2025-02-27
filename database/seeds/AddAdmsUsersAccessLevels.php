@@ -51,7 +51,7 @@ class AddAdmsUsersAccessLevels extends AbstractSeed
             // Criar o array com os dados do usuário
             $data[] = [
                 'adms_user_id' => 3,
-                'adms_access_level_id' => 2,
+                'adms_access_level_id' => 1,
                 'created_at' => date("Y-m-d H:i:s"),
             ];
         }
@@ -65,7 +65,7 @@ class AddAdmsUsersAccessLevels extends AbstractSeed
             // Criar o array com os dados do usuário
             $data[] = [
                 'adms_user_id' => 4,
-                'adms_access_level_id' => 4,
+                'adms_access_level_id' => 23,
                 'created_at' => date("Y-m-d H:i:s"),
             ];
         }
