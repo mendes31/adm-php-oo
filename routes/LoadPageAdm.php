@@ -36,10 +36,10 @@ class LoadPageAdm
      "ListPackages", "CreatePackage", "ViewPackage", "UpdatePackage", "DeletePackage", 
      "ListGroupsPages", "ViewGroupPage", "CreateGroupPage", "UpdateGroupPage", "DeleteGroupPage", 
      "ListPages", "ViewPage", "CreatePage", "UpdatePage", "DeletePage", 
-     "ListPositions", "CreatePosition", "ViewPosition", "UpdatePosition", "DeletePosition"];
+     "ListPositions", "CreatePosition", "ViewPosition", "UpdatePosition", "DeletePosition", "ListAccessLevelsPermissions"];
 
     /** @var array $listDirectory Recebe a lista de diretórios com as controllers */
-    private array $listDirectory = ["login", "dashboard", "users", "errors", "accessLevels", "departments", "packages", "groupsPages", "pages", "positions"];
+    private array $listDirectory = ["login", "dashboard", "users", "errors", "accessLevels", "departments", "packages", "groupsPages", "pages", "positions", "permission"];
 
     /** @var array $listPackages Recebe a lista de pacotes com as controllers */
     private array $listPackages = ["adms"];

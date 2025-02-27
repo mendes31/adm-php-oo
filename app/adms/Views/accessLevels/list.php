@@ -29,6 +29,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_access_level');
 
             <span class="ms-auto">
                 <a href="<?php echo $_ENV['URL_ADM']; ?>create-access-level" class="btn btn-success btn-sm"><i class="fa-regular fa-square-plus"></i> Cadastrar</a>
+
                 <a href="<?php echo $_ENV['URL_ADM']; ?>access-level-page-sync" class="btn btn-warning btn-sm" onclick="showProcessing(this)"><i class="fa-solid fa-rotate"></i> Sincronizar</a>
             </span>
         </div>
@@ -63,6 +64,8 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_access_level');
                                 <td><?php echo $id; ?></td>
                                 <td><?php echo $name; ?></td>
                                 <td class="d-md-flex flex-row justify-content-center">
+
+                                    <a href='<?php echo "{$_ENV['URL_ADM']}list-access-levels-permissions/$id"; ?>' class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-lock-open"></i> Permissões</a>
 
                                     <a href='<?php echo "{$_ENV['URL_ADM']}view-access-level/$id"; ?>' class="btn btn-primary btn-sm me-1 mb-1"><i class="fa-regular fa-eye"></i> Visualizar</a>
 

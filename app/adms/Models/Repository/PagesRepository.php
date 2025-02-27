@@ -259,4 +259,28 @@ class PagesRepository extends DbConnection
         // Retornar apenas os valores de 'id' como array simples
         return $result ? array_column($result, 'id') : false;
     }
+
+    public function getAllPagesFull(): array
+    {
+
+        // QUERY para recuperar os registros do banco de dados
+        $sql = 'SELECT ap.id, ap.name, ap.obs, ap.page_status, ap.public_page,
+                app.name app_name
+                FROM adms_pages AS ap 
+                INNER JOIN adms_packages_pages AS app ON app.id=ap.adms_packages_page_id  
+                WHERE ap.page_status = :page_status
+                ORDER BY ap.id ASC';
+
+        // Preparar a QUERY
+        $stmt = $this->getConnection()->prepare($sql);
+
+        // Substituir os parâmetros da QUERY pelos valores
+        $stmt->bindValue(':page_status', 1, PDO::PARAM_INT);
+
+        // Executar a QUERY
+        $stmt->execute();
+
+        // Ler os registros e retornar
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

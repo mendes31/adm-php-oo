@@ -27,12 +27,17 @@ class AccessLevelsPagesRepository extends DbConnection
      * @param int $accessLevel ID do nível de acesso.
      * @return array|bool Retorna um array com os IDs das páginas ou `false` se não houver resultados.
      */
-    public function getPagesAccessLevelsArray(int $accessLevel): array|bool
+    public function getPagesAccessLevelsArray(int $accessLevel, bool $permission = false): array|bool
     {
         // QUERY para recuperar os registros do banco de dados
         $sql = 'SELECT adms_page_id
                 FROM adms_access_levels_pages
                 WHERE adms_access_level_id = :adms_access_level_id';
+
+        // Acessa o if quando retornar somente as paginas que tiverem permissão 1
+        if($permission){
+            $sql .= " AND permission = 1";
+        }
 
         // Preparar a QUERY
         $stmt = $this->getConnection()->prepare($sql);
