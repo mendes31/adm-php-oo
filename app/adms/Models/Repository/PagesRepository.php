@@ -239,4 +239,24 @@ class PagesRepository extends DbConnection
             return false;
         }
     }
+
+    public function getPagesArray(): array|bool
+    {
+
+        // QUERY para recuperar os registros do banco de dados
+        $sql = 'SELECT id
+                FROM adms_pages';
+
+        // Preparar a QUERY
+        $stmt = $this->getConnection()->prepare($sql);
+
+        // Executar a QUERY
+        $stmt->execute();
+
+        // Ler os registros
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Retornar apenas os valores de 'id' como array simples
+        return $result ? array_column($result, 'id') : false;
+    }
 }

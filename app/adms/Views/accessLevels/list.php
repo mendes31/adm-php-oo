@@ -29,6 +29,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_access_level');
 
             <span class="ms-auto">
                 <a href="<?php echo $_ENV['URL_ADM']; ?>create-access-level" class="btn btn-success btn-sm"><i class="fa-regular fa-square-plus"></i> Cadastrar</a>
+                <a href="<?php echo $_ENV['URL_ADM']; ?>access-level-page-sync" class="btn btn-warning btn-sm" onclick="showProcessing(this)"><i class="fa-solid fa-rotate"></i> Sincronizar</a>
             </span>
         </div>
 

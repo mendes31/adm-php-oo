@@ -18,3 +18,13 @@ function confirmDeletion(event, id){
       });
 
 }
+
+// Apresentar no botão "Processando..." e também o ícone quando o usuário clicar no botão
+function showProcessing(buttom){
+
+  // Substituir o texto e o ícone do botão - fa-spin adiciona a animação de rotação
+  buttom.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando...';
+
+  // Desabilitar o botão para evitar que o usuário clicar novamente
+  buttom.classList.add('disabled');
+}
