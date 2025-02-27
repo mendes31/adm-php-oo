@@ -75,6 +75,12 @@ $csrf_token_update_access_level = CSRFHelper::generateCSRFToken('form_update_acc
                     <dt class="col-sm-3">Usuário: </dt>
                     <dd class="col-sm-9"><?php echo $username; ?></dd>
 
+                    <dt class="col-sm-3">Departamento: </dt>
+                    <dd class="col-sm-9"><?php echo $dep_name; ?></dd>
+
+                    <dt class="col-sm-3">Usuário: </dt>
+                    <dd class="col-sm-9"><?php echo $pos_name; ?></dd>
+
                     <dt class="col-sm-3">Cadastrado: </dt>
                     <dd class="col-sm-9"><?php echo ($created_at ? date('d/m/Y H:i:s', strtotime($created_at)) : ""); ?></dd>
 
@@ -93,7 +99,7 @@ $csrf_token_update_access_level = CSRFHelper::generateCSRFToken('form_update_acc
 
     </div>
 
-    <div class="card mb-4 border-light shadow">
+    <!-- <div class="card mb-4 border-light shadow">
         <div class="card-header d-flex flex-column flex-sm-row gap-2">
             <span>Departamento</span>
 
@@ -129,7 +135,7 @@ $csrf_token_update_access_level = CSRFHelper::generateCSRFToken('form_update_acc
             ?>
         </div>
 
-    </div>
+    </div> -->
 
 
     <div class="card mb-4 border-light shadow">

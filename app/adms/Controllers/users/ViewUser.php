@@ -84,6 +84,10 @@ class ViewUser
         $viewUserDepartments = new UsersDepartmentsRepository();
         $this->data['userDepartments'] = $viewUserDepartments->getUserDepartments((int) $id);
 
+        // Instanciar o Repository para recuperar os departamentos do usuário
+        $viewDepartment = new UsersRepository();
+        $this->data['userDepartment'] = $viewDepartment->getUserDepartments((int) $id);
+
         // Chamar o método para salvar o log
         GenerateLog::generateLog("error", "Usuário não encontrado.", ['id' => (int) $id]);
 

@@ -34,7 +34,7 @@ class UsersRepository extends DbConnection
         $offset = max(0, ($page - 1) * $limitResult);
 
         // QUERY para recuperar os registros do banco de dados
-        $sql = 'SELECT id, name, email, username
+        $sql = 'SELECT id, name, email, username, user_department_id, user_position_id
                 FROM adms_users 
                 ORDER BY id DESC
                 LIMIT :limit OFFSET :offset';
@@ -87,10 +87,12 @@ class UsersRepository extends DbConnection
     public function getUser(int $id): array|bool
     {
         // QUERY para recuperar o registro selecionado do banco de dados
-        $sql = 'SELECT id, name, email, username, created_at, updated_at 
-                FROM adms_users
-                WHERE id = :id
-                ORDER BY id DESC';
+        $sql = 'SELECT t0.id, t0.name, t0.email, t0.username, t0.user_department_id, t0.user_position_id, t0.created_at, t0.updated_at, t1.name dep_name, t2.name pos_name
+                FROM adms_users t0
+                INNER JOIN adms_departments t1 ON t0.user_department_id = t1.id
+                INNER JOIN adms_positions t2 ON t0.user_position_id = t2.id
+                WHERE t0.id = :id
+                ORDER BY t0.id DESC';
 
         // Preparar a QUERY
         $stmt = $this->getConnection()->prepare($sql);
@@ -192,7 +194,6 @@ class UsersRepository extends DbConnection
 
             // Retornar TRUE quando conseguir executar a QUERY SQL, não considerando se alterou dados do registro
             return $stmt->execute();
-
         } catch (Exception $e) { // Acessa o catch quando houver erro no try
 
             // Chamar o método para salvar o log
@@ -202,7 +203,7 @@ class UsersRepository extends DbConnection
         }
     }
 
-   /**
+    /**
      * Atualizar a senha de um usuário.
      *
      * Este método atualiza a senha de um usuário específico. Em caso de erro, um log é gerado.
@@ -283,5 +284,27 @@ class UsersRepository extends DbConnection
 
             return false;
         }
+    }
+
+    public function getUserDepartments(int $id): array|bool
+    {
+        // QUERY para recuperar o registro do banco de dados
+        $sql = 'SELECT t1.name
+                FROM adms_users t0
+                INNER JOIN adms_departments t1 ON t0.user_department_id = t1.id
+                WHERE t1.id = :id
+                ORDER BY t1.id DESC';
+
+        // Preparar a quey
+        $stmt = $this->getConnection()->prepare($sql);
+
+        // Substituir o link pelo valor
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+        // Executar a query
+        $stmt->execute();
+
+        // Ler os registros e retornar
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
