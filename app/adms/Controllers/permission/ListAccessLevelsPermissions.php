@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\permission;
 
+use App\adms\Controllers\Services\Validation\ValidationAccessLevelPermissionService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Repository\AccessLevelsPagesRepository;
@@ -33,8 +34,8 @@ class ListAccessLevelsPermissions
             CSRFHelper::validateCSRFToken('form_update_access_level_permissions', $this->data['form']['csrf_token'])
         ) {
             // Editar o nível de acesso
-            //$this->editAccessLevelPermissions();
-            var_dump($this->data['form']);
+            $this->editAccessLevelPermissions();
+
         } else {
             // Carregar a visualização para edição do nível de acesso
             $this->viewAccessLevelPermissions();
@@ -75,4 +76,32 @@ class ListAccessLevelsPermissions
         $loadView = new LoadViewService("adms/Views/permission/list", $this->data);
         $loadView->loadView();
     }
+
+    private function editAccessLevelPermissions(): void 
+    {
+        // Validar os dados do formulário 
+        $validationAccessLevelPermissions = new ValidationAccessLevelPermissionService();
+        $this->data['errors'] = $validationAccessLevelPermissions->validate($this->data['form']);
+
+        // Se houver erros de validação, recarregar a visualização
+        if(!empty($this->data['errors'])){
+            $this->viewAccessLevelPermissions();
+            return;
+        }
+
+        // Atualizar as permissões do nível de acesso
+        $accessLevelPagesUpdate = new AccessLevelsPagesRepository();
+        $result = $accessLevelPagesUpdate->updateAccessLevelPages($this->data['form']);
+
+        // Verifica o resultado da atualização
+        if($result){
+            $_SESSION['success'] = "Permissões do nível de acesso editadas com sucesso!";
+            header("Location: {$_ENV['URL_ADM']}list-access-levels-permissions/{$this->data['form']['adms_access_level_id']}");
+        }else{
+            $this->data['errors'][] = "Permissões do nível de acesso não editadas!";
+            $this->viewAccessLevelPermissions();
+        }
+    }
+
+
 }
