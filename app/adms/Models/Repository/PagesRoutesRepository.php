@@ -35,12 +35,19 @@ class PagesRoutesRepository extends DbConnection
     {
 
         // QUERY para verificar a permissão do usuário em relação à página
-        $sql = 'SELECT aulp.adms_access_level_id, alp.permission            
-                FROM adms_users_access_levels AS aulp
-                INNER JOIN adms_access_levels_pages As alp ON alp.adms_access_level_id = aulp.adms_access_level_id
-                WHERE aulp.adms_user_id = :adms_user_id
-                AND alp.adms_page_id = :adms_page_id
-                AND alp.permission = 1
+        $sql = 'SELECT 
+                    CASE
+                        WHEN aulp.adms_access_level_id = 1 THEN 1
+                        ELSE alp.permission
+                    END AS permission          
+                FROM 
+                    adms_users_access_levels AS aulp
+                LEFT JOIN 
+                    adms_access_levels_pages As alp ON alp.adms_access_level_id = aulp.adms_access_level_id 
+                    AND alp.adms_page_id = :adms_page_id
+                WHERE 
+                    aulp.adms_user_id = :adms_user_id
+                    AND (aulp.adms_access_level_id = 1 OR alp.permission = 1)
                 LIMIT 1';
 
         // Preparar a QUERY
