@@ -265,9 +265,10 @@ class PagesRepository extends DbConnection
 
         // QUERY para recuperar os registros do banco de dados
         $sql = 'SELECT ap.id, ap.name, ap.obs, ap.page_status, ap.public_page,
-                app.name app_name
+                app.name app_name, agp.name AS agp_name
                 FROM adms_pages AS ap 
-                INNER JOIN adms_packages_pages AS app ON app.id=ap.adms_packages_page_id  
+                INNER JOIN adms_packages_pages AS app ON app.id=ap.adms_packages_page_id
+                INNER JOIN adms_groups_pages as agp on ap.adms_groups_page_id = agp.id
                 WHERE ap.page_status = :page_status
                 ORDER BY ap.id ASC';
 

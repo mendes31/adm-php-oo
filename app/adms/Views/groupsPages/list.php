@@ -28,7 +28,13 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_group_page');
             <span>Listar</span>
 
             <span class="ms-auto">
-                <a href="<?php echo $_ENV['URL_ADM']; ?>create-group-page" class="btn btn-success btn-sm"><i class="fa-regular fa-square-plus"></i> Cadastrar</a>
+            <?php
+                if (in_array('CreateGroupPage', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}create-group-page' class='btn btn-success btn-sm'><i class='fa-regular fa-square-plus'></i> Cadastrar</a> ";
+                }
+                ?>
+
+                <!-- <a href="<?php echo $_ENV['URL_ADM']; ?>create-group-page" class="btn btn-success btn-sm"><i class="fa-regular fa-square-plus"></i> Cadastrar</a> -->
             </span>
         </div>
 
@@ -61,9 +67,36 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_group_page');
                             <tr>
                                 <td><?php echo $id; ?></td>
                                 <td><?php echo $name; ?></td>
-                                <td class="d-md-flex flex-row justify-content-center">
+                                <td class="text-center">
 
-                                    <a href='<?php echo "{$_ENV['URL_ADM']}view-group-page/$id"; ?>' class="btn btn-primary btn-sm me-1 mb-1"><i class="fa-regular fa-eye"></i> Visualizar</a>
+                                <?php
+                                    if (in_array('ViewGroupPage', $this->data['buttonPermission'])) {
+                                        echo "<a href='{$_ENV['URL_ADM']}view-group-page/$id' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Visualizar</a>";
+                                    }
+
+                                    if (in_array('UpdateGroupPage', $this->data['buttonPermission'])) {
+                                        echo "<a href='{$_ENV['URL_ADM']}update-group-page/$id' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-pen-to-square'></i> Editar</a>";
+                                    }
+
+                                    if (in_array('DeleteGroupPage', $this->data['buttonPermission'])) {
+                                    ?>
+                                        <form id="formDelete<?php echo $id; ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-group-page" method="POST" class="d-inline">
+
+                                            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+
+                                            <input type="hidden" name="id" id="id" value="<?php echo $id ?? ''; ?>">
+
+                                            <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo $id; ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
+
+                                        </form>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+
+                        <?php } ?>
+
+
+                                    <!-- <a href='<?php echo "{$_ENV['URL_ADM']}view-group-page/$id"; ?>' class="btn btn-primary btn-sm me-1 mb-1"><i class="fa-regular fa-eye"></i> Visualizar</a>
 
                                     <a href='<?php echo "{$_ENV['URL_ADM']}update-group-page/$id"; ?>' class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
 
@@ -75,12 +108,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_group_page');
 
                                         <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo $id; ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
 
-                                    </form>
-
-                                </td>
-                            </tr>
-
-                        <?php } ?>
+                                    </form> -->
 
                     </tbody>
                 </table>

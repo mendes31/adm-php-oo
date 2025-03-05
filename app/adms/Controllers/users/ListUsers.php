@@ -4,6 +4,7 @@ namespace App\adms\Controllers\users;
 
 use App\adms\Controllers\Services\PageController;
 use App\adms\Controllers\Services\PaginationService;
+use App\adms\Models\Repository\ButtonPermissionUserRepository;
 use App\adms\Models\Repository\UsersRepository;
 use App\adms\Views\Services\LoadViewService;
 
@@ -47,7 +48,11 @@ class ListUsers
 
         // Ativar o item de menu
         $this->data['menu'] = "list-users";
-        
+
+        // APRESENTAR O ITEM DE MENU
+        $button = ['CreateUser', 'ViewUser', 'UpdateUser', 'DeleteUser'];
+        $buttonPermission = new ButtonPermissionUserRepository();
+        $this->data['buttonPermission'] = $buttonPermission->buttonPermission($button);        
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/users/list", $this->data);

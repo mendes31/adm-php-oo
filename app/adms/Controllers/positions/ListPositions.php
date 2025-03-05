@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\positions;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\PaginationService;
 use App\adms\Models\Repository\PositionsRepository;
 use App\adms\Views\Services\LoadViewService;
@@ -51,10 +52,16 @@ class ListPositions
         );
 
         // Definir o título da página
-        $this->data['title_head'] = "Listar Cargos";
-
         // Ativar o item de menu
-        $this->data['menu'] = "list-positions";
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Listar Cargos',
+            'menu' => 'list-positions',
+            'buttonPermission' => ['CreatePosition', 'ViewPosition', 'UpdatePosition', 'DeletePosition'],
+        ];
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW com os dados
         $loadView = new LoadViewService("adms/Views/positions/list", $this->data);

@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\positions;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\Validation\ValidationPositionService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
@@ -73,10 +74,16 @@ class UpdatePOsition
     private function viewPosition(): void
     {
         // Definir o título da página
-        $this->data['title_head'] = "Editar Cargo";
-
         // Ativar o item de menu
-        $this->data['menu'] = "list-positions";
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Editar Cargo',
+            'menu' => 'list-positions',
+            'buttonPermission' => ['ListPositions', 'ViewPosition'],
+        ];
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/positions/update", $this->data);

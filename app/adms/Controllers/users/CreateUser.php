@@ -4,6 +4,7 @@ namespace App\adms\Controllers\users;
 
 use App\adms\Controllers\Services\Validation\ValidationUserRakitService;
 use App\adms\Helpers\CSRFHelper;
+use App\adms\Models\Repository\ButtonPermissionUserRepository;
 use App\adms\Models\Repository\DepartmentsRepository;
 use App\adms\Models\Repository\PositionsRepository;
 use App\adms\Models\Repository\UsersRepository;
@@ -68,6 +69,11 @@ class CreateUser
 
         // Criar o título da página
         $this->data['title_head'] =  "Cadastrar Usuários";
+
+        // Apresentar ou ocultar botão
+        $button = ['ListUsers'];
+        $buttonPermission = new ButtonPermissionUserRepository();
+        $this->data['buttonPermission'] = $buttonPermission->buttonPermission($button);
 
         // Ativar o item de menu
         $this->data['menu'] = "list-users";

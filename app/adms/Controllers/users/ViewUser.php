@@ -3,6 +3,7 @@
 namespace App\adms\Controllers\users;
 
 use App\adms\Helpers\GenerateLog;
+use App\adms\Models\Repository\ButtonPermissionUserRepository;
 use App\adms\Models\Repository\UsersAccessLevelsRepository;
 use App\adms\Models\Repository\UsersDepartmentsRepository;
 use App\adms\Models\Repository\UsersRepository;
@@ -96,6 +97,11 @@ class ViewUser
 
         // Ativar o item de menu
         $this->data['menu'] = "list-users";
+
+        // Apresentar ou ocultar botão
+        $button = ['ListUsers', 'UpdateUser', 'UpdatePasswordUser', 'DeleteUser', 'UpdateUserAccessLevels'];
+        $buttonPermission = new ButtonPermissionUserRepository();
+        $this->data['buttonPermission'] = $buttonPermission->buttonPermission($button);
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/users/view", $this->data);

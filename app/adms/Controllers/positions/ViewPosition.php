@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\positions;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Repository\DepartmentsRepository;
 use App\adms\Models\Repository\PositionsRepository;
@@ -61,10 +62,16 @@ class ViewPosition
         GenerateLog::generateLog("info", "Visualizado o Cargo.", ['id' => (int) $id]);
 
         // Definir o título da página
-        $this->data['title_head'] = "Visualizar Cargo";
-
         // Ativar o item de menu
-        $this->data['menu'] = "list-positions";
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Visualizar Cargo',
+            'menu' => 'list-positions',
+            'buttonPermission' => ['ListPositions', 'UpdatePosition', 'DeletePosition'],
+        ];
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/positions/view", $this->data);

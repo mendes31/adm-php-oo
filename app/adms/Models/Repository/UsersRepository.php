@@ -34,8 +34,10 @@ class UsersRepository extends DbConnection
         $offset = max(0, ($page - 1) * $limitResult);
 
         // QUERY para recuperar os registros do banco de dados
-        $sql = 'SELECT id, name, email, username, user_department_id, user_position_id
-                FROM adms_users 
+        $sql = 'SELECT usr.id, usr.name, usr.email, usr.username, usr.user_department_id, usr.user_position_id, dep.name name_dep, pos.name name_pos
+                FROM adms_users usr
+                INNER JOIN adms_departments dep ON usr.user_department_id = dep.id
+                INNER JOIN adms_positions pos ON usr.user_position_id = pos.id 
                 ORDER BY id DESC
                 LIMIT :limit OFFSET :offset';
 
@@ -121,7 +123,7 @@ class UsersRepository extends DbConnection
         try { // Permanece no try se não houver erro
 
             // QUERY cadastrar usuários
-            $sql = 'INSERT INTO adms_users (name, email, username, user_department_id, user_position_id,  password, created_at ) VALUES (:name, :email, :username, user_department_id = :user_department_id, user_position_id = :user_position_id, :password, :created_at)';
+            $sql = 'INSERT INTO adms_users (name, email, username, user_department_id, user_position_id,  password, created_at ) VALUES (:name, :email, :username, :user_department_id,:user_position_id, :password, :created_at)';
 
             // Preparar a QUERY
             $stmt = $this->getConnection()->prepare($sql);

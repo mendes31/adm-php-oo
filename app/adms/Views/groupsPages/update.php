@@ -29,9 +29,20 @@ use App\adms\Helpers\CSRFHelper;
             <span>Editar</span>
 
             <span class="ms-auto d-sm-flex flex-row">
-                <a href="<?php echo $_ENV['URL_ADM']; ?>list-groups-pages" class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-list"></i> Listar</a>
+            <?php
+                if (in_array('ListGroupsPages', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}list-groups-pages' class='btn btn-info btn-sm me-1 mb-1'><i class='fa-solid fa-list'></i> Listar</a> ";
+                }
 
-                <a href="<?php echo $_ENV['URL_ADM'] . 'view-group-page/' . ($this->data['form']['id'] ?? ''); ?>" class="btn btn-primary btn-sm me-1 mb-1"><i class="fa-regular fa-eye"></i> Visualizar</a>
+                $id = ($this->data['form']['id'] ?? '');
+                if (in_array('ViewGroupPage', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}view-group-page/$id' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Visualizar</a> ";
+                }
+                ?>
+
+                <!-- <a href="<?php echo $_ENV['URL_ADM']; ?>list-groups-pages" class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-list"></i> Listar</a> -->
+
+                <!-- <a href="<?php echo $_ENV['URL_ADM'] . 'view-group-page/' . ($this->data['form']['id'] ?? ''); ?>" class="btn btn-primary btn-sm me-1 mb-1"><i class="fa-regular fa-eye"></i> Visualizar</a> -->
 
             </span>
 

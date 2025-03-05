@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\accessLevels;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Repository\AccessLevelsRepository;
 use App\adms\Views\Services\LoadViewService;
@@ -60,10 +61,16 @@ class ViewAccessLevel
         GenerateLog::generateLog("info", "Visualizado o nível de acesso.", ['id' => (int) $id]);
 
         // Definir o título da página
-        $this->data['title_head'] = "Visualizar nível de acesso";
-
         // Ativar o item de menu
-        $this->data['menu'] = "list-access-levels";
+        // Apresentar ou ocultar botão  
+        $pageElements = [
+            'title_head' => 'Visualizar nível de acesso',
+            'menu' => 'list-access-levels',
+            'buttonPermission' => ['ListAccessLevels', 'UpdateAccessLevel', 'DeleteAccessLevel'],
+        ];
+        $pageLayoutService = new PageLayoutService(); 
+        // Combinar os valores do atributos 'data' com o array dos elementos da página
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/accessLevels/view", $this->data);

@@ -26,23 +26,45 @@ $csrf_token_update_access_level = CSRFHelper::generateCSRFToken('form_update_acc
             </span>
 
             <span class="ms-sm-auto d-sm-flex flex-row">
-                <a href="<?php echo $_ENV['URL_ADM']; ?>list-users" class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-list-ul"></i> Listar</a>
 
-                <a href="<?php echo $_ENV['URL_ADM'] . 'update-user/' . ($this->data['user']['id'] ?? ''); ?>" class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-regular fa-pen-to-square"></i> Editar</a>
+            <?php
+                if (in_array('ListUsers', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}list-users' class='btn btn-info btn-sm me-1 mb-1'><i class='fa-solid fa-list-ul'></i> Listar</a> ";
+                }
 
-                <a href="<?php echo $_ENV['URL_ADM'] . 'update-password-user/' . ($this->data['user']['id'] ?? ''); ?>" class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-solid fa-key"></i> Editar Senha</a>
+                $id = ($this->data['user']['id'] ?? '');
+                if (in_array('UpdateUser', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}update-user/$id' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-regular fa-pen-to-square'></i> Editar</a> ";
+                }
 
-                <!-- Formulário para deletar usuário -->
-                <form id="formDelete<?php echo ($this->data['user']['id'] ?? ''); ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-user" method="POST">
+                if (in_array('UpdatePasswordUser', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}update-password-user/$id' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-key'></i> Editar Senha</a> ";
+                }
 
-                    <!-- Campo oculto para o token CSRF -->
-                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                if (in_array('DeleteUser', $this->data['buttonPermission'])) {
+                    ?>
+                        <!-- Formulário para deletar usuário -->
+                        <form id="formDelete<?php echo ($this->data['user']['id'] ?? ''); ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-user" method="POST">
+    
+                            <!-- Campo oculto para o token CSRF -->
+                            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+    
+                            <!-- Campo oculto para o ID do usuário -->
+                            <input type="hidden" name="id" id="id" value="<?php echo ($this->data['user']['id'] ?? ''); ?>">
+    
+                            <!-- Botão para submeter o formulário -->
+                            <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo ($this->data['user']['id'] ?? ''); ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
+    
+                        </form>
+                    <?php } ?>
 
-                    <!-- Campo oculto para o ID do usuário -->
-                    <input type="hidden" name="id" id="id" value="<?php echo ($this->data['user']['id'] ?? ''); ?>">
+                <!-- <a href="<?php echo $_ENV['URL_ADM']; ?>list-users" class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-list-ul"></i> Listar</a> -->
 
-                    <!-- Botão para submeter o formulário -->
-                    <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo ($this->data['user']['id'] ?? ''); ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
+                <!-- <a href="<?php echo $_ENV['URL_ADM'] . 'update-user/' . ($this->data['user']['id'] ?? ''); ?>" class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-regular fa-pen-to-square"></i> Editar</a> -->
+
+                <!-- <a href="<?php echo $_ENV['URL_ADM'] . 'update-password-user/' . ($this->data['user']['id'] ?? ''); ?>" class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-solid fa-key"></i> Editar Senha</a> -->
+
+                
 
                 </form>
 

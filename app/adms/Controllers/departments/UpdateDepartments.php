@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\departments;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\Validation\ValidationDepartmentService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
@@ -73,10 +74,16 @@ class UpdateDepartments
     private function viewDepartment(): void
     {
         // Definir o título da página
-        $this->data['title_head'] = "Editar Departamento";
-
         // Ativar o item de menu
-        $this->data['menu'] = "list-departments";
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Editar Departamento',
+            'menu' => 'list-departments',
+            'buttonPermission' => ['ListDepartment', 'ViewDepartment'],
+        ];
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/departments/update", $this->data);

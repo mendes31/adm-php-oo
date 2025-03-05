@@ -2,9 +2,11 @@
 
 namespace App\adms\Controllers\accessLevels;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\Validation\ValidationAccessLevelService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Models\Repository\AccessLevelsRepository;
+use App\adms\Models\Repository\ButtonPermissionUserRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**
@@ -56,10 +58,16 @@ class CreateAccessLevel
     private function viewAccessLevel(): void
     {
         // Definir o título da página
-        $this->data['title_head'] = "Cadastrar Nível de acesso";
-
         // Ativar o item de menu
-        $this->data['menu'] = "list-access-levels";
+        // Apresentar ou ocultar botão     
+        $pageElements = [
+            'title_head' => 'Cadastrar Nível de acesso',
+            'menu' => 'list-access-levels',
+            'buttonPermission' => ['ListAccessLevels'],
+        ];
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/accessLevels/create", $this->data);

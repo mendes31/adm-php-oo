@@ -5,6 +5,7 @@ namespace App\adms\Controllers\users;
 use App\adms\Controllers\Services\Validation\ValidationUserPasswordService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
+use App\adms\Models\Repository\ButtonPermissionUserRepository;
 use App\adms\Models\Repository\UsersRepository;
 use App\adms\Views\Services\LoadViewService;
 
@@ -84,6 +85,11 @@ class UpdatePasswordUser
     {
         // Criar o título da página
         $this->data['title_head'] =  "Editar Senha do Usuário";
+
+        // Apresentar ou ocultar botão
+        $button = ['ListUsers', 'ViewUser'];
+        $buttonPermission = new ButtonPermissionUserRepository();
+        $this->data['buttonPermission'] = $buttonPermission->buttonPermission($button);
 
         // Ativar o item de menu
         $this->data['menu'] = "list-users";

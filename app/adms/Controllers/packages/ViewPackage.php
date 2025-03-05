@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\packages;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Repository\PackagesRepository;
 use App\adms\Views\Services\LoadViewService;
@@ -60,10 +61,16 @@ class ViewPackage
         GenerateLog::generateLog("info", "Visualizado o pacote.", ['id' => (int) $id]);
 
         // Definir o título da página
-        $this->data['title_head'] = "Visualizar Pacote";
-
         // Ativar o item de menu
-        $this->data['menu'] = "list-packages";
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Visualizar Pacote',
+            'menu' => 'list-packages',
+            'buttonPermission' => ['ListPackages', 'UpdatePackage', 'DeletePackage'],
+        ];
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/packages/view", $this->data);

@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\accessLevels;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\Validation\ValidationAccessLevelService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
@@ -73,10 +74,16 @@ class UpdateAccessLevel
     private function viewAccessLevel(): void
     {
         // Definir o título da página
-        $this->data['title_head'] = "Editar Nível de Acesso";
-
         // Ativar o item de menu
-        $this->data['menu'] = "list-access-levels";
+        // Apresentar ou ocultar botão     
+        $pageElements = [
+            'title_head' => 'Editar Nível de Acesso',
+            'menu' => 'list-access-levels',
+            'buttonPermission' => ['ListAccessLevels', 'ViewAccessLevel'],
+        ];
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/accessLevels/update", $this->data);

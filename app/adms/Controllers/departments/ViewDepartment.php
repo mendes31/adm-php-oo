@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\departments;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Repository\DepartmentsRepository;
 use App\adms\Views\Services\LoadViewService;
@@ -60,10 +61,16 @@ class ViewDepartment
         GenerateLog::generateLog("info", "Visualizado o departamento.", ['id' => (int) $id]);
 
         // Definir o título da página
-        $this->data['title_head'] = "Visualizar dodepartamento";
-
         // Ativar o item de menu
-        $this->data['menu'] = "list-departments";
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Visualizar Departamento',
+            'menu' => 'list-departments',
+            'buttonPermission' => ['ListDepartments', 'UpdateDepartments', 'DeleteDepartment'],
+        ];
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/departments/view", $this->data);

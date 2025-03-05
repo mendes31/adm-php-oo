@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\packages;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\Validation\ValidationPackageService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Models\Repository\PackagesRepository;
@@ -56,10 +57,16 @@ class CreatePackage
     private function viewPackage(): void
     {
         // Definir o título da página
-        $this->data['title_head'] = "Cadastrar Pacote";
-
         // Ativar o item de menu
-        $this->data['menu'] = "list-packages";
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Cadastrar Pacote',
+            'menu' => 'list-packages',
+            'buttonPermission' => ['ListPackages'],
+        ];
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/packages/create", $this->data);

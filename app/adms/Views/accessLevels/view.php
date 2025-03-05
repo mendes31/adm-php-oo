@@ -31,23 +31,33 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_access_level');
             <span>Visualizar</span>
 
             <span class="ms-sm-auto d-sm-flex flex-row">
-                <a href="<?php echo $_ENV['URL_ADM']; ?>list-access-levels" class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-list"></i> Listar</a>
 
-                <a href="<?php echo $_ENV['URL_ADM'] . 'update-access-level/' . ($this->data['accessLevel']['id'] ?? ''); ?>" class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+            <?php
+                if (in_array('ListAccessLevels', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}list-access-levels' class='btn btn-info btn-sm me-1 mb-1'><i class='fa-solid fa-list'></i> Listar</a> ";
+                }
 
-                <!-- Formulário para deletar nível de acesso -->
-                <form id="formDelete<?php echo ($this->data['accessLevel']['id'] ?? ''); ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-access-level" method="POST">
+                $id = ($this->data['accessLevel']['id'] ?? '');
+                if (in_array('UpdateAccessLevel', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}update-access-level/$id' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-pen-to-square'></i> Editar</a> ";
+                }
+                if (in_array('DeleteAccessLevel', $this->data['buttonPermission'])) {
+                ?>
 
-                    <!-- Campo oculto para o token CSRF -->
-                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                    <!-- Formulário para deletar nível de acesso -->
+                    <form id="formDelete<?php echo ($this->data['accessLevel']['id'] ?? ''); ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-access-level" method="POST">
 
-                    <!-- Campo oculto para o ID do nível de acesso -->
-                    <input type="hidden" name="id" id="id" value="<?php echo ($this->data['accessLevel']['id'] ?? ''); ?>">
+                        <!-- Campo oculto para o token CSRF -->
+                        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
 
-                    <!-- Botão para submeter o formulário -->
-                    <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo ($this->data['accessLevel']['id'] ?? ''); ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
+                        <!-- Campo oculto para o ID do nível de acesso -->
+                        <input type="hidden" name="id" id="id" value="<?php echo ($this->data['accessLevel']['id'] ?? ''); ?>">
 
-                </form>
+                        <!-- Botão para submeter o formulário -->
+                        <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo ($this->data['accessLevel']['id'] ?? ''); ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
+
+                    </form>
+                <?php } ?>
 
             </span>
         </div>

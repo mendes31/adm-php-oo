@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\departments;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\PaginationService;
 use App\adms\Models\Repository\DepartmentsRepository;
 use App\adms\Views\Services\LoadViewService;
@@ -51,10 +52,16 @@ class ListDepartments
         );
 
         // Definir o título da página
-        $this->data['title_head'] = "Listar Departmantos";
-
         // Ativar o item de menu
-        $this->data['menu'] = "list-departments";
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Listar Departmantos',
+            'menu' => 'list-departments',
+            'buttonPermission' => ['CreateDepartment', 'ViewDepartment', 'UpdateDepartments', 'DeleteDepartment'],
+        ];
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW com os dados
         $loadView = new LoadViewService("adms/Views/departments/list", $this->data);

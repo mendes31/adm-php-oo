@@ -28,10 +28,15 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_update_access_level_permission
     <div class="card mb-4 border-light shadow">
 
         <div class="card-header hstack gap-2">
-            <span><?php echo $this->data['accessLevel']['name'] ?? 'Listar'; ?></span>
+            
+            <!-- <span><?php echo $this->data['accessLevel']['name'] ?? 'Listar'; ?></span> -->
 
-            <span class="ms-auto">
-
+            <span class="ms-auto d-sm-flex flex-row">
+                <?php
+                if (in_array('ListAccessLevels', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}list-access-levels' class='btn btn-info btn-sm me-1 mb-1'><i class='fa-solid fa-list'></i> Listar</a> ";
+                }
+                ?>
             </span>
         </div>
 
@@ -60,6 +65,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_update_access_level_permission
                                 <th scope="col">Liberado</th>
                                 <th scope="col">Página</th>
                                 <th scope="col">Nome</th>
+                                <th scope="col">Grupo</th>
                                 <th scope="col" class="d-none d-md-table-cell">Observação</th>
                                 <th scope="col" class="d-none d-md-table-cell">Pública / Privada</th>
                             </tr>
@@ -94,6 +100,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_update_access_level_permission
                                     </td>
                                     <td><?php echo $id; ?></td>
                                     <td><?php echo $name; ?></td>
+                                    <td><?php echo $agp_name; ?></td>
                                     <td class="d-none d-md-table-cell"><?php echo $obs; ?></td>
                                     <td class="d-none d-md-table-cell">
                                         <?php echo $public_page ? "<span class='badge text-bg-success'>Pública</span>" : "<span class='badge text-bg-danger'>Privada</span>";; ?>

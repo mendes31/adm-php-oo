@@ -2,8 +2,10 @@
 
 namespace App\adms\Controllers\accessLevels;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\PaginationService;
 use App\adms\Models\Repository\AccessLevelsRepository;
+use App\adms\Models\Repository\ButtonPermissionUserRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**
@@ -51,10 +53,16 @@ class ListAccessLevels
         );
 
         // Definir o título da página
-        $this->data['title_head'] = "Listar Níveis de Acesso";
-
         // Ativar o item de menu
-        $this->data['menu'] = "list-access-levels";
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Listar Níveis de Acesso',
+            'menu' => 'list-access-levels',
+            'buttonPermission' => ['CreateAccessLevel', 'ViewAccessLevel', 'UpdateAccessLevel', 'DeleteAccessLevel', 'AccessLevelPageSync', 'ListAccessLevelsPermissions'],
+        ];
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW com os dados
         $loadView = new LoadViewService("adms/Views/accessLevels/list", $this->data);

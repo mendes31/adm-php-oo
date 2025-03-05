@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\permission;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\Validation\ValidationAccessLevelPermissionService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
@@ -63,14 +64,25 @@ class ListAccessLevelsPermissions
         $listPages = new PagesRepository();
         $this->data['pages'] = $listPages->getAllPagesFull();
         
+        // Recuperar as permissões do nível de acesso
         $listAccessLevelsPages = new AccessLevelsPagesRepository();
         $this->data['accessLevelsPages'] = $listAccessLevelsPages->getPagesAccessLevelsArray($this->id, true);
         
-        // Definir o título da página
-        $this->data['title_head'] = "Editar Permissão do Nível de Acesso";
+        // Definir o título da página, ativar o item de menu, apresentar ou ocultar botão
+        $pageElements = [
+            'title_head' => 'Editar Permissão do Nível de Acesso',
+            'menu' => 'list-access-levels',
+            'buttonPermission' => ['ListAccessLevels'],
+        ];
+        $pageLayoutService = new PageLayoutService(); 
+        // Combinar os valores do atributos 'data' com o array dos elementos da página
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
-        // Ativar o item de menu
-        $this->data['menu'] = "list-access-levels";
+        // // Definir o título da página
+        // $this->data['title_head'] = "Editar Permissão do Nível de Acesso";
+
+        // // Ativar o item de menu
+        // $this->data['menu'] = "list-access-levels";
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/permission/list", $this->data);

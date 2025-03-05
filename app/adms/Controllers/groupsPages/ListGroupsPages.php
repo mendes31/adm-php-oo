@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\groupsPages;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\PaginationService;
 use App\adms\Models\Repository\GroupsPagesRepository;
 use App\adms\Models\Repository\PackagesRepository;
@@ -50,13 +51,19 @@ class ListGroupsPages
             (int) $page, 
             'list-groups'
         );
-
+        
         // Definir o título da página
-        $this->data['title_head'] = "Listar Grupos de Páginas";
-
         // Ativar o item de menu
-        $this->data['menu'] = "list-groups-pages";
-
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Listar Grupos de Páginas',
+            'menu' => 'list-groups-pages',
+            'buttonPermission' => ['CreateGroupPage', 'ViewGroupPage', 'UpdateGroupPage', 'DeleteGroupPage'],
+        ];
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
+        
         // Carregar a VIEW com os dados
         $loadView = new LoadViewService("adms/Views/groupsPages/list", $this->data);
         $loadView->loadView();

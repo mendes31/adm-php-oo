@@ -5,6 +5,7 @@ namespace App\adms\Controllers\users;
 use App\adms\Controllers\Services\Validation\ValidationUserRakitService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
+use App\adms\Models\Repository\ButtonPermissionUserRepository;
 use App\adms\Models\Repository\DepartmentsRepository;
 use App\adms\Models\Repository\PositionsRepository;
 use App\adms\Models\Repository\UsersRepository;
@@ -98,6 +99,11 @@ class UpdateUser
 
         // Ativar o item de menu
         $this->data['menu'] = "list-users";
+
+        // Apresentar ou ocultar botão
+        $button = ['ListUsers', 'ViewUser'];
+        $buttonPermission = new ButtonPermissionUserRepository();
+        $this->data['buttonPermission'] = $buttonPermission->buttonPermission($button);
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/users/update", $this->data);

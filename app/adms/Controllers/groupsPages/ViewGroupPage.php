@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\groupsPages;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Repository\GroupsPagesRepository;
 use App\adms\Views\Services\LoadViewService;
@@ -60,10 +61,16 @@ class ViewGroupPage
         GenerateLog::generateLog("info", "Visualizado o grupo de página .", ['id' => (int) $id]);
 
         // Definir o título da página
-        $this->data['title_head'] = "Visualizar Grupo de Página ";
-
         // Ativar o item de menu
-        $this->data['menu'] = "list-groups-pages";
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Visualizar Grupo de Página',
+            'menu' => 'list-groups-pages',
+            'buttonPermission' => ['ListGroupsPages', 'UpdateGroupPage', 'DeleteGroupPage'],
+        ];
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/groupsPages/view", $this->data);
