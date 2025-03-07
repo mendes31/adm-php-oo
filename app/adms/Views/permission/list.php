@@ -28,6 +28,8 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_update_access_level_permission
     <div class="card mb-4 border-light shadow">
 
         <div class="card-header hstack gap-2">
+            <span><?php echo $this->data['accessLevel']['name'] ?? 'Listar'; ?></span>
+            
             <span class="ms-auto d-sm-flex flex-row">
                 <?php
                 if (in_array('ListAccessLevels', $this->data['buttonPermission'])) {
@@ -109,7 +111,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_update_access_level_permission
                         </tbody>
                     </table>
 
-                
+
                     <div class="col-12">
                         <!-- <button type="submit" class="btn btn-warning btn-sm" onclick="showLoading()">Salvar</button> -->
                         <button type="submit" class="btn btn-warning btn-sm">Salvar</button>
