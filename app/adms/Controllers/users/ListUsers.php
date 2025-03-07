@@ -6,6 +6,7 @@ use App\adms\Controllers\Services\PageController;
 use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\PaginationService;
 use App\adms\Models\Repository\ButtonPermissionUserRepository;
+use App\adms\Models\Repository\MenuPermissionUserRepository;
 use App\adms\Models\Repository\UsersRepository;
 use App\adms\Views\Services\LoadViewService;
 
@@ -56,6 +57,12 @@ class ListUsers
         $pageLayoutService = new PageLayoutService();
         $pageLayoutService->configurePageElements($pageElements);
         $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
+
+        // // Apresentar ou ocultar item de menu
+        // $menu = ['Dashboard', 'ListUsers', 'ListDepartments', 'ListPositions', 'ListAccessLevels', 'ListPackages', 'ListGroupsPages', 'ListPages'];
+        // $menuPermission = new MenuPermissionUserRepository();
+        // $this->data['menuPermission'] = $menuPermission->menuPermission($menu);
+        // var_dump( $this->data['menuPermission']);
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/users/list", $this->data);

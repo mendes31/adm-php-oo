@@ -4,6 +4,7 @@ namespace App\adms\Controllers\pages;
 
 use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\PaginationService;
+use App\adms\Models\Repository\MenuPermissionUserRepository;
 use App\adms\Models\Repository\PagesRepository;
 use App\adms\Views\Services\LoadViewService;
 
@@ -62,6 +63,11 @@ class ListPages
         $pageLayoutService = new PageLayoutService();
         $pageLayoutService->configurePageElements($pageElements);
         $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
+
+        // Apresentar ou ocultar item de menu
+        // $menu = ['Dashboard', 'ListUsers', 'ListDepartments', 'ListPositions', 'ListAccessLevels', 'ListPackages', 'ListGroupsPages', 'ListPages'];
+        // $menuPermission = new MenuPermissionUserRepository();
+        // $this->data['menuPermission'] = $menuPermission->menuPermission($menu);
 
         // Carregar a VIEW com os dados
         $loadView = new LoadViewService("adms/Views/pages/list", $this->data);

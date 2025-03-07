@@ -32,6 +32,11 @@ class ButtonPermissionUserRepository extends DbConnection
         // var_dump($button);
         // return [];
 
+        // Verificar se o array $button está vazio
+            if(empty($button)){
+                return [];
+            }
+
         // Criar uma string de placeholders do mesmo tamanho do array de controllers
         $placeholders = implode(', ', array_fill(0, count($button), '?'));
 
