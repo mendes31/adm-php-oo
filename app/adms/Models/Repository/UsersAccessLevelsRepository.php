@@ -12,8 +12,7 @@ class UsersAccessLevelsRepository extends DbConnection
     public function getUserAccessLevel(int $id): array|bool
     {
         // QUERY para recuperar o registro do banco de dados
-        $sql = 'SELECT 
-        lev.name
+        $sql = 'SELECT lev.name
         FROM adms_users_access_levels AS usr_lev
         INNER JOIN adms_access_levels AS lev ON lev.id = usr_lev.adms_access_level_id
         WHERE usr_lev.adms_user_id = :adms_user_id
@@ -80,21 +79,21 @@ class UsersAccessLevelsRepository extends DbConnection
         // Criar o elemento userAccesLevels no array quando não vem nível de acesso do formulário
         $userAccessLevelsArray = $data['userAccessLevelsArray'] ?? [];
 
-        var_dump($data);
-        var_dump($userAccessLevelsArray);
+        // var_dump($data);
+        // var_dump($userAccessLevelsArray);
 
         try {
             // Recuperar os níveis de acesso do usuário em formato de array
             $userAccessLevelsArrayDB = $this->getUserAccessLevelArray($data['adms_user_id']);
             $userAccessLevelsArrayDB = $userAccessLevelsArrayDB ? $userAccessLevelsArrayDB : [];
 
-            var_dump($userAccessLevelsArrayDB);
+            // var_dump($userAccessLevelsArrayDB);
             // exit;      
 
             // Perceorrer o array com os valores de acesso e liberar acesso
             foreach ($data['userAccessLevelsArray'] as $userAccessLevel) {
 
-                var_dump($userAccessLevelsArrayDB);
+                // var_dump($userAccessLevelsArrayDB);
                 // exit;
 
                 // var_dump($userAccessLevel);

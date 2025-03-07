@@ -9,9 +9,12 @@ class PageLayoutService
 {
     public function configurePageElements(array $data): array
     {
+        // var_dump($data);
+        // return [];
+
         // Verificar se o usuário tem o nível de acesso Super Administrador.
         // Nível de acesso Super Administrador tem acesso a todos os botões, não precisa validar as permissões no banco de dados
-        $usersAccessLevels = new UsersAccessLevelsRepository(); 
+        $usersAccessLevels = new UsersAccessLevelsRepository();
         if(in_array(1, $usersAccessLevels->getUserAccessLevelArray($_SESSION['user_id']))){
             return $data;
         }
@@ -24,7 +27,7 @@ class PageLayoutService
 
         // Apresentar ou ocultar botão
         $buttonPermission = new ButtonPermissionUserRepository();
-        $pageElements['buttonPermission'] = $buttonPermission->buttonPermission($data['button_permission'] ?? []);
+        $pageElements['buttonPermission'] = $buttonPermission->buttonPermission($data['buttonPermission'] ?? []);
 
         return $pageElements;
     }

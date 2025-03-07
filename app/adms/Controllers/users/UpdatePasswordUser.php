@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\users;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\Validation\ValidationUserPasswordService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
@@ -83,16 +84,18 @@ class UpdatePasswordUser
      */
     private function viewUser(): void
     {
-        // Criar o título da página
-        $this->data['title_head'] =  "Editar Senha do Usuário";
-
-        // Apresentar ou ocultar botão
-        $button = ['ListUsers', 'ViewUser'];
-        $buttonPermission = new ButtonPermissionUserRepository();
-        $this->data['buttonPermission'] = $buttonPermission->buttonPermission($button);
-
+        // Definir o título da página
         // Ativar o item de menu
-        $this->data['menu'] = "list-users";
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Editar Senha do Usuário',
+            'menu' => 'list-users',
+            'buttonPermission' => ['ListUsers', 'ViewUser'],
+        ];
+        
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/users/updatePassword", $this->data);

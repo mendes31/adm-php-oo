@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\pages;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\Validation\ValidationPageService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Models\Repository\GroupsPagesRepository;
@@ -56,7 +57,7 @@ class CreatePage
      * @return void
      */
     private function viewPage(): void
-    {
+    {        
         // Instanciar o repositório para recuperar os pacotes
         $listPackagesPages = new PackagesRepository();
         $this->data['listPackagesPages'] = $listPackagesPages->getAllPackagesSelect();
@@ -66,11 +67,17 @@ class CreatePage
         $this->data['listgroupsPages'] = $listgroupsPages->getAllGroupsPagesSelect();
 
         // Definir o título da página
-        $this->data['title_head'] = "Cadastrar Página";
-
         // Ativar o item de menu
-        $this->data['menu'] = "list-pages";
-
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Cadastrar Página',
+            'menu' => 'list-pages',
+            'buttonPermission' => ['ListPages'],
+        ];
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
+        
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/pages/create", $this->data);
         $loadView->loadView();

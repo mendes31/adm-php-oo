@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\pages;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\Validation\ValidationPageService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
@@ -81,12 +82,18 @@ class UpdatePage
         // Instanciar o repositório para recuperar os grupos
         $listgroupsPages = new GroupsPagesRepository();
         $this->data['listgroupsPages'] = $listgroupsPages->getAllGroupsPagesSelect();
-        
-        // Definir o título da página
-        $this->data['title_head'] = "Editar Página";
 
+        // Definir o título da página
         // Ativar o item de menu
-        $this->data['menu'] = "list-pages";
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Editar Página',
+            'menu' => 'list-pages',
+            'buttonPermission' => ['ListPages', 'ViewPage'],
+        ];
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/pages/update", $this->data);

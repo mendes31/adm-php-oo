@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\pages;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\PaginationService;
 use App\adms\Models\Repository\PagesRepository;
 use App\adms\Views\Services\LoadViewService;
@@ -51,10 +52,16 @@ class ListPages
         );
 
         // Definir o título da página
-        $this->data['title_head'] = "Listar Páginas";
-
         // Ativar o item de menu
-        $this->data['menu'] = "list-pages";
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Listar Páginas',
+            'menu' => 'list-pages',
+            'buttonPermission' => ['CreatePage', 'ViewPage', 'UpdatePage', 'DeletePage'],
+        ];
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW com os dados
         $loadView = new LoadViewService("adms/Views/pages/list", $this->data);

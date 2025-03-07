@@ -31,24 +31,34 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_departments');
             <span>Visualizar</span>
 
             <span class="ms-sm-auto d-sm-flex flex-row">
-                <a href="<?php echo $_ENV['URL_ADM']; ?>list-positions" class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-list"></i> Listar</a>
+                <?php
+                if (in_array('ListPositions', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}list-positions' class='btn btn-info btn-sm me-1 mb-1'><i class='fa-solid fa-list'></i> Listar</a> ";
+                }
 
-                <a href="<?php echo $_ENV['URL_ADM'] . 'update-position/' . ($this->data['positions']['id'] ?? ''); ?>" class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+                $id = ($this->data['positions']['id'] ?? '');
 
-                <!-- Formulário para deletar nível de acesso -->
-                <form id="formDelete<?php echo ($this->data['positions']['id'] ?? ''); ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-position" method="POST">
+                if (in_array('UpdatePosition', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}update-position/$id' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-pen-to-square'></i> Editar</a>";
+                }
+                if (in_array('DeletePosition', $this->data['buttonPermission'])) {
+                ?>
 
-                    <!-- Campo oculto para o token CSRF -->
-                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                    <!-- Formulário para deletar nível de acesso -->
+                    <form id="formDelete<?php echo ($this->data['positions']['id'] ?? ''); ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-position" method="POST">
 
-                    <!-- Campo oculto para o ID do nível de acesso -->
-                    <input type="hidden" name="id" id="id" value="<?php echo ($this->data['positions']['id'] ?? ''); ?>">
+                        <!-- Campo oculto para o token CSRF -->
+                        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
 
-                    <!-- Botão para submeter o formulário -->
-                    <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo ($this->data['positions']['id'] ?? ''); ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
+                        <!-- Campo oculto para o ID do nível de acesso -->
+                        <input type="hidden" name="id" id="id" value="<?php echo ($this->data['position']['id'] ?? ''); ?>">
 
+                        <!-- Botão para submeter o formulário -->
+                        <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo ($this->data['positions']['id'] ?? ''); ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
+
+                    </form>
+                <?php } ?>
                 </form>
-
             </span>
         </div>
 

@@ -44,11 +44,6 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_group_page');
 
                 if (in_array('DeleteGroupPage', $this->data['buttonPermission'])) {
                 ?>
-
-                    <!-- <a href="<?php echo $_ENV['URL_ADM']; ?>list-groups-pages" class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-list"></i> Listar</a> -->
-
-                    <!-- <a href="<?php echo $_ENV['URL_ADM'] . 'update-group-page/' . ($this->data['groupPage']['id'] ?? ''); ?>" class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-solid fa-pen-to-square"></i> Editar</a> -->
-
                     <!-- Formulário para deletar grupo -->
                     <form id="formDelete<?php echo ($this->data['groupPage']['id'] ?? ''); ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-group-page" method="POST">
 
@@ -64,20 +59,6 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_group_page');
                     </form>
 
                 <?php } ?>
-                
-                <!-- Formulário para deletar grupo -->
-                <!-- <form id="formDelete<?php echo ($this->data['groupPage']['id'] ?? ''); ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-group-page" method="POST"> -->
-
-                    <!-- Campo oculto para o token CSRF -->
-                    <!-- <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>"> -->
-
-                    <!-- Campo oculto para o ID do grupo -->
-                    <!-- <input type="hidden" name="id" id="id" value="<?php echo ($this->data['groupPage']['id'] ?? ''); ?>"> -->
-
-                    <!-- Botão para submeter o formulário -->
-                    <!-- <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo ($this->data['groupPage']['id'] ?? ''); ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button> -->
-
-                <!-- </form> -->
 
             </span>
         </div>

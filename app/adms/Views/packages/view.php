@@ -31,21 +31,33 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_package');
             <span>Visualizar</span>
 
             <span class="ms-sm-auto d-sm-flex flex-row">
-                <a href="<?php echo $_ENV['URL_ADM']; ?>list-packages" class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-list"></i> Listar</a>
+                <?php
+                if (in_array('ListPackages', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}list-packages' class='btn btn-info btn-sm me-1 mb-1'><i class='fa-solid fa-list'></i> Listar</a> ";
+                }
 
-                <a href="<?php echo $_ENV['URL_ADM'] . 'update-package/' . ($this->data['packages']['id'] ?? ''); ?>" class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+                $id = ($this->data['packages']['id'] ?? '');
 
-                <!-- Formulário para deletar pacote -->
-                <form id="formDelete<?php echo ($this->data['packages']['id'] ?? ''); ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-package" method="POST">
+                if (in_array('UpdatePackage', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}update-package/$id' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-pen-to-square'></i> Editar</a> ";
+                }
+                if (in_array('DeletePackage', $this->data['buttonPermission'])) {
+                ?>
 
-                    <!-- Campo oculto para o token CSRF -->
-                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                    <!-- Formulário para deletar nível de acesso -->
+                    <form id="formDelete<?php echo ($this->data['packages']['id'] ?? ''); ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-package" method="POST">
 
-                    <!-- Campo oculto para o ID do pacote -->
-                    <input type="hidden" name="id" id="id" value="<?php echo ($this->data['packages']['id'] ?? ''); ?>">
+                        <!-- Campo oculto para o token CSRF -->
+                        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
 
-                    <!-- Botão para submeter o formulário -->
-                    <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo ($this->data['packages']['id'] ?? ''); ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
+                        <!-- Campo oculto para o ID do nível de acesso -->
+                        <input type="hidden" name="id" id="id" value="<?php echo ($this->data['packages']['id'] ?? ''); ?>">
+
+                        <!-- Botão para submeter o formulário -->
+                        <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo ($this->data['packages']['id'] ?? ''); ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
+
+                    </form>
+                <?php } ?>
 
                 </form>
 

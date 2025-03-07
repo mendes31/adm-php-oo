@@ -52,6 +52,8 @@ class ListAccessLevels
             'list-access-levels'
         );
 
+        // var_dump($this->data);
+
         // Definir o título da página
         // Ativar o item de menu
         // Apresentar ou ocultar botão 
@@ -60,9 +62,14 @@ class ListAccessLevels
             'menu' => 'list-access-levels',
             'buttonPermission' => ['CreateAccessLevel', 'ViewAccessLevel', 'UpdateAccessLevel', 'DeleteAccessLevel', 'AccessLevelPageSync', 'ListAccessLevelsPermissions'],
         ];
+
         $pageLayoutService = new PageLayoutService();
-        $pageLayoutService->configurePageElements($pageElements);
+        // var_dump($pageLayoutService->configurePageElements($pageElements));
+        
+        // $pageLayoutService->configurePageElements($pageElements);
         $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
+
+        // var_dump($this->data);
 
         // Carregar a VIEW com os dados
         $loadView = new LoadViewService("adms/Views/accessLevels/list", $this->data);

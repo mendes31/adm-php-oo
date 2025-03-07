@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\users;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Repository\ButtonPermissionUserRepository;
 use App\adms\Models\Repository\UsersAccessLevelsRepository;
@@ -92,16 +93,18 @@ class ViewUser
         // Chamar o método para salvar o log
         GenerateLog::generateLog("error", "Usuário não encontrado.", ['id' => (int) $id]);
 
-        // Criar o título da página
-        $this->data['title_head'] =  "Visualizar Usuário";
-
+        // Definir o título da página
         // Ativar o item de menu
-        $this->data['menu'] = "list-users";
-
-        // Apresentar ou ocultar botão
-        $button = ['ListUsers', 'UpdateUser', 'UpdatePasswordUser', 'DeleteUser', 'UpdateUserAccessLevels'];
-        $buttonPermission = new ButtonPermissionUserRepository();
-        $this->data['buttonPermission'] = $buttonPermission->buttonPermission($button);
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Visualizar Usuário',
+            'menu' => 'list-users',
+            'buttonPermission' => ['ListUsers', 'UpdateUser', 'UpdatePasswordUser', 'DeleteUser', 'UpdateUserAccessLevels'],
+        ];
+        
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/users/view", $this->data);

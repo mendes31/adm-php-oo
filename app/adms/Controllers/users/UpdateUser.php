@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\users;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\Validation\ValidationUserRakitService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
@@ -93,17 +94,19 @@ class UpdateUser
         // Instanciar o repositório para recuperar os cargos
         $listPositions = new PositionsRepository();
         $this->data['listPositions'] = $listPositions->getAllPositionsSelect();
-        
-        // Criar o título da página
-        $this->data['title_head'] =  "Editar Usuário";
 
+        // Definir o título da página
         // Ativar o item de menu
-        $this->data['menu'] = "list-users";
-
-        // Apresentar ou ocultar botão
-        $button = ['ListUsers', 'ViewUser'];
-        $buttonPermission = new ButtonPermissionUserRepository();
-        $this->data['buttonPermission'] = $buttonPermission->buttonPermission($button);
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Editar Usuário',
+            'menu' => 'list-users',
+            'buttonPermission' => ['ListUsers', 'ViewUser'],
+        ];
+        
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/users/update", $this->data);

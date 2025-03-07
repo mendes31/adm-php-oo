@@ -28,7 +28,11 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_positions');
             <span>Listar</span>
 
             <span class="ms-auto">
-                <a href="<?php echo $_ENV['URL_ADM']; ?>create-position" class="btn btn-success btn-sm"><i class="fa-regular fa-square-plus"></i> Cadastrar</a>
+            <?php
+                if (in_array('CreatePosition', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}create-position' class='btn btn-success btn-sm'><i class='fa-regular fa-square-plus'></i> Cadastrar</a> ";
+                }
+                ?>
             </span>
         </div>
 

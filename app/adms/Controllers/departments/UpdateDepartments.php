@@ -79,7 +79,7 @@ class UpdateDepartments
         $pageElements = [
             'title_head' => 'Editar Departamento',
             'menu' => 'list-departments',
-            'buttonPermission' => ['ListDepartment', 'ViewDepartment'],
+            'buttonPermission' => ['ListDepartments', 'ViewDepartment'],
         ];
         $pageLayoutService = new PageLayoutService();
         $pageLayoutService->configurePageElements($pageElements);

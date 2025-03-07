@@ -29,10 +29,17 @@ use App\adms\Helpers\CSRFHelper;
             <span>Editar</span>
 
             <span class="ms-auto d-sm-flex flex-row">
-                <a href="<?php echo $_ENV['URL_ADM']; ?>list-packages" class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-list"></i> Listar</a>
 
-                <a href="<?php echo $_ENV['URL_ADM'] . 'view-package/' . ($this->data['form']['id'] ?? ''); ?>" class="btn btn-primary btn-sm me-1 mb-1"><i class="fa-regular fa-eye"></i> Visualizar</a>
+            <?php
+                if (in_array('ListPackages', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}list-packages' class='btn btn-info btn-sm me-1 mb-1'><i class='fa-solid fa-list'></i> Listar</a> ";
+                }
 
+                $id = ($this->data['form']['id'] ?? '');
+                if (in_array('ViewPackage', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}view-package/$id' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Visualizar</a> ";
+                }
+                ?>
             </span>
 
         </div>

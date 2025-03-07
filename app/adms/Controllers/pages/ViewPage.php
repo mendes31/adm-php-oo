@@ -2,6 +2,7 @@
 
 namespace App\adms\Controllers\pages;
 
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Repository\PagesRepository;
 use App\adms\Views\Services\LoadViewService;
@@ -60,10 +61,22 @@ class ViewPage
         GenerateLog::generateLog("info", "Visualizado a página.", ['id' => (int) $id]);
 
         // Definir o título da página
-        $this->data['title_head'] = "Visualizar Página";
+        $this->data['title_head'] = " Página";
 
         // Ativar o item de menu
         $this->data['menu'] = "list-pages";
+
+        // Definir o título da página
+        // Ativar o item de menu
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Visualizar Página',
+            'menu' => 'list-pages',
+            'buttonPermission' => ['ListPages', 'UpdatePage', 'DeletePage'],
+        ];
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/pages/view", $this->data);

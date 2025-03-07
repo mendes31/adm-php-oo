@@ -36,10 +36,6 @@ use App\adms\Helpers\CSRFHelper;
                 }
                 ?>
 
-                <!-- <a href="<?php echo $_ENV['URL_ADM']; ?>list-users" class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-list"></i> Listar</a> -->
-
-                <!-- <a href="<?php echo $_ENV['URL_ADM'] . 'view-user/' . ($this->data['form']['id'] ?? ''); ?>" class="btn btn-primary btn-sm me-1 mb-1"><i class="fa-regular fa-eye"></i> Visualizar</a> -->
-
             </span>
 
         </div>

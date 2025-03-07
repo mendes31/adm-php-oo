@@ -3,6 +3,7 @@
 namespace App\adms\Controllers\users;
 
 use App\adms\Controllers\Services\PageController;
+use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\PaginationService;
 use App\adms\Models\Repository\ButtonPermissionUserRepository;
 use App\adms\Models\Repository\UsersRepository;
@@ -42,17 +43,19 @@ class ListUsers
         $listUsers = new UsersRepository();
         $this->data['users'] = $listUsers->getAllUsers((int) $page, (int) $this->limitResult);
         $this->data['pagination'] = PaginationService::generatePagination((int) $listUsers->getAmountUsers(), (int) $this->limitResult, (int) $page, 'list-users');
-
-        // Criar o título da página
-        $this->data['title_head'] =  "Listar Usuários";
-
+    
+        // Definir o título da página
         // Ativar o item de menu
-        $this->data['menu'] = "list-users";
-
-        // APRESENTAR O ITEM DE MENU
-        $button = ['CreateUser', 'ViewUser', 'UpdateUser', 'DeleteUser'];
-        $buttonPermission = new ButtonPermissionUserRepository();
-        $this->data['buttonPermission'] = $buttonPermission->buttonPermission($button);        
+        // Apresentar ou ocultar botão 
+        $pageElements = [
+            'title_head' => 'Listar Usuários',
+            'menu' => 'list-users',
+            'buttonPermission' => ['CreateUser', 'ViewUser', 'UpdateUser', 'DeleteUser'],
+        ];
+        
+        $pageLayoutService = new PageLayoutService();
+        $pageLayoutService->configurePageElements($pageElements);
+        $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/users/list", $this->data);

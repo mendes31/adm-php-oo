@@ -95,21 +95,6 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_group_page');
 
                         <?php } ?>
 
-
-                                    <!-- <a href='<?php echo "{$_ENV['URL_ADM']}view-group-page/$id"; ?>' class="btn btn-primary btn-sm me-1 mb-1"><i class="fa-regular fa-eye"></i> Visualizar</a>
-
-                                    <a href='<?php echo "{$_ENV['URL_ADM']}update-group-page/$id"; ?>' class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
-
-                                    <form id="formDelete<?php echo $id; ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-group-page" method="POST">
-
-                                        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-
-                                        <input type="hidden" name="id" id="id" value="<?php echo $id ?? ''; ?>">
-
-                                        <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo $id; ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
-
-                                    </form> -->
-
                     </tbody>
                 </table>
 

@@ -13,7 +13,7 @@ use PDO;
  * nos níveis de acesso que possui.
  * 
  * @package App\adms\Models\Repository
- * @author Cesar <cesar@celke.com.br>
+ * @author Rafael Mendes
  */
 class ButtonPermissionUserRepository extends DbConnection
 {
@@ -29,10 +29,13 @@ class ButtonPermissionUserRepository extends DbConnection
      */
     public function buttonPermission(array $button): array|bool
     {
+        // var_dump($button);
+        // return [];
+
         // Criar uma string de placeholders do mesmo tamanho do array de controllers
         $placeholders = implode(', ', array_fill(0, count($button), '?'));
 
-        // QUERY para verificar a permissão do usuário em relação às páginas
+        //QUERY para verificar a permissão do usuário em relação às páginas
         $sql = "SELECT
                     ap.controller
                 FROM 

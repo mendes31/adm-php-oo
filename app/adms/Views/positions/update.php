@@ -29,10 +29,16 @@ use App\adms\Helpers\CSRFHelper;
             <span>Editar</span>
 
             <span class="ms-auto d-sm-flex flex-row">
-                <a href="<?php echo $_ENV['URL_ADM']; ?>list-positions" class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-list"></i> Listar</a>
+            <?php
+                if (in_array('ListPositions', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}list-positions' class='btn btn-info btn-sm me-1 mb-1'><i class='fa-solid fa-list'></i> Listar</a> ";
+                }
 
-                <a href="<?php echo $_ENV['URL_ADM'] . 'view-position/' . ($this->data['form']['id'] ?? ''); ?>" class="btn btn-primary btn-sm me-1 mb-1"><i class="fa-regular fa-eye"></i> Visualizar</a>
-
+                $id = ($this->data['form']['id'] ?? '');
+                if (in_array('ViewPosition', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}view-position/$id' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Visualizar</a> ";
+                }
+                ?>
             </span>
 
         </div>

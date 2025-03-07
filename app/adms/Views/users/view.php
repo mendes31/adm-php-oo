@@ -56,16 +56,7 @@ $csrf_token_update_access_level = CSRFHelper::generateCSRFToken('form_update_acc
                             <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo ($this->data['user']['id'] ?? ''); ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
     
                         </form>
-                    <?php } ?>
-
-                <!-- <a href="<?php echo $_ENV['URL_ADM']; ?>list-users" class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-list-ul"></i> Listar</a> -->
-
-                <!-- <a href="<?php echo $_ENV['URL_ADM'] . 'update-user/' . ($this->data['user']['id'] ?? ''); ?>" class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-regular fa-pen-to-square"></i> Editar</a> -->
-
-                <!-- <a href="<?php echo $_ENV['URL_ADM'] . 'update-password-user/' . ($this->data['user']['id'] ?? ''); ?>" class="btn btn-warning btn-sm me-1 mb-1"><i class="fa-solid fa-key"></i> Editar Senha</a> -->
-
-                
-
+                    <?php } ?>            
                 </form>
 
             </span>

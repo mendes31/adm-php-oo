@@ -29,7 +29,6 @@ use App\adms\Helpers\CSRFHelper;
                     echo "<a href='{$_ENV['URL_ADM']}list-users' class='btn btn-info btn-sm me-1 mb-1'><i class='fa-solid fa-list-ul'></i> Listar</a> ";
                 }
                 ?>
-                <!-- <a href="<?php echo $_ENV['URL_ADM']; ?>list-users" class="btn btn-info btn-sm me-1 mb-1"><i class="fa-solid fa-list-ul"></i> Listar</a> -->
             </span>
         </div>
 
