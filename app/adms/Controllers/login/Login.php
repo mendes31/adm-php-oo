@@ -5,6 +5,7 @@ namespace App\adms\Controllers\login;
 use App\adms\Controllers\Services\Validation\ValidationLoginService;
 use App\adms\Controllers\Services\ValidationUserLogin;
 use App\adms\Helpers\CSRFHelper;
+use App\adms\Models\Repository\LogsRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**
@@ -74,6 +75,17 @@ class Login
         $result = $validationUserLogin->validationUserLogin($this->data['form']);
 
         if($result){
+
+            $dataLogs = [
+                'table_name' => 'adms_users',
+                'action' => 'login',
+                'record_id' => 0,
+                'description' => 'login',
+
+            ];
+            // Instanciar a classe validar  o usuário
+            $insertLogs = new LogsRepository();
+            $insertLogs->insertLogs($dataLogs);
 
             // Redirecionar o usuário para página listar
             header("Location: {$_ENV['URL_ADM']}dashboard");
