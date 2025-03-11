@@ -28,18 +28,70 @@ class LoadPageAdm
     private array $listPgPublic = ["Login", "Error403", "NewUser", "ForgotPassword", "ResetPassword"];
 
     /** @var array $listPgPrivate Recebe a lista de paginas privadas */
-    private array $listPgPrivate = ["Dashboard", 
-    "ListUsers", "ViewUser", "CreateUser", "UpdateUser", "DeleteUser", "UpdatePasswordUser", 
-    "Logout", 
-    "ListAccessLevels", "CreateAccessLevel", "ViewAccessLevel", "UpdateAccessLevel", "DeleteAccessLevel",
-     "ListDepartments", "CreateDepartment", "ViewDepartment", "UpdateDepartments", "DeleteDepartment", "UpdateUserAccessLevels", "AccessLevelPageSync",
-     "ListPackages", "CreatePackage", "ViewPackage", "UpdatePackage", "DeletePackage", 
-     "ListGroupsPages", "ViewGroupPage", "CreateGroupPage", "UpdateGroupPage", "DeleteGroupPage", 
-     "ListPages", "ViewPage", "CreatePage", "UpdatePage", "DeletePage", 
-     "ListPositions", "CreatePosition", "ViewPosition", "UpdatePosition", "DeletePosition", "ListAccessLevelsPermissions"];
+    private array $listPgPrivate = [
+        "Dashboard",
+        "ListUsers",
+        "ViewUser",
+        "CreateUser",
+        "UpdateUser",
+        "DeleteUser",
+        "UpdatePasswordUser",
+        "Logout",
+        "ListAccessLevels",
+        "CreateAccessLevel",
+        "ViewAccessLevel",
+        "UpdateAccessLevel",
+        "DeleteAccessLevel",
+        "ListDepartments",
+        "CreateDepartment",
+        "ViewDepartment",
+        "UpdateDepartments",
+        "DeleteDepartment",
+        "UpdateUserAccessLevels",
+        "AccessLevelPageSync",
+        "ListPackages",
+        "CreatePackage",
+        "ViewPackage",
+        "UpdatePackage",
+        "DeletePackage",
+        "ListGroupsPages",
+        "ViewGroupPage",
+        "CreateGroupPage",
+        "UpdateGroupPage",
+        "DeleteGroupPage",
+        "ListPages",
+        "ViewPage",
+        "CreatePage",
+        "UpdatePage",
+        "DeletePage",
+        "ListPositions",
+        "CreatePosition",
+        "ViewPosition",
+        "UpdatePosition",
+        "DeletePosition",
+        "ListAccessLevelsPermissions",
+        "ListBanks",
+        "CreateBank",
+        "ViewBank",
+        "UpdateBank",
+        "DeleteBank"
+    ];
 
     /** @var array $listDirectory Recebe a lista de diretórios com as controllers */
-    private array $listDirectory = ["login", "dashboard", "users", "errors", "accessLevels", "departments", "packages", "groupsPages", "pages", "positions", "permission"];
+    private array $listDirectory = [
+        "login",
+        "dashboard",
+        "users",
+        "errors",
+        "accessLevels",
+        "departments",
+        "packages",
+        "groupsPages",
+        "pages",
+        "positions",
+        "permission",
+        "banks"
+    ];
 
     /** @var array $listPackages Recebe a lista de pacotes com as controllers */
     private array $listPackages = ["adms"];
@@ -67,13 +119,12 @@ class LoadPageAdm
             GenerateLog::generateLog("error", "Pagina não encontrada.", ['pagina' => $this->urlController, 'parametro' => $this->urlParameter]);
 
             // die("Erro 002: Por favor tente novamente. Caso o problema persista, entre em contato com o adminstrador {$_ENV['EMAIL_ADM']}");
-            
+
             // Criar a mensagem de erro
             $_SESSION['error'] = "Necessário estar logado para acessar pagina restrita.";
 
             // Redirecionar o usuário para a pagina de login
             header("Location: {$_ENV['URL_ADM']}login");
-
         }
 
         // Verificar se a classe/controller existe
@@ -102,24 +153,24 @@ class LoadPageAdm
         }
 
         // Chamar o método para verificar se existe a pagina no array de paginas privadas
-        if($this->checkPagePrivateExists()){
+        if ($this->checkPagePrivateExists()) {
             return true;
         }
-       
+
 
         return false;
     }
 
-    private function checkPagePrivateExists(): bool 
+    private function checkPagePrivateExists(): bool
     {
 
-         // Verificar se existe a pagina no array de paginas privadas
-         if (!in_array($this->urlController, $this->listPgPrivate)) {
+        // Verificar se existe a pagina no array de paginas privadas
+        if (!in_array($this->urlController, $this->listPgPrivate)) {
             return false;
         }
 
         // Verificar se o usuário está logado
-        if((!isset($_SESSION['user_id'])) and (!isset($_SESSION['user_name'])) and (!isset($_SESSION['user_email'])) and (!isset($_SESSION['user_email']))){
+        if ((!isset($_SESSION['user_id'])) and (!isset($_SESSION['user_name'])) and (!isset($_SESSION['user_email'])) and (!isset($_SESSION['user_email']))) {
             return false;
         }
         return true;
@@ -175,8 +226,8 @@ class LoadPageAdm
         $classLoad = new $this->classLoad();
 
         if (method_exists($classLoad, "index")) {
-            
-            
+
+
             // Chamar o método para salvar log
             GenerateLog::generateLog("info", "Pagina acessada.", ['pagina' => $this->urlController, 'parametro' => $this->urlParameter]);
 

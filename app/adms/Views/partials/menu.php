@@ -74,7 +74,17 @@
                     
                     echo "</a>";
                 }
+
+                if(in_array('ListBanks', $this->data['menuPermission'])){
+                    $active = (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-banks')) ? 'active' : '';
+                    echo "<a href='{$_ENV['URL_ADM']}list-banks' class='nav-link $active'>";
+                    
+                    echo "<div class='sb-nav-link-icon'><i class='fa-solid fa-piggy-bank'></i></div>Bancos";
+                    
+                    echo "</a>";
+                }
                 ?>
+
 
                 <!-- <a class="nav-link <?php echo (($this->data['menu'] ?? false) and ($this->data['menu'] == 'dashboard')) ? 'active' : '' ?>" href="<?php echo $_ENV['URL_ADM']; ?>dashboard">
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>

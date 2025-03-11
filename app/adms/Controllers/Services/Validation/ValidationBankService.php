@@ -5,20 +5,20 @@ namespace App\adms\Controllers\Services\Validation;
 use Rakit\Validation\Validator;
 
 /**
- * Classe ValidationDepartmentService
+ * Classe ValidationPositionService
  * 
- * Esta classe é responsável por validar os dados de um formulário de departamento, aplicando regras de validação para criação e edição de departamentos.
+ * Esta classe é responsável por validar os dados de um formulário de cargo, aplicando regras de validação para criação e edição de cargos.
  * Ela utiliza o pacote `Rakit\Validation` para realizar as validações e inclui uma regra personalizada de unicidade em múltiplas colunas.
  * 
  * @package App\adms\Controllers\Services\Validation
  * @author Rafael Mendes 
  */
-class ValidationDepartmentService
+class ValidationBankService
 {
     /**
      * Validar os dados do formulário.
      * 
-     * Este método valida os dados fornecidos no formulário de departamento, aplicando diferentes regras dependendo se é uma criação ou edição de departamentos.
+     * Este método valida os dados fornecidos no formulário de cargo, aplicando diferentes regras dependendo se é uma criação ou edição de cargos.
      * 
      * @param array $data Dados do formulário.
      * @return array Lista de erros. Se não houver erros, o array será vazio.
@@ -39,19 +39,19 @@ class ValidationDepartmentService
 
         // Se o ID estiver ausente, é uma criação (cadastrar)
         if (!isset($data['id'])) {
-            $rules['name'] = 'required|uniqueInColumns:adms_departments,name';
+            $rules['bank_name'] = 'required|uniqueInColumns:adms_bank_accounts,bank_name';
         } else {
-            // Para edição, adicionar validação de id e ignorar o próprio departamento
+            // Para edição, adicionar validação de id e ignorar o próprio cargo
             $rules['id'] = 'required|integer';
-            $rules['name'] = 'required|uniqueInColumns:adms_departments,name,' . $data['id'];
+            $rules['bank_name'] = 'required|uniqueInColumns:adms_bank_accounts,bank_name,' . $data['id'];
         }
 
         // Definir as mensagens de erro personalizadas
         $messages = [
             'id:required' => 'Dados inválidos.',
             'id:integer' => 'Dados inválidos.',
-            'name:required' => 'O campo nome é obrigatório.',
-            'name:uniqueInColumns' => 'Já existe um departamento cadastrado com este nome.',
+            'bank_name:required' => 'O campo nome é obrigatório.',
+            'bank_name:uniqueInColumns' => 'Já existe um banco cadastrado com este nome.',
         ];
 
         // Criar o validador com os dados e regras fornecidos
