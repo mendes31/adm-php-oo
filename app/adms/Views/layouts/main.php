@@ -15,11 +15,19 @@
 
     <script src="https://use.fontawesome.com/releases/v6.6.0/js/all.js" crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" type="text/css" href="<?php echo $_ENV['URL_ADM'] ?>public/adms/DataTables/datatables.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/> -->
+
+    <script type="text/javascript" src="<?php echo $_ENV['URL_ADM'] ?>public/adms/DataTables/datatables.min.js"></script>
+	<!-- <script type="text/javascript" src="DataTables/datatables.min.js"></script> -->
+
     <title>
         <?php
         echo $_ENV['APP_NAME'] . " - " . ($this->data['title_head'] ?? "");
         ?>
     </title>
+
+
 </head>
 
 <body class="sb-nav-fixed">
@@ -64,6 +72,8 @@
     <script src="<?php echo $_ENV['URL_ADM'] ?>public/adms/js/sbadmin.js"></script>
     
     <script src="<?php echo $_ENV['URL_ADM'] ?>public/adms/js/script_admin.js"></script>
+
+    
 
 </body>
 

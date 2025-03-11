@@ -76,6 +76,7 @@ class Login
 
         if($result){
 
+            if($_ENV['APP_LOGS'] == 'Sim'){
             $dataLogs = [
                 'table_name' => 'adms_users',
                 'action' => 'login',
@@ -86,6 +87,7 @@ class Login
             // Instanciar a classe validar  o usuário
             $insertLogs = new LogsRepository();
             $insertLogs->insertLogs($dataLogs);
+            }
 
             // Redirecionar o usuário para página listar
             header("Location: {$_ENV['URL_ADM']}dashboard");

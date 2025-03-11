@@ -7,6 +7,7 @@ use App\adms\Controllers\Services\Validation\ValidationAccessLevelService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Repository\AccessLevelsRepository;
+use App\adms\Models\Repository\LogsRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**
@@ -117,6 +118,22 @@ class UpdateAccessLevel
 
         // Verificar o resultado da atualização
         if ($result) {
+
+            // gravar logs na tabela adms-logs
+            if ($_ENV['APP_LOGS'] == 'Sim') {
+                $dataLogs = [
+                    'table_name' => 'adms_access_levels',
+                    'action' => 'edição',
+                    'record_id' => $result,
+                    'description' => $this->data['form']['name'],
+    
+                ];
+                // Instanciar a classe validar  o usuário
+                $insertLogs = new LogsRepository();
+                $insertLogs->insertLogs($dataLogs);
+            }
+
+
             $_SESSION['success'] = "Nível de acesso editado com sucesso!";
             header("Location: {$_ENV['URL_ADM']}view-access-level/{$this->data['form']['id']}");
         } else {

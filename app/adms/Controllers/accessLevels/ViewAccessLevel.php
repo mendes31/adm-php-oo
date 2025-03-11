@@ -5,6 +5,7 @@ namespace App\adms\Controllers\accessLevels;
 use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Repository\AccessLevelsRepository;
+use App\adms\Models\Repository\LogsRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**
@@ -71,6 +72,20 @@ class ViewAccessLevel
         $pageLayoutService = new PageLayoutService(); 
         // Combinar os valores do atributos 'data' com o array dos elementos da página
         $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
+
+        // gravar logs na tabela adms-logs
+        if ($_ENV['APP_LOGS'] == 'Sim') {
+            $dataLogs = [
+                'table_name' => 'adms_access_levels',
+                'action' => 'visualização',
+                'record_id' => $this->data['accessLevel']['id'],
+                'description' => $this->data['accessLevel']['name'],
+
+            ];
+            // Instanciar a classe validar  o usuário
+            $insertLogs = new LogsRepository();
+            $insertLogs->insertLogs($dataLogs);
+        }
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/accessLevels/view", $this->data);

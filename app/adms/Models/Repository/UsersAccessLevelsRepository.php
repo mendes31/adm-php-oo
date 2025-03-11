@@ -79,7 +79,9 @@ class UsersAccessLevelsRepository extends DbConnection
         // Criar o elemento userAccesLevels no array quando não vem nível de acesso do formulário
         $userAccessLevelsArray = $data['userAccessLevelsArray'] ?? [];
 
+
         // var_dump($data);
+        // var_dump($data['userAccessLevelsArray']);
         // var_dump($userAccessLevelsArray);
 
         try {
@@ -101,6 +103,7 @@ class UsersAccessLevelsRepository extends DbConnection
                 // Se o usuário já tem o nível de acesso liberado, remove do array
                 if (in_array($userAccessLevel, $userAccessLevelsArrayDB)) {
                     $userAccessLevelsArrayDB = array_diff($userAccessLevelsArrayDB, [$userAccessLevel]);
+                    // var_dump($userAccessLevelsArrayDB);
                 } else {
                     // Cadastrar o nível de acesso
 

@@ -5,6 +5,7 @@ namespace App\adms\Controllers\accessLevels;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Repository\AccessLevelsRepository;
+use App\adms\Models\Repository\LogsRepository;
 
 /**
  * Controller para exclusão de nível de acesso
@@ -34,7 +35,7 @@ class DeleteAccessLevel
     {
         // Receber os dados do formulário
         $this->data['form'] = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-        
+                
         // Verificar a validade do token CSRF e a existência do ID do nível de acesso
         if (!isset($this->data['form']['csrf_token']) 
             || !CSRFHelper::validateCSRFToken('form_delete_access_level', $this->data['form']['csrf_token']) 
@@ -70,6 +71,21 @@ class DeleteAccessLevel
 
         // Verificar se a exclusão foi bem-sucedida
         if ($result) {
+
+            // gravar logs na tabela adms-logs
+            if ($_ENV['APP_LOGS'] == 'Sim') {
+                $dataLogs = [
+                    'table_name' => 'adms_access_levels',
+                    'action' => 'exclusão',
+                    'record_id' => $result,
+                    'description' => $this->data['form']['name'],
+    
+                ];
+                // Instanciar a classe validar  o usuário
+                $insertLogs = new LogsRepository();
+                $insertLogs->insertLogs($dataLogs);
+            }
+            
             // Criar a mensagem de sucesso
             $_SESSION['success'] = "Nível de acesso apagado com sucesso!";
         } else {

@@ -128,8 +128,7 @@ class AccessLevelsRepository extends DbConnection
             // Retornar o ID do nivel recém cadastrado
             return $this->getConnection()->lastInsertId();
 
-            //   $sql = 'INSERT INTO adms_access_levels (date, time, table_name, action, user_id, record_id, description) VALUES (date, time, table_name, action, user_id, record_id, description)';
-
+            
         } catch (Exception $e) {
             // Gerar log de erro
             GenerateLog::generateLog("error", "Nível de acesso não cadastrado.", ['name' => $data['name'], 'error' => $e->getMessage()]);

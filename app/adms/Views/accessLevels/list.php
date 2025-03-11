@@ -46,6 +46,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_access_level');
             <?php // Inclui o arquivo que exibe mensagens de sucesso e erro
             include './app/adms/Views/partials/alerts.php';
 
+
             // Verifica se há níveis de acesso no array
             if ($this->data['accessLevels'] ?? false) {
             ?>
@@ -94,6 +95,8 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_access_level');
 
                                             <input type="hidden" name="id" id="id" value="<?php echo $id ?? ''; ?>">
 
+                                            <input type="hidden" name="name" id="name" value="<?php echo $name ?? ''; ?>">
+
                                             <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo $id; ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
 
                                         </form>
@@ -107,7 +110,6 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_access_level');
                     </tbody>
                 </table>
 
-
             <?php
                 // Inclui o arquivo de paginação
                 include_once './app/adms/Views/partials/pagination.php';
@@ -116,6 +118,51 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_access_level');
             } ?>
 
         </div>
+        <!-- <div class="bs-example widget-shadow" data-example-id="bordered-table">
+            
+            <table class="table table-hover" id="tabela">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> -->
 
     </div>
 </div>
+
+<!-- <script type="text/javascript">
+    
+    $(document).ready( function () {
+	    $('#tabela').DataTable({
+	    	"ordering": false,
+	    	"stateSave": true,
+	    });
+	    $('#tabela_filter label input').focus();
+	} );
+
+</script> -->

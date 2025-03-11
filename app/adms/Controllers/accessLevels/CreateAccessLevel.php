@@ -7,6 +7,7 @@ use App\adms\Controllers\Services\Validation\ValidationAccessLevelService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Models\Repository\AccessLevelsRepository;
 use App\adms\Models\Repository\ButtonPermissionUserRepository;
+use App\adms\Models\Repository\LogsRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**
@@ -98,9 +99,25 @@ class CreateAccessLevel
         // Instanciar o Repository para criar o nível de acesso
         $accessLevelCreate = new AccessLevelsRepository();
         $result = $accessLevelCreate->createAccessLevel($this->data['form']);
+        
 
         // Se a criação do nível de acesso for bem-sucedida
         if ($result) {
+
+            // gravar logs na tabela adms-logs
+            if ($_ENV['APP_LOGS'] == 'Sim') {
+                $dataLogs = [
+                    'table_name' => 'adms_access_levels',
+                    'action' => 'inserção',
+                    'record_id' => $result,
+                    'description' => $this->data['form']['name'],
+    
+                ];
+                // Instanciar a classe validar  o usuário
+                $insertLogs = new LogsRepository();
+                $insertLogs->insertLogs($dataLogs);
+            }
+
             // Mensagem de sucesso
             $_SESSION['success'] = "Nível de acesso cadastrado com sucesso!";
 

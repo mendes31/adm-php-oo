@@ -208,16 +208,20 @@ $csrf_token_update_access_level = CSRFHelper::generateCSRFToken('form_update_acc
                         foreach ($this->data['userAllAccessLevelsArray'] as $userAllAccessLevelsArray) {
                             // Extrai variáveis do array de usuário
                             extract($userAllAccessLevelsArray);
+                            // var_dump($userAllAccessLevelsArray);
+                          
 
                             // Verifica se o nível de acesso atual ($id) está no array de níveis de acesso do usuário
                             $userAccessLevels = $this->data['userAccessLevelsArray'] ? $this->data['userAccessLevelsArray'] : [];
                             $checked = in_array($id, $userAccessLevels) ? 'checked' : '';
+
 
                             echo "<div class='form-check form-switch'>";
 
                             echo "<input type='checkbox' name='userAccessLevelsArray[$id]' class='form-check-input' role='switch' id='userAccessLevelsArray$id' value='$id' $checked>";
 
                             echo "<label class='form-check-label' for='userAccessLevelsArray$id'>$name</label>";
+                            
                             echo "</div>";
                         } ?>
 
