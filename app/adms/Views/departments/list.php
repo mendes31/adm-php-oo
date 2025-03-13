@@ -3,7 +3,7 @@
 use App\adms\Helpers\CSRFHelper;
 
 // Gera o token CSRF para proteger o formulário de deleção
-$csrf_token = CSRFHelper::generateCSRFToken('form_delete_departments');
+$csrf_token = CSRFHelper::generateCSRFToken('form_delete_department');
 
 ?>
 
@@ -42,7 +42,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_departments');
             <?php // Inclui o arquivo que exibe mensagens de sucesso e erro
             include './app/adms/Views/partials/alerts.php';
 
-            // Verifica se há departamento no array
+            // Verifica se há centro de custo no array
             if ($this->data['departments'] ?? false) {
             ?>
 
@@ -58,11 +58,11 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_departments');
                     <tbody>
 
                         <?php
-                        // Percorre o array de Departamento
-                        foreach ($this->data['departments'] as $department) {
+                        // Percorre o array de centros de custo
+                        foreach ($this->data['departments'] as $departament) {
 
-                            // Extrai variáveis do array de departamentos
-                            extract($department); ?>
+                            // Extrai variáveis do array de centro de custo
+                            extract($departament); ?>
                             <tr>
                             <td><?php echo $id; ?></td>
                                 <td><?php echo $name; ?></td>
@@ -70,7 +70,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_departments');
 
                                     <?php
                                     if (in_array('ViewDepartment', $this->data['buttonPermission'])) {
-                                        echo "<a href='{$_ENV['URL_ADM']}view-department/$id' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Visualizar</a>";
+                                        echo "<a href='{$_ENV['URL_ADM']}view-departments/$id' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Visualizar</a>";
                                     }
 
                                     if (in_array('UpdateDepartments', $this->data['buttonPermission'])) {
@@ -85,6 +85,8 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_departments');
                                             <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
 
                                             <input type="hidden" name="id" id="id" value="<?php echo $id ?? ''; ?>">
+
+                                            <input type="hidden" name="name" id="name" value="<?php echo $name ?? ''; ?>">
 
                                             <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo $id; ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
 

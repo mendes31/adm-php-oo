@@ -74,7 +74,12 @@ class LoadPageAdm
         "CreateBank",
         "ViewBank",
         "UpdateBank",
-        "DeleteBank"
+        "DeleteBank",
+        "ListCostCenters",
+        "CreateCostCenter",
+        "ViewCostCenter",
+        "UpdateCostCenter",
+        "DeleteCostCenter"
     ];
 
     /** @var array $listDirectory Recebe a lista de diretórios com as controllers */
@@ -93,6 +98,7 @@ class LoadPageAdm
         "banks",
         "pay",
         "receive",
+        "costCenter",
     ];
 
     /** @var array $listPackages Recebe a lista de pacotes com as controllers */

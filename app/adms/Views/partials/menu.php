@@ -38,6 +38,15 @@
                     
                     echo "</a>";
                 }
+                
+                if(in_array('ListCostCenters', $this->data['menuPermission'])){
+                    $active = (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-cost-centers')) ? 'active' : '';
+                    echo "<a href='{$_ENV['URL_ADM']}list-cost-centers' class='nav-link $active'>";
+                    
+                    echo "<div class='sb-nav-link-icon'><i class='fa-solid fa-coins'></i></div>Centros de Custo";
+                    
+                    echo "</a>";
+                }
 
                 if(in_array('ListAccessLevels', $this->data['menuPermission'])){
                     $active = (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-access-levels')) ? 'active' : '';
@@ -74,6 +83,7 @@
                     
                     echo "</a>";
                 }
+
 
                 if(in_array('ListBanks', $this->data['menuPermission'])){
                     $active = (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-banks')) ? 'active' : '';
@@ -119,6 +129,7 @@
                     
                     echo "</a>";
                 }
+
                 ?>
 
 

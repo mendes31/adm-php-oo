@@ -5,7 +5,6 @@ namespace App\adms\Controllers\departments;
 use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\PaginationService;
 use App\adms\Models\Repository\DepartmentsRepository;
-use App\adms\Models\Repository\MenuPermissionUserRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**

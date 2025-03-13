@@ -25,7 +25,7 @@ class ListAccessLevels
     private array|string|null $data = null;
 
     /** @var int $limitResult Limite de registros por página */
-    private int $limitResult = 10; // Ajuste conforme necessário
+    private int $limitResult = 1000; // Ajuste conforme necessário
 
     /**
      * Recuperar e listar níveis de acesso com paginação.

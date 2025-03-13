@@ -102,6 +102,9 @@ class CreatePay
         $payCreate = new PaymentsRepository();
         $result = $payCreate->createPay($this->data['form']);
 
+        var_dump($this->data['form']);
+        exit;
+
         // Se a criação do Conta à Pagar for bem-sucedida
         if ($result) {
 

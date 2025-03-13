@@ -26,9 +26,9 @@ final class AdmsPay extends AbstractMigration
             $table = $this->table('adms_pay');
 
             // Define as colunas da tabela
-            $table->addColumn('description', 'string', ['limit' => 255, 'null' => false])   //descrição da conta
+            $table->addColumn('description', 'string', ['limit' => 255, 'null' => true])    //descrição da conta
                 ->addColumn('num_doc', 'string', ['limit' => 50, 'null' => false])          //numero do documento (NF, boleto etc)
-                ->addColumn('file', 'string', ['limit' => 255, 'null' => false])            //caminho para o arquivo
+                ->addColumn('file', 'string', ['limit' => 255, 'null' => true])            //caminho para o arquivo
                 ->addColumn('paid', 'boolean', ['default' => false, 'null' => false])       //pago (inicia com Não e só altera quando encerraro o pagamento)
 
                 ->addColumn('partner_id', 'integer', ['null' => false])         //id parceiro de negócio

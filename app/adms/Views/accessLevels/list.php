@@ -51,7 +51,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_access_level');
             if ($this->data['accessLevels'] ?? false) {
             ?>
 
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover" id="tabela">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
@@ -118,47 +118,12 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_access_level');
             } ?>
 
         </div>
-        <div class="bs-example widget-shadow" data-example-id="bordered-table">
-            
-            <table class="table table-hover" id="tabela">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Username</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
 
     </div>
 </div>
 
 <script type="text/javascript">
-    
-    $(document).ready( function () {
-	    $('#tabela').DataTable();
-	} );
-
+    $(document).ready(function() {
+        $('#tabela').DataTable();
+    });
 </script>

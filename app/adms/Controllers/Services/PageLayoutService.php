@@ -24,7 +24,8 @@ class PageLayoutService
             'ListPayments',
             'ListReceive',
             'ListBalance',
-            'FinancialReport'
+            'FinancialReport',
+            'ListCostCenters'
         ];
 
         // Verificar se o usuário tem o nível de acesso Super Administrador.

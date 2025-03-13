@@ -4,12 +4,11 @@ namespace App\adms\Controllers\pay;
 
 use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\PaginationService;
-use App\adms\Models\Repository\BanksRepository;
 use App\adms\Models\Repository\PaymentsRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**
- * Controller para listar Bancos
+ * Controller para listar Contas à pagar
  *
  * Esta classe é responsável por recuperar e exibir uma lista de Bancos no sistema. Utiliza um repositório
  * para obter dados dos Bancos e um serviço de paginação para gerenciar a navegação entre páginas de resultados.
@@ -27,9 +26,9 @@ class ListPayments
     private int $limitResult = 10; // Ajuste conforme necessário
 
     /**
-     * Recuperar e listar Bancos com paginação.
+     * Recuperar e listarContas à pagar com paginação.
      * 
-     * Este método recupera os Bancos a partir do repositório de Bancos com base na página atual e no limite
+     * Este método recupera os Bancos a partir do repositório de Contas à pagar com base na página atual e no limite
      * de registros por página. Gera os dados de paginação e carrega a visualização para exibir a lista de Bancos.
      * 
      * @param string|int $page Página atual para a exibição dos resultados. O padrão é 1.
@@ -42,7 +41,7 @@ class ListPayments
         $listPayments = new PaymentsRepository();
 
         // Recuperar os Bancos para a página atual
-        $this->data['pay'] = $listPayments->getAllPayments((int) $page, (int) $this->limitResult);
+        $this->data['payments'] = $listPayments->getAllPayments((int) $page, (int) $this->limitResult);
 
         // Gerar dados de paginação
         $this->data['pagination'] = PaginationService::generatePagination(
@@ -56,9 +55,9 @@ class ListPayments
         // Ativar o item de menu
         // Apresentar ou ocultar botão 
         $pageElements = [
-            'title_head' => 'Listar Bancos',
-            'menu' => 'list-banks',
-            'buttonPermission' => ['CreateBank', 'ViewBank', 'UpdateBank', 'DeleteBank'],
+            'title_head' => 'Listar Contas à pagar',
+            'menu' => 'list-payments',
+            'buttonPermission' => ['CreatePay', 'ViewPay', 'UpdatePay', 'DeletePay'],
         ];
         $pageLayoutService = new PageLayoutService();
         $pageLayoutService->configurePageElements($pageElements);
@@ -70,7 +69,7 @@ class ListPayments
         // $this->data['menuPermission'] = $menuPermission->menuPermission($menu);
 
         // Carregar a VIEW com os dados
-        $loadView = new LoadViewService("adms/Views/banks/list", $this->data);
+        $loadView = new LoadViewService("adms/Views/pay/list", $this->data);
         $loadView->loadView();
     }
 }
