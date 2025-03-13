@@ -25,7 +25,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
             </span>
 
             <span class="ms-auto">
-            <?php
+                <?php
                 if (in_array('CreateUser', $this->data['buttonPermission'])) {
                     echo "<a href='{$_ENV['URL_ADM']}create-user' class='btn btn-success btn-sm'><i class='fa-regular fa-square-plus'></i> Cadastrar</a> ";
                 }
@@ -71,7 +71,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
                                 <td class="d-none d-md-table-cell"><?php echo $name_dep ?></td>
                                 <td class="d-none d-md-table-cell"><?php echo $name_pos ?></td>
                                 <td class="text-center">
-                                <!-- <td class="d-md-flex flex-row justify-content-center"> -->
+                                    <!-- <td class="d-md-flex flex-row justify-content-center"> -->
 
                                     <?php
                                     if (in_array('ViewUser', $this->data['buttonPermission'])) {
@@ -95,8 +95,8 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
                                         </form>
                                     <?php } ?>
 
-            
-                                    
+
+
 
                                 </td>
                             </tr>

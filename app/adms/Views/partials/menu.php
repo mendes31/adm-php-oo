@@ -83,6 +83,42 @@
                     
                     echo "</a>";
                 }
+
+                if(in_array('ListPayments', $this->data['menuPermission'])){
+                    $active = (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-payments')) ? 'active' : '';
+                    echo "<a href='{$_ENV['URL_ADM']}list-payments' class='nav-link $active'>";
+                    
+                    echo "<div class='sb-nav-link-icon'><i class='fa-solid fa-money-bill-trend-up'></i></div>Contas à Pagar";
+                    
+                    echo "</a>";
+                }
+
+                if(in_array('ListReceive', $this->data['menuPermission'])){
+                    $active = (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-receive')) ? 'active' : '';
+                    echo "<a href='{$_ENV['URL_ADM']}list-receive' class='nav-link $active'>";
+                    
+                    echo "<div class='sb-nav-link-icon'><i class='fa-solid fa-comments-dollar'></i></div>Contas à Receber";
+                    
+                    echo "</a>";
+                }
+
+                if(in_array('ListBalance', $this->data['menuPermission'])){
+                    $active = (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-balance')) ? 'active' : '';
+                    echo "<a href='{$_ENV['URL_ADM']}list-balance' class='nav-link $active'>";
+                    
+                    echo "<div class='sb-nav-link-icon'><i class='fa-solid fa-sack-dollar'></i></div>Extrato Caixa";
+                    
+                    echo "</a>";
+                }
+
+                if(in_array('FinancialReport', $this->data['menuPermission'])){
+                    $active = (($this->data['menu'] ?? false) and ($this->data['menu'] == 'financial-report')) ? 'active' : '';
+                    echo "<a href='{$_ENV['URL_ADM']}financial-report' class='nav-link $active'>";
+                    
+                    echo "<div class='sb-nav-link-icon'><i class='fa-solid fa-coins'></i></div>Relatório Financeiro";
+                    
+                    echo "</a>";
+                }
                 ?>
 
 

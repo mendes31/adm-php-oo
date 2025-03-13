@@ -154,6 +154,43 @@ class AddAdmsGroupsPages extends AbstractSeed
             ];
         }
 
+        // Verifica se o grupo de página com o name especificado já existe
+        $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Bancos'])->fetch();
+
+        // Se o usuário não existir, adiciona seus dados ao array $data
+        if (!$existingRecord) {
+            $data[] = [
+                'name' => 'Bancos',
+                'obs' => '',
+                'created_at' => date("Y-m-d H:i:s"),
+            ];
+        }
+
+        // Verifica se o grupo de página com o name especificado já existe
+        $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Pagar'])->fetch();
+
+        // Se o usuário não existir, adiciona seus dados ao array $data
+        if (!$existingRecord) {
+            $data[] = [
+                'name' => 'Pagar',
+                'obs' => '',
+                'created_at' => date("Y-m-d H:i:s"),
+            ];
+        }
+
+        // Verifica se o grupo de página com o name especificado já existe
+        $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Receber'])->fetch();
+
+        // Se o usuário não existir, adiciona seus dados ao array $data
+        if (!$existingRecord) {
+            $data[] = [
+                'name' => 'Receber',
+                'obs' => '',
+                'created_at' => date("Y-m-d H:i:s"),
+            ];
+        }
+
+
         // Obtém a tabela 'adms_groups_pages' para inserir os registros
         $adms_groups_pages = $this->table('adms_groups_pages');
 

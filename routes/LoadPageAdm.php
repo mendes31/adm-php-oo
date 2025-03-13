@@ -90,7 +90,9 @@ class LoadPageAdm
         "pages",
         "positions",
         "permission",
-        "banks"
+        "banks",
+        "pay",
+        "receive",
     ];
 
     /** @var array $listPackages Recebe a lista de pacotes com as controllers */

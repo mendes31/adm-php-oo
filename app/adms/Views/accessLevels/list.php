@@ -118,7 +118,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_access_level');
             } ?>
 
         </div>
-        <!-- <div class="bs-example widget-shadow" data-example-id="bordered-table">
+        <div class="bs-example widget-shadow" data-example-id="bordered-table">
             
             <table class="table table-hover" id="tabela">
                 <thead>
@@ -150,19 +150,15 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_access_level');
                     </tr>
                 </tbody>
             </table>
-        </div> -->
+        </div>
 
     </div>
 </div>
 
-<!-- <script type="text/javascript">
+<script type="text/javascript">
     
     $(document).ready( function () {
-	    $('#tabela').DataTable({
-	    	"ordering": false,
-	    	"stateSave": true,
-	    });
-	    $('#tabela_filter label input').focus();
+	    $('#tabela').DataTable();
 	} );
 
-</script> -->
+</script>

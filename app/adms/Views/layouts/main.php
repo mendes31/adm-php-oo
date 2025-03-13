@@ -13,13 +13,10 @@
 
     <link rel="stylesheet" href="<?php echo $_ENV['URL_ADM'] ?>public/adms/css/styles_admin.css">
 
+    <link rel="stylesheet" href="<?php echo $_ENV['URL_ADM'] ?>public/adms/DataTables/datatables.min.css">
+
     <script src="https://use.fontawesome.com/releases/v6.6.0/js/all.js" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" type="text/css" href="<?php echo $_ENV['URL_ADM'] ?>public/adms/DataTables/datatables.min.css">
-    <!-- <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/> -->
-
-    <script type="text/javascript" src="<?php echo $_ENV['URL_ADM'] ?>public/adms/DataTables/datatables.min.js"></script>
-	<!-- <script type="text/javascript" src="DataTables/datatables.min.js"></script> -->
 
     <title>
         <?php
@@ -70,10 +67,14 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="<?php echo $_ENV['URL_ADM'] ?>public/adms/js/sbadmin.js"></script>
-    
-    <script src="<?php echo $_ENV['URL_ADM'] ?>public/adms/js/script_admin.js"></script>
 
+    <script src="<?php echo $_ENV['URL_ADM'] ?>public/adms/js/script_admin.js"></script>
     
+    <script src="<?php echo $_ENV['URL_ADM'] ?>public/adms/DataTables/datatables.min.js"></script>
+
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js"></script>
+
+
 
 </body>
 
