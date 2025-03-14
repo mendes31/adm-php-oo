@@ -5,7 +5,6 @@ namespace App\adms\Controllers\costCenter;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Repository\CostCentersRepository;
-use App\adms\Models\Repository\DepartmentsRepository;
 
 /**
  * Controller para exclusão de centro de custo

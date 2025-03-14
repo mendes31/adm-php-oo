@@ -4,7 +4,6 @@ namespace App\adms\Controllers\pages;
 
 use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\PaginationService;
-use App\adms\Models\Repository\MenuPermissionUserRepository;
 use App\adms\Models\Repository\PagesRepository;
 use App\adms\Views\Services\LoadViewService;
 
@@ -24,7 +23,7 @@ class ListPages
     private array|string|null $data = null;
 
     /** @var int $limitResult Limite de registros por página */
-    private int $limitResult = 10; // Ajuste conforme necessário
+    private int $limitResult = 1000; // Ajuste conforme necessário
 
     /**
      * Recuperar e listar páginas com paginação.

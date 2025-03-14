@@ -3,20 +3,20 @@
 use App\adms\Helpers\CSRFHelper;
 
 // Gera o token CSRF para proteger o formulário de deleção
-$csrf_token = CSRFHelper::generateCSRFToken('form_delete_department');
+$csrf_token = CSRFHelper::generateCSRFToken('form_delete_frequency');
 
 ?>
 
 <div class="container-fluid px-4">
 
     <div class="mb-1 hstack gap-2">
-        <h2 class="mt-3">Departamentos</h2>
+        <h2 class="mt-3">Frequências</h2>
 
         <ol class="breadcrumb mb-3 mt-3 ms-auto">
             <li class="breadcrumb-item">
                 <a href="<?php echo $_ENV['URL_ADM']; ?>dashboard" class="text-decoration-none">Dashboard</a>
             </li>
-            <li class="breadcrumb-item">Departamentos</li>
+            <li class="breadcrumb-item">Frequências</li>
 
         </ol>
 
@@ -29,8 +29,8 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_department');
 
             <span class="ms-auto">
             <?php
-                if (in_array('CreateDepartment', $this->data['buttonPermission'])) {
-                    echo "<a href='{$_ENV['URL_ADM']}create-department' class='btn btn-success btn-sm'><i class='fa-regular fa-square-plus'></i> Cadastrar</a> ";
+                if (in_array('CreateFrequency', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}create-frequency' class='btn btn-success btn-sm'><i class='fa-regular fa-square-plus'></i> Cadastrar</a> ";
                 }
                 ?>
                 
@@ -42,8 +42,8 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_department');
             <?php // Inclui o arquivo que exibe mensagens de sucesso e erro
             include './app/adms/Views/partials/alerts.php';
 
-            // Verifica se há centro de custo no array
-            if ($this->data['departments'] ?? false) {
+            // Verifica se há departamento no array
+            if ($this->data['frequencies'] ?? false) {
             ?>
 
                 <table class="table table-striped table-hover">
@@ -51,6 +51,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_department');
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Nome</th>
+                            <th scope="col">Dias</th>
                             <th scope="col" class="text-center">Ações</th>
                         </tr>
                     </thead>
@@ -58,29 +59,30 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_department');
                     <tbody>
 
                         <?php
-                        // Percorre o array de centros de custo
-                        foreach ($this->data['departments'] as $departament) {
+                        // Percorre o array de Frequências
+                        foreach ($this->data['frequencies'] as $costCenter) {
 
-                            // Extrai variáveis do array de centro de custo
-                            extract($departament); ?>
+                            // Extrai variáveis do array de Frequências
+                            extract($costCenter); ?>
                             <tr>
                             <td><?php echo $id; ?></td>
                                 <td><?php echo $name; ?></td>
+                                <td><?php echo $days; ?></td>
                                 <td class="text-center">
 
                                     <?php
-                                    if (in_array('ViewDepartment', $this->data['buttonPermission'])) {
-                                        echo "<a href='{$_ENV['URL_ADM']}view-department/$id' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Visualizar</a>";
+                                    if (in_array('ViewFrequency', $this->data['buttonPermission'])) {
+                                        echo "<a href='{$_ENV['URL_ADM']}view-frequency/$id' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Visualizar</a>";
                                     }
 
-                                    if (in_array('UpdateDepartments', $this->data['buttonPermission'])) {
-                                        echo "<a href='{$_ENV['URL_ADM']}update-departments/$id' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-pen-to-square'></i> Editar</a>";
+                                    if (in_array('UpdateFrequency', $this->data['buttonPermission'])) {
+                                        echo "<a href='{$_ENV['URL_ADM']}update-frequency/$id' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-pen-to-square'></i> Editar</a>";
                                     }
 
-                                    if (in_array('DeleteDepartment', $this->data['buttonPermission'])) {
+                                    if (in_array('DeleteFrequency', $this->data['buttonPermission'])) {
                                     ?>
 
-                                        <form id="formDelete<?php echo $id; ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-department" method="POST" class="d-inline">
+                                        <form id="formDelete<?php echo $id; ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-frequency" method="POST" class="d-inline">
 
                                             <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
 

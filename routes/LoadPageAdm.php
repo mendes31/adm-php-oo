@@ -79,7 +79,27 @@ class LoadPageAdm
         "CreateCostCenter",
         "ViewCostCenter",
         "UpdateCostCenter",
-        "DeleteCostCenter"
+        "DeleteCostCenter",
+        "ListAccountsPlan",
+        "CreateAccountPlan",
+        "ViewAccountPlan",
+        "UpdateAccountPlan",
+        "DeleteAccountPlan",
+        "ListFrequncies",
+        "CreateFrequncy",
+        "ViewFrequncy",
+        "UpdateFrequncy",
+        "DeleteFrequncy",
+        "ListCustomers",
+        "CreateCustomer",
+        "ViewCustomer",
+        "UpdateCustomer",
+        "DeleteCustomer",
+        "ListSuppliers",
+        "CreateSupplier",
+        "ViewSupplier",
+        "UpdateSupplier",
+        "DeleteSupplier",
     ];
 
     /** @var array $listDirectory Recebe a lista de diretórios com as controllers */
@@ -99,6 +119,10 @@ class LoadPageAdm
         "pay",
         "receive",
         "costCenter",
+        "accountPlan",
+        "frequency",
+        "customer",
+        "supplier"
     ];
 
     /** @var array $listPackages Recebe a lista de pacotes com as controllers */

@@ -45,7 +45,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_page');
             if ($this->data['pages'] ?? false) {
             ?>
 
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover" id="tabela">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
@@ -116,3 +116,9 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_page');
 
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#tabela').DataTable();
+    });
+</script>

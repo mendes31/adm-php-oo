@@ -24,7 +24,7 @@ class AddAdmsGroupsPages extends AbstractSeed
         // Verifica se o grupo de página com o name especificado já existe
         $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Dashboard'])->fetch();
 
-        // Se o usuário não existir, adiciona seus dados ao array $data
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 1
         if (!$existingRecord) {
             $data[] = [
                 'name' => 'Dashboard',
@@ -33,10 +33,10 @@ class AddAdmsGroupsPages extends AbstractSeed
             ];
         }
 
-        // Verifica se o grupo de página com o name especificado já existe
+        // Verifica se o grupo de página com o name especificado já existe 
         $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Usuários'])->fetch();
 
-        // Se o usuário não existir, adiciona seus dados ao array $data
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 2
         if (!$existingRecord) {
             $data[] = [
                 'name' => 'Usuários',
@@ -48,7 +48,7 @@ class AddAdmsGroupsPages extends AbstractSeed
         // Verifica se o grupo de página com o name especificado já existe
         $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Nível de Acesso'])->fetch();
 
-        // Se o usuário não existir, adiciona seus dados ao array $data
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 3
         if (!$existingRecord) {
             $data[] = [
                 'name' => 'Nível de Acesso',
@@ -61,7 +61,7 @@ class AddAdmsGroupsPages extends AbstractSeed
         // Verifica se o grupo de página com o name especificado já existe
         $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Pacote de Páginas'])->fetch();
 
-        // Se o usuário não existir, adiciona seus dados ao array $data
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 4
         if (!$existingRecord) {
             $data[] = [
                 'name' => 'Pacote de Páginas',
@@ -73,7 +73,7 @@ class AddAdmsGroupsPages extends AbstractSeed
         // Verifica se o grupo de página com o name especificado já existe
         $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Grupo de Páginas'])->fetch();
 
-        // Se o usuário não existir, adiciona seus dados ao array $data
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 5
         if (!$existingRecord) {
             $data[] = [
                 'name' => 'Grupo de Páginas',
@@ -85,7 +85,7 @@ class AddAdmsGroupsPages extends AbstractSeed
         // Verifica se o grupo de página com o name especificado já existe
         $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Páginas'])->fetch();
 
-        // Se o usuário não existir, adiciona seus dados ao array $data
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 6
         if (!$existingRecord) {
             $data[] = [
                 'name' => 'Páginas',
@@ -97,7 +97,7 @@ class AddAdmsGroupsPages extends AbstractSeed
         // Verifica se o grupo de página com o name especificado já existe
         $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Login'])->fetch();
 
-        // Se o usuário não existir, adiciona seus dados ao array $data
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 7
         if (!$existingRecord) {
             $data[] = [
                 'name' => 'Login',
@@ -109,7 +109,7 @@ class AddAdmsGroupsPages extends AbstractSeed
          // Verifica se o grupo de página com o name especificado já existe
          $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Departamento'])->fetch();
 
-         // Se o usuário não existir, adiciona seus dados ao array $data
+         // Se o usuário não existir, adiciona seus dados ao array $data Nº 8
          if (!$existingRecord) {
              $data[] = [
                  'name' => 'Departamento',
@@ -121,7 +121,7 @@ class AddAdmsGroupsPages extends AbstractSeed
         // Verifica se o grupo de página com o name especificado já existe
         $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Erros'])->fetch();
 
-        // Se o usuário não existir, adiciona seus dados ao array $data
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 9
         if (!$existingRecord) {
             $data[] = [
                 'name' => 'Erros',
@@ -133,7 +133,7 @@ class AddAdmsGroupsPages extends AbstractSeed
         // Verifica se o grupo de página com o name especificado já existe
         $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Cargo'])->fetch();
 
-        // Se o usuário não existir, adiciona seus dados ao array $data
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 10
         if (!$existingRecord) {
             $data[] = [
                 'name' => 'Cargo',
@@ -145,7 +145,7 @@ class AddAdmsGroupsPages extends AbstractSeed
         // Verifica se o grupo de página com o name especificado já existe
         $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Permissões'])->fetch();
 
-        // Se o usuário não existir, adiciona seus dados ao array $data
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 11
         if (!$existingRecord) {
             $data[] = [
                 'name' => 'Permissões',
@@ -157,7 +157,7 @@ class AddAdmsGroupsPages extends AbstractSeed
         // Verifica se o grupo de página com o name especificado já existe
         $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Bancos'])->fetch();
 
-        // Se o usuário não existir, adiciona seus dados ao array $data
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 12
         if (!$existingRecord) {
             $data[] = [
                 'name' => 'Bancos',
@@ -169,7 +169,7 @@ class AddAdmsGroupsPages extends AbstractSeed
         // Verifica se o grupo de página com o name especificado já existe
         $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Pagar'])->fetch();
 
-        // Se o usuário não existir, adiciona seus dados ao array $data
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 13
         if (!$existingRecord) {
             $data[] = [
                 'name' => 'Pagar',
@@ -181,7 +181,7 @@ class AddAdmsGroupsPages extends AbstractSeed
         // Verifica se o grupo de página com o name especificado já existe
         $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Receber'])->fetch();
 
-        // Se o usuário não existir, adiciona seus dados ao array $data
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 14
         if (!$existingRecord) {
             $data[] = [
                 'name' => 'Receber',
@@ -189,6 +189,67 @@ class AddAdmsGroupsPages extends AbstractSeed
                 'created_at' => date("Y-m-d H:i:s"),
             ];
         }
+
+        // Verifica se o grupo de página com o name especificado já existe
+        $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Centros de Custo'])->fetch();
+
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 15
+        if (!$existingRecord) {
+            $data[] = [
+                'name' => 'Centros de Custo',
+                'obs' => '',
+                'created_at' => date("Y-m-d H:i:s"),
+            ];
+        }
+
+        // Verifica se o grupo de página com o name especificado já existe
+        $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Plano de Contas'])->fetch();
+
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 16
+        if (!$existingRecord) {
+            $data[] = [
+                'name' => 'Plano de Contas',
+                'obs' => '',
+                'created_at' => date("Y-m-d H:i:s"),
+            ];
+        }
+
+        // Verifica se o grupo de página com o name especificado já existe
+        $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Frequências'])->fetch();
+
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 17
+        if (!$existingRecord) {
+            $data[] = [
+                'name' => 'Frequências',
+                'obs' => '',
+                'created_at' => date("Y-m-d H:i:s"),
+            ];
+        }
+
+        // Verifica se o grupo de página com o name especificado já existe
+        $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Clientes'])->fetch();
+
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 18
+        if (!$existingRecord) {
+            $data[] = [
+                'name' => 'Clientes',
+                'obs' => '',
+                'created_at' => date("Y-m-d H:i:s"),
+            ];
+        }
+
+        // Verifica se o grupo de página com o name especificado já existe
+        $existingRecord = $this->query('SELECT id FROM adms_groups_pages WHERE name=:name', ['name' => 'Forncedores'])->fetch();
+
+        // Se o usuário não existir, adiciona seus dados ao array $data Nº 19
+        if (!$existingRecord) {
+            $data[] = [
+                'name' => 'Forncedores',
+                'obs' => '',
+                'created_at' => date("Y-m-d H:i:s"),
+            ];
+        }
+
 
 
         // Obtém a tabela 'adms_groups_pages' para inserir os registros

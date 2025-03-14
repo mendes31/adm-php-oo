@@ -10,7 +10,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_departments');
 <div class="container-fluid px-4">
 
     <div class="mb-1 d-flex flex-column flex-sm-row gap-2">
-        <h2 class="mt-3">Departamentos</h2>
+        <h2 class="mt-3">Departamento</h2>
 
         <ol class="breadcrumb mb-3 mt-0 mt-sm-3 ms-auto">
             <li class="breadcrumb-item">
