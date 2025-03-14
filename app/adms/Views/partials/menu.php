@@ -43,7 +43,7 @@
                     $active = (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-cost-centers')) ? 'active' : '';
                     echo "<a href='{$_ENV['URL_ADM']}list-cost-centers' class='nav-link $active'>";
                     
-                    echo "<div class='sb-nav-link-icon'><i class='fa-solid fa-coins'></i></div>Centros de Custo";
+                    echo "<div class='sb-nav-link-icon'><i class='fa-brands fa-uncharted'></i></div>Centros de Custo";
                     
                     echo "</a>";
                 }
@@ -84,12 +84,48 @@
                     echo "</a>";
                 }
 
+                if(in_array('ListCustomers', $this->data['menuPermission'])){
+                    $active = (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-customers')) ? 'active' : '';
+                    echo "<a href='{$_ENV['URL_ADM']}list-customers' class='nav-link $active'>";
+                    
+                    echo "<div class='sb-nav-link-icon'><i class='fa-solid fa-store'></i></div>Clientes";
+                    
+                    echo "</a>";
+                }
+
+                if(in_array('ListSuppliers', $this->data['menuPermission'])){
+                    $active = (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-suppliers')) ? 'active' : '';
+                    echo "<a href='{$_ENV['URL_ADM']}list-suppliers' class='nav-link $active'>";
+                    
+                    echo "<div class='sb-nav-link-icon'><i class='fa-solid fa-cart-shopping'></i></div>Fornecedores";
+                    
+                    echo "</a>";
+                }
+
 
                 if(in_array('ListBanks', $this->data['menuPermission'])){
                     $active = (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-banks')) ? 'active' : '';
                     echo "<a href='{$_ENV['URL_ADM']}list-banks' class='nav-link $active'>";
                     
                     echo "<div class='sb-nav-link-icon'><i class='fa-solid fa-piggy-bank'></i></div>Bancos";
+                    
+                    echo "</a>";
+                }
+
+                if(in_array('ListAccountsPlan', $this->data['menuPermission'])){
+                    $active = (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-accounts-plan')) ? 'active' : '';
+                    echo "<a href='{$_ENV['URL_ADM']}list-accounts-plan' class='nav-link $active'>";
+                    
+                    echo "<div class='sb-nav-link-icon'><i class='fa-solid fa-file-invoice-dollar'></i></div>Plano de Contas";
+                    
+                    echo "</a>";
+                }
+
+                if(in_array('ListFrequencies', $this->data['menuPermission'])){
+                    $active = (($this->data['menu'] ?? false) and ($this->data['menu'] == 'list-frequencies')) ? 'active' : '';
+                    echo "<a href='{$_ENV['URL_ADM']}list-frequencies' class='nav-link $active'>";
+                    
+                    echo "<div class='sb-nav-link-icon'><i class='fa-solid fa-coins'></i></div>Frequencias";
                     
                     echo "</a>";
                 }
@@ -129,6 +165,8 @@
                     
                     echo "</a>";
                 }
+
+               
 
                 ?>
 

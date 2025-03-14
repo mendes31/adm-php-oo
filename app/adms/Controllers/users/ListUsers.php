@@ -58,12 +58,6 @@ class ListUsers
         $pageLayoutService->configurePageElements($pageElements);
         $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
-        // // Apresentar ou ocultar item de menu
-        // $menu = ['Dashboard', 'ListUsers', 'ListDepartments', 'ListPositions', 'ListAccessLevels', 'ListPackages', 'ListGroupsPages', 'ListPages'];
-        // $menuPermission = new MenuPermissionUserRepository();
-        // $this->data['menuPermission'] = $menuPermission->menuPermission($menu);
-        // var_dump( $this->data['menuPermission']);
-
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/users/list", $this->data);
         $loadView->loadView();

@@ -5,8 +5,6 @@ namespace App\adms\Controllers\groupsPages;
 use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\PaginationService;
 use App\adms\Models\Repository\GroupsPagesRepository;
-use App\adms\Models\Repository\MenuPermissionUserRepository;
-use App\adms\Models\Repository\PackagesRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**
@@ -50,7 +48,7 @@ class ListGroupsPages
             (int) $listGroupsPages->getAmountGroupsPages(), 
             (int) $this->limitResult, 
             (int) $page, 
-            'list-groups'
+            'list-groups-pages'
         );
         
         // Definir o título da página
