@@ -109,7 +109,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_page');
                 // Inclui o arquivo de paginação
                 include_once './app/adms/Views/partials/pagination.php';
             } else { // Exibe mensagem se nenhum página for encontrado
-                echo "<div class='alert alert-danger' role='alert'>Grupo não encontrado!</div>";
+                echo "<div class='alert alert-danger' role='alert'>Página não encontrada!</div>";
             } ?>
 
         </div>

@@ -42,7 +42,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_account_plan');
             <?php // Inclui o arquivo que exibe mensagens de sucesso e erro
             include './app/adms/Views/partials/alerts.php';
 
-            // Verifica se há departamento no array
+            // Verifica se há plano de contas no array
             if ($this->data['accountsPlan'] ?? false) {
             ?>
 
@@ -107,8 +107,8 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_account_plan');
             <?php
                 // Inclui o arquivo de paginação
                 include_once './app/adms/Views/partials/pagination.php';
-            } else { // Exibe mensagem se nenhum nível de acesso for encontrado
-                echo "<div class='alert alert-danger' role='alert'>Nenhum departamento encontrado!</div>";
+            } else { // Exibe mensagem se nenhum plano de contas for encontrado
+                echo "<div class='alert alert-danger' role='alert'>Nenhum Plano de Conta encontrado!</div>";
             } ?>
 
         </div>

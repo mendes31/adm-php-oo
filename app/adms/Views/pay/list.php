@@ -113,8 +113,8 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
             <?php
                 // Inclui o arquivo de paginação
                 include_once './app/adms/Views/partials/pagination.php';
-            } else { // Exibe mensagem se nenhum nível de acesso for encontrado
-                echo "<div class='alert alert-danger' role='alert'>Nenhum cargo encontrado!</div>";
+            } else { // Exibe mensagem se nenhuma conta for encontrado
+                echo "<div class='alert alert-danger' role='alert'>Nenhuma Conta encontrada!</div>";
             } ?>
 
         </div>

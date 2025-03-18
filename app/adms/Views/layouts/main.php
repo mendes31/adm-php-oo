@@ -79,6 +79,10 @@
 
     <script src="<?php echo $_ENV['URL_ADM'] ?>public/adms/DataTables/datatables.min.js"></script>
 
+    <script src="<?php echo $_ENV['URL_ADM'] ?>public/adms/js/telefone-mascara.js"></script>
+
+    <script src="<?php echo $_ENV['URL_ADM'] ?>public/adms/js/mascaras.js"></script>
+
 
 </body>
 
