@@ -5,8 +5,13 @@ namespace App\adms\Controllers\pay;
 use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\Validation\ValidationPaymentsService;
 use App\adms\Helpers\CSRFHelper;
+use App\adms\Models\Repository\AccountPlanRepository;
+use App\adms\Models\Repository\BanksRepository;
+use App\adms\Models\Repository\CostCentersRepository;
+use App\adms\Models\Repository\FrequencyRepository;
 use App\adms\Models\Repository\LogsRepository;
 use App\adms\Models\Repository\PaymentsRepository;
+use App\adms\Models\Repository\SupplierRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**
@@ -60,6 +65,26 @@ class CreatePay
      */
     private function viewPay(): void
     {
+        // Instanciar o repositório para recuperar os fornecedores
+        $listSuppliers = new SupplierRepository();
+        $this->data['listSuppliers'] = $listSuppliers->getAllSuppliersSelect();
+
+        // Instanciar o repositório para recuperar as frequencias
+        $listFrequencies = new FrequencyRepository();
+        $this->data['listFrequencies'] = $listFrequencies->getAllFrequencySelect();
+
+        // Instanciar o repositório para recuperar os planos de conta
+        $listAccountsPlan = new AccountPlanRepository();
+        $this->data['listAccountsPlan'] = $listAccountsPlan->getAllAccountsPlanSelect();
+
+        // Instanciar o repositório para recuperar os centros de custo
+        $listCostCenters = new CostCentersRepository();
+        $this->data['listCostCenters'] = $listCostCenters->getAllCostCenterSelect();
+
+        // Instanciar o repositório para recuperar os bancos
+        $listBanks = new BanksRepository();
+        $this->data['listBanks'] = $listBanks->getAllBanksSelect();
+
         // Definir o título da página
         // Ativar o item de menu
         // Apresentar ou ocultar botão 
@@ -102,8 +127,10 @@ class CreatePay
         $payCreate = new PaymentsRepository();
         $result = $payCreate->createPay($this->data['form']);
 
-        var_dump($this->data['form']);
-        exit;
+        // var_dump($result);
+
+        // var_dump($this->data['form']);
+        // exit;
 
         // Se a criação do Conta à Pagar for bem-sucedida
         if ($result) {
@@ -123,14 +150,14 @@ class CreatePay
             }
             
             // Mensagem de sucesso
-            $_SESSION['success'] = "Conta à Pagar cadastrado com sucesso!";
+            $_SESSION['success'] = "Conta à Pagar cadastrada com sucesso!";
 
             // Redirecionar para a página de visualização do Conta à Pagar recém-criado
             header("Location: {$_ENV['URL_ADM']}view-pay/$result");
             return;
         } else {
             // Mensagem de erro
-            $this->data['errors'][] = "Conta à Pagar não cadastrado!";
+            $this->data['errors'][] = "Conta à Pagar não cadastrada!";
 
             // Recarregar a view com erro
             $this->viewPay();

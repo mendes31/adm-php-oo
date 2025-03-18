@@ -46,6 +46,7 @@ class LoadPageAdm
         "ListFrequncies", "CreateFrequncy", "ViewFrequncy", "UpdateFrequncy", "DeleteFrequncy",
         "ListCustomers", "CreateCustomer", "ViewCustomer", "UpdateCustomer", "DeleteCustomer",
         "ListSuppliers", "CreateSupplier", "ViewSupplier", "UpdateSupplier", "DeleteSupplier",
+        "ListPaymentMethods", "CreatePaymentMethod", "ViewPaymentMethod", "UpdatePaymentMethod", "DeletePaymentMethod",
     ];
 
     /** @var array $listDirectory Recebe a lista de diretórios com as controllers */
@@ -68,7 +69,8 @@ class LoadPageAdm
         "accountsPlan",
         "frequency",
         "customer",
-        "supplier"
+        "supplier",
+        "paymentMethod"
     ];
 
     /** @var array $listPackages Recebe a lista de pacotes com as controllers */

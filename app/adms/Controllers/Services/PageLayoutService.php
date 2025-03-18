@@ -29,7 +29,8 @@ class PageLayoutService
             "ListAccountsPlan",
             "ListCustomers",
             "ListSuppliers",
-            "ListFrequencies"
+            "ListFrequencies",
+            "ListPaymentMethods"
         ];
 
         // Verificar se o usuário tem o nível de acesso Super Administrador.

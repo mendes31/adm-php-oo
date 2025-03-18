@@ -71,7 +71,7 @@
 
                 <!-- Financeiro -->
                 <?php
-                $submenuFinanceiro = in_array($this->data['menu'], ['list-banks', 'list-frequencies', 'list-payments', 'list-accounts-plan', 'list-receive', 'list-balance',  'financial-report']) ? 'show' : '';
+                $submenuFinanceiro = in_array($this->data['menu'], ['list-banks', 'list-frequencies', 'list-payment-methods','list-payments', 'list-accounts-plan', 'list-receive', 'list-balance',  'financial-report']) ? 'show' : '';
                 ?>
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseFinanceiro" aria-expanded="<?= $submenuFinanceiro ? 'true' : 'false' ?>">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-coins"></i></div> Financeiro
@@ -88,6 +88,9 @@
                             <a href="<?= $_ENV['URL_ADM'] ?>list-frequencies" class="nav-link <?= ($this->data['menu'] ?? false) == 'list-frequencies' ? 'active' : '' ?>">Frequências</a>
                         <?php endif; ?>
 
+                        <?php if (in_array('ListPaymentMethods', $this->data['menuPermission'])): ?>
+                            <a href="<?= $_ENV['URL_ADM'] ?>list-payment-methods" class="nav-link <?= ($this->data['menu'] ?? false) == 'list-payment-methods' ? 'active' : '' ?>">Formas de Pagamento</a>
+                        <?php endif; ?>
 
                         <?php if (in_array('ListPayments', $this->data['menuPermission'])): ?>
                             <a href="<?= $_ENV['URL_ADM'] ?>list-payments" class="nav-link <?= ($this->data['menu'] ?? false) == 'list-payments' ? 'active' : '' ?>">Pagar</a>

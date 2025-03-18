@@ -58,11 +58,11 @@ class DeletePosition
         if (!$this->data['position']) {
 
             // Registrar um log de erro
-            GenerateLog::generateLog("error", "deletePosition não encontrado.", ['id' => (int) $this->data['form']['id']]);
+            GenerateLog::generateLog("error", "Cargo não encontrado.", ['id' => (int) $this->data['form']['id']]);
 
             // Criar a mensagem de erro e redirecionar
-            $_SESSION['error'] = "deletePosition não encontrado!";
-            header("Location: {$_ENV['URL_ADM']}list-dpositions");
+            $_SESSION['error'] = "Cargo não encontrado!";
+            header("Location: {$_ENV['URL_ADM']}list-positions");
             return;
         }
 

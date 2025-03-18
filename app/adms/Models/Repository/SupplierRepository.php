@@ -249,8 +249,9 @@ class SupplierRepository extends DbConnection
     {
         // QUERY para recuperar os registros do banco de dados
         $sql = 'SELECT id, card_code, card_name 
-                FROM adms_supplier                
-                ORDER BY name ASC';
+                FROM adms_supplier
+                WHERE active = 1               
+                ORDER BY card_name ASC';
 
         // Preparar a QUERY
         $stmt = $this->getConnection()->prepare($sql);

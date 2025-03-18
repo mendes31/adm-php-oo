@@ -2,11 +2,8 @@
 
 namespace App\adms\Controllers\users;
 
-use App\adms\Controllers\Services\PageController;
 use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\PaginationService;
-use App\adms\Models\Repository\ButtonPermissionUserRepository;
-use App\adms\Models\Repository\MenuPermissionUserRepository;
 use App\adms\Models\Repository\UsersRepository;
 use App\adms\Views\Services\LoadViewService;
 

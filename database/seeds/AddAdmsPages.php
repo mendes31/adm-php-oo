@@ -127,6 +127,14 @@ class AddAdmsPages extends AbstractSeed
             ['name'=> 'Visualizar Fornecedor', 'controller' => 'ViewSupplier', 'controller_url' => 'view-supplier', 'directory' => 'supplier', 'obs' => 'Página apresentar os detalhes do Fornecedor.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 19],
             ['name'=> 'Editar Fornecedor', 'controller' => 'UpdateSupplier', 'controller_url' => 'update-supplier', 'directory' => 'supplier', 'obs' => 'Página com o formulário editar Fornecedor.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 19],           
             ['name'=> 'Apagar Fornecedor', 'controller' => 'DeleteSupplier', 'controller_url' => 'delete-supplier', 'directory' => 'supplier', 'obs' => 'Página para apagar o Fornecedor do banco de dados.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 19],
+
+            ['name'=> 'Cadastrar Forma de Pagamento', 'controller' => 'CreatePaymentMethod', 'controller_url' => 'create-payment-method', 'directory' => 'paymentMethod', 'obs' => 'Página com o formulário cadastrar Forma de Pagamento.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 20],
+            ['name'=> 'Listar Formas de Pagamento', 'controller' => 'ListPaymentMethods', 'controller_url' => 'list-payment-methods', 'directory' => 'paymentMethod', 'obs' => 'Página para listar o Formas de Pagamento.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 20],
+            ['name'=> 'Visualizar Forma de Pagamento', 'controller' => 'ViewPaymentMethod', 'controller_url' => 'view-payment-method', 'directory' => 'paymentMethod', 'obs' => 'Página apresentar os detalhes do Forma de Pagamento.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 20],
+            ['name'=> 'Editar Forma de Pagamento', 'controller' => 'UpdatePaymentMethod', 'controller_url' => 'update-payment-method', 'directory' => 'paymentMethod', 'obs' => 'Página com o formulário editar Forma de Pagamento.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 20],           
+            ['name'=> 'Apagar Forma de Pagamento', 'controller' => 'DeletePaymentMethod', 'controller_url' => 'delete-payment-method', 'directory' => 'paymentMethod', 'obs' => 'Página para apagar o Forma de Pagamento do banco de dados.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 20],
+
+            
         ];
 
         // Percorrer o array com dados que devem ser validados antes de cadastrar

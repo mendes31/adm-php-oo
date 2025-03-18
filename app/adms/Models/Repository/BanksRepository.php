@@ -223,7 +223,7 @@ class BanksRepository extends DbConnection
         // QUERY para recuperar os registros do banco de dados
         $sql = 'SELECT id, bank_name, bank, account, agency
                 FROM adms_bank_accounts                
-                ORDER BY name ASC';
+                ORDER BY bank_name ASC';
 
         // Preparar a QUERY
         $stmt = $this->getConnection()->prepare($sql);

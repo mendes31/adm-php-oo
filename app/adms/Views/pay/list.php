@@ -48,11 +48,14 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
+                            <th scope="col">Documento</th>
+                            <th scope="col">Descrição</th>
                             <th scope="col">Nome</th>
-                            <th scope="col">Banco</th>
-                            <th scope="col">Conta</th>
-                            <th scope="col">Agência</th>
+                            <th scope="col">Valor</th>
+                            <th scope="col">Vencimento</th>
+                            <th scope="col">Frequencia</th>
+                            <th scope="col">Saída</th>
+                            <th scope="col">Arquivo</th>
                             <th scope="col" class="text-center">Ações</th>
                         </tr>
                     </thead>
@@ -66,37 +69,41 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
                             // Extrai variáveis do array de cargos
                             extract($pay); ?>
                             <tr>
-                                <td><?php echo $id; ?></td>
-                                <td><?php echo $num_doc; ?></td>
-                                <td><?php echo $partner_id; ?></td>
+                                <td><?php echo $num_doc; ?></td>                                
+                                <td><?php echo $description; ?></td>
+                                <td><?php echo $card_name; ?></td>
                                 <td><?php echo $value; ?></td>
                                 <td><?php echo $due_date; ?></td>
+                                <td><?php echo $name_freq; ?></td>
+                                <td><?php echo $bank_name; ?></td>
+                                <td><?php echo $file; ?></td>
+                                
                                 <td class="text-center">
 
                                     <?php
 
                                     if (in_array('ViewPay', $this->data['buttonPermission'])) {
-                                        echo "<a href='{$_ENV['URL_ADM']}view-pay/$id' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Visualizar</a>";
+                                        echo "<a href='{$_ENV['URL_ADM']}view-pay/$id_pay' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Visualizar</a>";
                                     }
 
                                     if (in_array('UpdatePay', $this->data['buttonPermission'])) {
-                                        echo "<a href='{$_ENV['URL_ADM']}update-pay/$id' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-pen-to-square'></i> Editar</a>";
+                                        echo "<a href='{$_ENV['URL_ADM']}update-pay/$id_pay' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-pen-to-square'></i> Editar</a>";
                                     }
 
                                     if (in_array('DeletePay', $this->data['buttonPermission'])) {
                                     ?>
 
-                                        <form id="formDelete<?php echo $id; ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-pay" method="POST" class="d-inline">
+                                        <form id="formDelete<?php echo $id_pay; ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-pay" method="POST" class="d-inline">
 
                                             <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
 
-                                            <input type="hidden" name="id" id="id" value="<?php echo $id ?? ''; ?>">
+                                            <input type="hidden" name="id" id="id" value="<?php echo $id_pay ?? ''; ?>">
 
                                             <input type="hidden" name="num_doc" id="num_doc" value="<?php echo $num_doc ?? ''; ?>">
 
                                             <input type="hidden" name="partner_id" id="partner_id" value="<?php echo $partner_id ?? ''; ?>">
 
-                                            <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo $id; ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
+                                            <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo $id_pay; ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
 
                                         </form>
                                     <?php } ?>
