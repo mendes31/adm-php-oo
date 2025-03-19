@@ -178,4 +178,18 @@ class PaymentsRepository extends DbConnection
             return false;
         }
     }
+
+    public function existsNumDocForPartner(string $num_doc, int $partner_id): bool
+    {
+        $sql = "SELECT COUNT(*) FROM adms_pay WHERE num_doc = :num_doc AND partner_id = :partner_id";
+
+
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->bindParam(':num_doc', $num_doc);
+        $stmt->bindParam(':partner_id', $partner_id);
+
+        $stmt->execute();
+        return $stmt->fetchColumn() > 0;
+    }
+    
 }

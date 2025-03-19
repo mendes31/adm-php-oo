@@ -265,35 +265,47 @@ class SupplierRepository extends DbConnection
     }
 
     public function getNextSupplierCode(): string
-{
-    try {
-        // Consulta para obter o último código de Fornecedor
-        $sql = "SELECT card_code FROM adms_supplier ORDER BY card_code DESC LIMIT 1";
+    {
+        try {
+            // Consulta para obter o último código de Fornecedor
+            $sql = "SELECT card_code FROM adms_supplier ORDER BY card_code DESC LIMIT 1";
 
-        // Preparar e executar a query
+            // Preparar e executar a query
+            $stmt = $this->getConnection()->prepare($sql);
+            $stmt->execute();
+
+            // Obtém o último card_code
+            $lastCode = $stmt->fetchColumn();
+
+            // Verifica se encontrou um código
+            if ($lastCode) {
+                // Extrai a parte numérica (assumindo formato 'C00001')
+                $numericPart = (int) substr($lastCode, 1);
+                $nextNumber = $numericPart + 1;
+            } else {
+                // Caso não haja código, começa com 1
+                $nextNumber = 1;
+            }
+
+            // Formata o próximo código com "C" seguido de número com 5 dígitos
+            return 'F' . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
+        } catch (Exception $e) {
+            // Gera log do erro e retorna um código padrão
+            GenerateLog::generateLog("error", "Erro ao obter o próximo código de Fornecedor.", ['error' => $e->getMessage()]);
+            return 'F00001';
+        }
+    }
+    public function getSupplierName(int $partner_id): string
+    {
+        // var_dump($partner_id);
+        // exit;
+        $sql = "SELECT 	card_name FROM adms_supplier WHERE id = :partner_id LIMIT 1";
+
         $stmt = $this->getConnection()->prepare($sql);
+
+        $stmt->bindParam(':partner_id', $partner_id, PDO::PARAM_INT);
         $stmt->execute();
 
-        // Obtém o último card_code
-        $lastCode = $stmt->fetchColumn();
-
-        // Verifica se encontrou um código
-        if ($lastCode) {
-            // Extrai a parte numérica (assumindo formato 'C00001')
-            $numericPart = (int) substr($lastCode, 1);
-            $nextNumber = $numericPart + 1;
-        } else {
-            // Caso não haja código, começa com 1
-            $nextNumber = 1;
-        }
-
-        // Formata o próximo código com "C" seguido de número com 5 dígitos
-        return 'F' . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
-    } catch (Exception $e) {
-        // Gera log do erro e retorna um código padrão
-        GenerateLog::generateLog("error", "Erro ao obter o próximo código de Fornecedor.", ['error' => $e->getMessage()]);
-        return 'F00001';
+        return $stmt->fetchColumn() ?: null;
     }
-}
-
 }

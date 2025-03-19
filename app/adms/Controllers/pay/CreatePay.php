@@ -85,6 +85,7 @@ class CreatePay
         $listBanks = new BanksRepository();
         $this->data['listBanks'] = $listBanks->getAllBanksSelect();
 
+
         // Definir o título da página
         // Ativar o item de menu
         // Apresentar ou ocultar botão 
@@ -123,44 +124,54 @@ class CreatePay
             return;
         }
 
-        // Instanciar o Repository para criar o Conta à Pagar
-        $payCreate = new PaymentsRepository();
-        $result = $payCreate->createPay($this->data['form']);
+        if (isset($this->data['form']['description']) || empty($this->data['form']['description'])) {
 
-        // var_dump($result);
+            // Instanciar o Repository para criar o Conta à Pagar
+            $payCreate = new PaymentsRepository();
+            $result = $payCreate->createPay($this->data['form']);
 
-        // var_dump($this->data['form']);
-        // exit;
+            var_dump($result);
 
-        // Se a criação do Conta à Pagar for bem-sucedida
-        if ($result) {
+            var_dump($this->data['form']);
+            exit;
 
-            // gravar logs na tabela adms-logs
-            if ($_ENV['APP_LOGS'] == 'Sim') {
-                $dataLogs = [
-                    'table_name' => 'adms_pay',
-                    'action' => 'inserção',
-                    'record_id' => $result,
-                    'description' => $this->data['form']['partner_id'],
-    
-                ];
-                // Instanciar a classe validar  o usuário
-                $insertLogs = new LogsRepository();
-                $insertLogs->insertLogs($dataLogs);
+            // Se a criação do Conta à Pagar for bem-sucedida
+            if ($result) {
+
+                // gravar logs na tabela adms-logs
+                if ($_ENV['APP_LOGS'] == 'Sim') {
+                    $dataLogs = [
+                        'table_name' => 'adms_pay',
+                        'action' => 'inserção',
+                        'record_id' => $result,
+                        'description' => $this->data['form']['partner_id'],
+
+                    ];
+                    // Instanciar a classe validar  o usuário
+                    $insertLogs = new LogsRepository();
+                    $insertLogs->insertLogs($dataLogs);
+                }
+
+                // Mensagem de sucesso
+                $_SESSION['success'] = "Conta à Pagar cadastrada com sucesso!";
+
+                // Redirecionar para a página de visualização do Conta à Pagar recém-criado
+                // header("Location: {$_ENV['URL_ADM']}view-pay/$result");
+                return;
+            } else {
+                // Mensagem de erro
+                $this->data['errors'][] = "Conta à Pagar não cadastrada!";
+
+                // Recarregar a view com erro
+                $this->viewPay();
             }
-            
-            // Mensagem de sucesso
-            $_SESSION['success'] = "Conta à Pagar cadastrada com sucesso!";
-
-            // Redirecionar para a página de visualização do Conta à Pagar recém-criado
-            header("Location: {$_ENV['URL_ADM']}view-pay/$result");
-            return;
         } else {
-            // Mensagem de erro
-            $this->data['errors'][] = "Conta à Pagar não cadastrada!";
+            $name = $validationPayments->getSupplierName($this->data['form']['partner_id']);
+            $this->data['form']['description'] = $name;
 
-            // Recarregar a view com erro
-            $this->viewPay();
+            var_dump($name);
+            var_dump($this->data['form']['description']);
         }
+
     }
 }

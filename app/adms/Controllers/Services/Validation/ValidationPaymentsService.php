@@ -2,6 +2,8 @@
 
 namespace App\adms\Controllers\Services\Validation;
 
+use App\adms\Models\Repository\PaymentsRepository;
+use App\adms\Models\Repository\SupplierRepository;
 use Rakit\Validation\Validator;
 
 /**
@@ -31,48 +33,67 @@ class ValidationPaymentsService
         // Instanciar a classe Validator para validar o formulário
         $validator = new Validator();
 
-        // Adicionar a regra personalizada de unicidade em múltiplas colunas
-        $validator->addValidator('uniqueInColumns', new UniqueInColumnsRule());
+        // Instanciar o repositório para verificar unicidade no banco
+        $paymentsRepo = new PaymentsRepository();
 
-        // Definir as regras de validação
-        $rules = [];
-
-        // Se o ID estiver ausente, é uma criação (cadastrar)
-        if (!isset($data['id'])) {
-            $rules['description'] = 'required';
-        } else {
-            // Para edição, adicionar validação de id e ignorar o próprio contas a pagar
-            $rules['id'] = 'required|integer';
-            $rules['description'] = 'required';
-        }
-
-        // Definir as mensagens de erro personalizadas
-        $messages = [
-            'id:required' => 'Dados inválidos.',
-            'id:integer' => 'Dados inválidos.',
-            'description:required' => 'O campo nome é obrigatório.',
+        // Definir regras de validação
+        $rules = [
+            'num_doc'    => 'required',
+            'partner_id' => 'required|integer'
         ];
 
-        // Criar o validador com os dados e regras fornecidos
+        // Verificar se num_doc já existe para o mesmo parceiro
+        if (!isset($data['id'])) {
+            if ($paymentsRepo->existsNumDocForPartner($data['num_doc'], $data['partner_id'])) {
+                $errors['num_doc'] = 'O número do documento já existe para este fornecedor.';
+            }
+        } else {
+            if ($paymentsRepo->existsNumDocForPartner($data['num_doc'], $data['partner_id'], $data['id'])) {
+                $errors['num_doc'] = 'O número do documento já existe para este fornecedor.';
+            }
+        }
+
+        // Criar a validação
         $validation = $validator->make($data, $rules);
 
-        // Definir as mensagens de erro personalizadas
-        $validation->setMessages($messages);
+        // Definir mensagens personalizadas
+        $validation->setMessages([
+            'num_doc:required' => 'O número do documento é obrigatório.',
+            'partner_id:required' => 'O fornecedor é obrigatório.',
+            'partner_id:integer' => 'O fornecedor deve ser um número válido.',
+        ]);
 
-        // Validar os dados
+        // Executar a validação
         $validation->validate();
 
-        // Retornar erros se houver
         if ($validation->fails()) {
-            // Recuperar os erros 
             $arrayErrors = $validation->errors();
 
-            // Percorrer o array de erros e armazenar a primeira mensagem de erro para cada campo validado
             foreach ($arrayErrors->firstOfAll() as $key => $message) {
                 $errors[$key] = $message;
             }
         }
 
         return $errors;
+    }
+
+    public function getSupplierName(int $partner_id): string
+    {
+        // Se a descrição estiver vazia, buscar o nome do fornecedor
+        if (empty($data['description']) && !empty($partner_id)) {
+
+            $supplierRepo = new SupplierRepository();
+            $supplierName = $supplierRepo->getSupplierName($partner_id);
+
+            var_dump($supplierName);
+
+            if (!empty($supplierName)) { // Verifica se retornou um nome válido
+                $data['description'] = $supplierName;
+            } else {
+                $errors['description'] = 'Descrição obrigatória e parceiro não encontrado.';
+            }
+        }
+
+        return $supplierName;
     }
 }
