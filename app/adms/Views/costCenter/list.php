@@ -28,12 +28,12 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_cost_center');
             <span>Listar</span>
 
             <span class="ms-auto">
-            <?php
+                <?php
                 if (in_array('CreateCostCenter', $this->data['buttonPermission'])) {
                     echo "<a href='{$_ENV['URL_ADM']}create-cost-center' class='btn btn-success btn-sm'><i class='fa-regular fa-square-plus'></i> Cadastrar</a> ";
                 }
                 ?>
-                
+
             </span>
         </div>
 
@@ -46,7 +46,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_cost_center');
             if ($this->data['costCenters'] ?? false) {
             ?>
 
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover" id="tabela">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
@@ -64,7 +64,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_cost_center');
                             // Extrai variáveis do array de Centros de Custo
                             extract($costCenter); ?>
                             <tr>
-                            <td><?php echo $id; ?></td>
+                                <td><?php echo $id; ?></td>
                                 <td><?php echo $name; ?></td>
                                 <td class="text-center">
 
@@ -113,3 +113,32 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_cost_center');
 
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#tabela').DataTable({
+            "language": {
+                "decimal": ",",
+                "thousands": ".",
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sEmptyTable": "Nenhum dado disponível na tabela",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+                "sSearch": "Buscar:",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Próximo",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            }
+        });
+    });
+</script>

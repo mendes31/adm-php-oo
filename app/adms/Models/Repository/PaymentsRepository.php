@@ -89,6 +89,7 @@ class PaymentsRepository extends DbConnection
      */
     public function createPay(array $data): bool|int
     {
+        $name = $this->getSupplierName($data['partner_id']);
         try {
             $sql = 'INSERT INTO adms_pay (description, num_doc, partner_id, bank_id, cost_center_id, 
                     user_launch_id, frequency_id, pay_method_id, account_id, value, original_value,
@@ -101,7 +102,9 @@ class PaymentsRepository extends DbConnection
 
             $stmt = $this->getConnection()->prepare($sql);
 
-            $stmt->bindValue(':description', $data['description'], PDO::PARAM_STR);
+            $description = !empty($data['description']) ? $data['description'] : $name;
+            $stmt->bindValue(':description', $description, PDO::PARAM_STR);
+
             $stmt->bindValue(':num_doc', $data['num_doc'], PDO::PARAM_STR);
 
             $stmt->bindValue(':partner_id', $data['partner_id'] ?? null, PDO::PARAM_INT);
@@ -190,6 +193,20 @@ class PaymentsRepository extends DbConnection
 
         $stmt->execute();
         return $stmt->fetchColumn() > 0;
+    }
+
+    public function getSupplierName(int $partner_id): string
+    {
+        // var_dump($partner_id);
+        // exit;
+        $sql = "SELECT 	card_name FROM adms_supplier WHERE id = :partner_id LIMIT 1";
+
+        $stmt = $this->getConnection()->prepare($sql);
+
+        $stmt->bindParam(':partner_id', $partner_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
     }
     
 }

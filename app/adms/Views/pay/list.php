@@ -45,7 +45,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
             if ($this->data['payments'] ?? false) {
             ?>
 
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover" id="tabela">
                     <thead>
                         <tr>
                             <th scope="col">Documento</th>
@@ -128,3 +128,32 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
 
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#tabela').DataTable({
+            "language": {
+                "decimal": ",",
+                "thousands": ".",
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sEmptyTable": "Nenhum dado disponível na tabela",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+                "sSearch": "Buscar:",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Próximo",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            }
+        });
+    });
+</script>

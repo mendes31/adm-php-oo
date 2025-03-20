@@ -16,6 +16,7 @@ class AAADatabaseSeeder extends AbstractSeed
         return [
             'AddDepartments',
             'AddAdmsPositions',
+            'AddAdmsCostCenters',
             'AddAdmsUsers',                                  
             'AddAccessLevels',
             'AddAdmsUsersAccessLevels',

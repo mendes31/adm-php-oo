@@ -123,17 +123,14 @@ class CreatePay
             $this->viewPay();
             return;
         }
-
-        if (isset($this->data['form']['description']) || empty($this->data['form']['description'])) {
-
             // Instanciar o Repository para criar o Conta à Pagar
             $payCreate = new PaymentsRepository();
             $result = $payCreate->createPay($this->data['form']);
 
-            var_dump($result);
+            // var_dump($result);
 
-            var_dump($this->data['form']);
-            exit;
+            // var_dump($this->data['form']);
+            // exit;
 
             // Se a criação do Conta à Pagar for bem-sucedida
             if ($result) {
@@ -157,6 +154,7 @@ class CreatePay
 
                 // Redirecionar para a página de visualização do Conta à Pagar recém-criado
                 // header("Location: {$_ENV['URL_ADM']}view-pay/$result");
+                header("Location: {$_ENV['URL_ADM']}list-payments");
                 return;
             } else {
                 // Mensagem de erro
@@ -165,13 +163,7 @@ class CreatePay
                 // Recarregar a view com erro
                 $this->viewPay();
             }
-        } else {
-            $name = $validationPayments->getSupplierName($this->data['form']['partner_id']);
-            $this->data['form']['description'] = $name;
-
-            var_dump($name);
-            var_dump($this->data['form']['description']);
-        }
+        
 
     }
 }
