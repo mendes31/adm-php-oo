@@ -34,6 +34,7 @@ class ValidationUserLogin
             $_SESSION['user_name'] = $name;
             $_SESSION['user_email'] = $email;
             $_SESSION['user_username'] = $username;
+            $_SESSION['user_image'] = $image;
             $_SESSION['user_department'] = $dep_name;
             $_SESSION['user_position'] = $pos_name;
 

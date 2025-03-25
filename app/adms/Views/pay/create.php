@@ -115,9 +115,29 @@ use App\adms\Helpers\CSRFHelper;
                     </select>
                 </div>
 
-                <div class="col-3">
+                <!-- <div class="col-3">
                     <label for="pay_method_id" class="form-label">Forma de Pagamento</label>
                     <input type="text" name="pay_method_id" class="form-control" id="pay_method_id" placeholder="Forma de Pagamento" value="<?php echo $this->data['form']['pay_method_id'] ?? ''; ?>">
+                </div> -->
+
+                <div class="col-md-3">
+                    <label for="pay_method_id" class="form-label">Forma de Pagamento</label>
+                    <select name="pay_method_id" class="form-select" id="pay_method_id">
+                        <option value="" selected>Selecione</option>
+                        <?php
+                        // Verificar se existe forma de pagametno
+                        if ($this->data['listPaymentMethods'] ?? false) {
+                            // percorrer o array de forma de pagametno
+                            foreach ($this->data['listPaymentMethods'] as $listFrequency) {
+                                // Extrari as variáveis do array
+                                extract($listFrequency);
+                                // Verificar se deve manter selecionado a opção
+                                $selected = isset($this->data['form']['id']) && $this->data['form']['id'] == $id ? 'selected' : '';
+                                echo "<option value='$id' $selected >$name</option>";
+                            }
+                        }
+                        ?>
+                    </select>
                 </div>
 
 

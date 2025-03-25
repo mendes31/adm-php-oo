@@ -10,6 +10,7 @@ use App\adms\Models\Repository\BanksRepository;
 use App\adms\Models\Repository\CostCentersRepository;
 use App\adms\Models\Repository\FrequencyRepository;
 use App\adms\Models\Repository\LogsRepository;
+use App\adms\Models\Repository\PaymentMethodsRepository;
 use App\adms\Models\Repository\PaymentsRepository;
 use App\adms\Models\Repository\SupplierRepository;
 use App\adms\Views\Services\LoadViewService;
@@ -73,6 +74,10 @@ class CreatePay
         $listFrequencies = new FrequencyRepository();
         $this->data['listFrequencies'] = $listFrequencies->getAllFrequencySelect();
 
+        // Instanciar o repositório para formas de pagamento
+        $listPaymentMethods = new PaymentMethodsRepository();
+        $this->data['listPaymentMethods'] = $listPaymentMethods->getAllPaymentMethodsSelect();
+
         // Instanciar o repositório para recuperar os planos de conta
         $listAccountsPlan = new AccountPlanRepository();
         $this->data['listAccountsPlan'] = $listAccountsPlan->getAllAccountsPlanSelect();
@@ -118,52 +123,108 @@ class CreatePay
         $validationPayments = new ValidationPaymentsService();
         $this->data['errors'] = $validationPayments->validate($this->data['form']);
 
+        // SCRIPT PARA SUBIR FOTO NO SERVIDOR
+
+        // Garante que a URL do ADM termina com '/'
+        $url_base = rtrim($_ENV['URL_ADM'] ?? '', '/') . '/';
+
+        // Define o nome do arquivo sem caracteres problemáticos
+        $nome_img = time() . '-' . preg_replace('/[^a-zA-Z0-9\._-]/', '_', $_FILES['arquivo']['name']);
+
+        // Caminho para exibição da imagem na web
+        $caminho_url = $url_base . 'public/adms/image/contas/' . $nome_img;
+
+        // Caminho absoluto para salvar o arquivo no servidor
+        $pasta_destino = __DIR__ . '/../public/adms/image/contas/';
+
+        // Garante que a pasta de destino existe
+        if (!is_dir($pasta_destino)) {
+            mkdir($pasta_destino, 0777, true);
+        }
+
+        // Caminho completo no servidor onde o arquivo será salvo
+        $caminho_upload = $pasta_destino . $nome_img;
+
+        $imagem_temp = $_FILES['arquivo']['tmp_name'];
+
+        // Verifica se um arquivo foi enviado
+        if (!empty($_FILES['arquivo']['name'])) {
+            // Lista de extensões permitidas
+            $extensoes_permitidas = ['png', 'jpg', 'jpeg', 'gif', 'pdf', 'rar', 'zip', 'doc', 'docx'];
+            $ext = strtolower(pathinfo($nome_img, PATHINFO_EXTENSION));
+
+            // Verifica se a extensão é válida
+            if (in_array($ext, $extensoes_permitidas)) {
+                // Exclui a foto anterior, se necessário
+                if (!empty($foto) && $foto != "sem-foto.png" && file_exists($pasta_destino . $foto)) {
+                    unlink($pasta_destino . $foto);
+                }
+
+                // Move o arquivo para o destino
+                if (move_uploaded_file($imagem_temp, $caminho_upload)) {
+                    $foto = $nome_img; // Atualiza a variável com o novo nome da foto
+                } else {
+                    echo 'Erro ao mover o arquivo!';
+                    exit();
+                }
+            } else {
+                echo 'Extensão de arquivo não permitida!';
+                exit();
+            }
+        } else {
+            echo 'Nenhum arquivo foi enviado!';
+            exit();
+        }
+
+
+
         // Se houver erros, recarregar a view com erros
         if (!empty($this->data['errors'])) {
             $this->viewPay();
             return;
         }
-            // Instanciar o Repository para criar o Conta à Pagar
-            $payCreate = new PaymentsRepository();
-            $result = $payCreate->createPay($this->data['form']);
 
-            // var_dump($result);
 
-            // var_dump($this->data['form']);
-            // exit;
 
-            // Se a criação do Conta à Pagar for bem-sucedida
-            if ($result) {
+        // Instanciar o Repository para criar o Conta à Pagar
+        $payCreate = new PaymentsRepository();
+        $result = $payCreate->createPay($this->data['form']);
 
-                // gravar logs na tabela adms-logs
-                if ($_ENV['APP_LOGS'] == 'Sim') {
-                    $dataLogs = [
-                        'table_name' => 'adms_pay',
-                        'action' => 'inserção',
-                        'record_id' => $result,
-                        'description' => $this->data['form']['partner_id'],
+        // var_dump($result);
 
-                    ];
-                    // Instanciar a classe validar  o usuário
-                    $insertLogs = new LogsRepository();
-                    $insertLogs->insertLogs($dataLogs);
-                }
+        // var_dump($this->data['form']);
+        // exit;
 
-                // Mensagem de sucesso
-                $_SESSION['success'] = "Conta à Pagar cadastrada com sucesso!";
+        // Se a criação do Conta à Pagar for bem-sucedida
+        if ($result) {
 
-                // Redirecionar para a página de visualização do Conta à Pagar recém-criado
-                // header("Location: {$_ENV['URL_ADM']}view-pay/$result");
-                header("Location: {$_ENV['URL_ADM']}list-payments");
-                return;
-            } else {
-                // Mensagem de erro
-                $this->data['errors'][] = "Conta à Pagar não cadastrada!";
+            // gravar logs na tabela adms-logs
+            if ($_ENV['APP_LOGS'] == 'Sim') {
+                $dataLogs = [
+                    'table_name' => 'adms_pay',
+                    'action' => 'inserção',
+                    'record_id' => $result,
+                    'description' => $this->data['form']['partner_id'],
 
-                // Recarregar a view com erro
-                $this->viewPay();
+                ];
+                // Instanciar a classe validar  o usuário
+                $insertLogs = new LogsRepository();
+                $insertLogs->insertLogs($dataLogs);
             }
-        
 
+            // Mensagem de sucesso
+            $_SESSION['success'] = "Conta à Pagar cadastrada com sucesso!";
+
+            // Redirecionar para a página de visualização do Conta à Pagar recém-criado
+            // header("Location: {$_ENV['URL_ADM']}view-pay/$result");
+            header("Location: {$_ENV['URL_ADM']}list-payments");
+            return;
+        } else {
+            // Mensagem de erro
+            $this->data['errors'][] = "Conta à Pagar não cadastrada!";
+
+            // Recarregar a view com erro
+            $this->viewPay();
+        }
     }
 }

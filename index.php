@@ -3,6 +3,7 @@
 use Routes\PageController;
 
 session_start(); // Iniciar a sessão
+
 ob_start(); // Limpar o Buffer de saída
 
 // Carregar o Composer

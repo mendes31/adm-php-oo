@@ -74,7 +74,10 @@ class ValidationPaymentsService
             }
         }
 
+        echo "Iniciando Validation 77";
+        var_dump($errors);
         return $errors;
+
     }
 
     public function getSupplierName(int $partner_id): string
@@ -95,5 +98,16 @@ class ValidationPaymentsService
         }
 
         return $supplierName;
+    }
+
+    public function validateFile(array $data): bool
+    {
+        
+        // Verifica se a variável $id está definida e é um número
+        if (empty($data['file'])) {
+           return false;
+        }
+        return true;
+        
     }
 }

@@ -41,6 +41,10 @@ $csrf_token_update_access_level = CSRFHelper::generateCSRFToken('form_update_acc
                     echo "<a href='{$_ENV['URL_ADM']}update-password-user/$id' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-key'></i> Editar Senha</a> ";
                 }
 
+                if (in_array('UpdateUserImage', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}update-user-image/$id' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-camera'></i> Editar Imagem</a> ";
+                }
+
                 if (in_array('DeleteUser', $this->data['buttonPermission'])) {
                 ?>
                     <!-- Formulário para deletar usuário -->
@@ -87,6 +91,9 @@ $csrf_token_update_access_level = CSRFHelper::generateCSRFToken('form_update_acc
 
                     <dt class="col-sm-3">Usuário: </dt>
                     <dd class="col-sm-9"><?php echo $username; ?></dd>
+
+                    <dt class="col-sm-3">Imagem: </dt>
+                    <dd class="col-sm-9"><?php echo $image; ?></dd>
 
                     <dt class="col-sm-3">Departamento: </dt>
                     <dd class="col-sm-9"><?php echo $dep_name; ?></dd>
