@@ -7,9 +7,14 @@ use App\adms\Controllers\Services\Validation\ValidationBankService;
 use App\adms\Controllers\Services\Validation\ValidationPaymentsService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
+use App\adms\Models\Repository\AccountPlanRepository;
 use App\adms\Models\Repository\BanksRepository;
+use App\adms\Models\Repository\CostCentersRepository;
+use App\adms\Models\Repository\FrequencyRepository;
 use App\adms\Models\Repository\LogsRepository;
+use App\adms\Models\Repository\PaymentMethodsRepository;
 use App\adms\Models\Repository\PaymentsRepository;
+use App\adms\Models\Repository\SupplierRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**
@@ -76,6 +81,30 @@ class UpdatePay
      */
     private function viewPay(): void
     {
+        // Instanciar o repositório para recuperar os fornecedores
+        $listSuppliers = new SupplierRepository();
+        $this->data['listSuppliers'] = $listSuppliers->getAllSuppliersSelect();
+
+        // Instanciar o repositório para recuperar as frequencias
+        $listFrequencies = new FrequencyRepository();
+        $this->data['listFrequencies'] = $listFrequencies->getAllFrequencySelect();
+
+        // Instanciar o repositório para formas de pagamento
+        $listPaymentMethods = new PaymentMethodsRepository();
+        $this->data['listPaymentMethods'] = $listPaymentMethods->getAllPaymentMethodsSelect();
+
+        // Instanciar o repositório para recuperar os planos de conta
+        $listAccountsPlan = new AccountPlanRepository();
+        $this->data['listAccountsPlan'] = $listAccountsPlan->getAllAccountsPlanSelect();
+
+        // Instanciar o repositório para recuperar os centros de custo
+        $listCostCenters = new CostCentersRepository();
+        $this->data['listCostCenters'] = $listCostCenters->getAllCostCenterSelect();
+
+        // Instanciar o repositório para recuperar os bancos
+        $listBanks = new BanksRepository();
+        $this->data['listBanks'] = $listBanks->getAllBanksSelect();
+        
         // Definir o título da página
         // Ativar o item de menu
         // Apresentar ou ocultar botão 

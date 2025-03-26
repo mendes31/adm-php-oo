@@ -28,7 +28,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
             <span>Listar</span>
 
             <span class="ms-auto">
-            <?php
+                <?php
                 if (in_array('CreatePay', $this->data['buttonPermission'])) {
                     echo "<a href='{$_ENV['URL_ADM']}create-pay' class='btn btn-success btn-sm'><i class='fa-regular fa-square-plus'></i> Cadastrar</a> ";
                 }
@@ -45,17 +45,23 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
             if ($this->data['payments'] ?? false) {
             ?>
 
+
                 <table class="table table-striped table-hover" id="tabela">
                     <thead>
                         <tr>
-                            <th scope="col">Documento</th>
-                            <th scope="col">Descrição</th>
-                            <th scope="col">Nome</th>
+                            <!-- <i class="fa-solid fa-square"></i> -->
+                            <!-- <th scope="col" class="d-none d-md-table-cell">Id</th> -->
+                            <th scope="col" class="d-none d-md-table-cell">Data</th>
+                            <th scope="col">Nº Doc</th>
+                            <!-- <th scope="col" class="d-none d-md-table-cell">Descrição</th> -->
+                            <th scope="col" class="d-none d-md-table-cell">Fornecedor</th>
                             <th scope="col">Valor</th>
                             <th scope="col">Vencimento</th>
-                            <th scope="col">Frequencia</th>
-                            <th scope="col">Saída</th>
-                            <th scope="col">Arquivo</th>
+                            <th scope="col" class="d-none d-md-table-cell">Previsão</th>
+                            <!-- <th scope="col" class="d-none d-md-table-cell">Frequencia</th> -->
+                            <th scope="col" class="d-none d-md-table-cell">Forma Pgto</th>
+                            <th scope="col" class="d-none d-md-table-cell">Saída</th>
+                            <!-- <th scope="col">Arquivo</th> -->
                             <th scope="col" class="text-center">Ações</th>
                         </tr>
                     </thead>
@@ -68,19 +74,43 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
 
                             // Extrai variáveis do array de cargos
                             extract($pay); ?>
+
+                            <?php
+                            $classe_pago = ''; // Inicializa a variável para evitar o erro
+
+                            if ($paid == 1) {
+                                $classe_pago = 'text-success'; // Define a cor verde
+                            } else {
+                                $classe_pago = 'text-danger'; // Define a cor vermelha
+                            }
+                            ?>
                             <tr>
-                                <td><?php echo $num_doc; ?></td>                                
-                                <td><?php echo $description; ?></td>
-                                <td><?php echo $card_name; ?></td>
+                                <!-- <td class="d-none d-md-table-cell"><?php echo $id_pay; ?></td> -->
+                                <td class="d-none d-md-table-cell"><?php echo date("d-m-Y", strtotime($doc_date)); ?></td>
+                                <td><i class="fa fa-square <?php echo $classe_pago; ?> mr-1"></i>&nbsp;<?php echo $num_doc; ?></td>
+                                <!-- <td class="d-none d-md-table-cell"><?php echo $description; ?></td> -->
+                                <td class="d-none d-md-table-cell"><?php echo $card_name; ?></td>
                                 <td><?php echo $value; ?></td>
-                                <td><?php echo $due_date; ?></td>
-                                <td><?php echo $name_freq; ?></td>
-                                <td><?php echo $bank_name; ?></td>
-                                <td><?php echo $file; ?></td>
-                                
+                                <td><?php echo date("d-m-Y", strtotime($due_date)); ?></td>
+                                <td class="d-none d-md-table-cell"><?php echo date("d-m-Y", strtotime($expected_date)); ?></td>
+                                <!-- <td class="d-none d-md-table-cell"><?php echo $name_freq; ?></td> -->
+                                <td class="d-none d-md-table-cell"><?php echo $name_apm; ?></td>
+                                <td class="d-none d-md-table-cell"><?php echo $bank_name; ?></td>
+                                <!-- <td><?php echo $file; ?></td> -->
+
                                 <td class="text-center">
 
                                     <?php
+
+                                    if (in_array('ViewPay', $this->data['buttonPermission'])) {
+                                        echo "<a href='{$_ENV['URL_ADM']}view-pay/$id_pay' class='btn btn-success btn-sm me-1 mb-1'><i class='fa-solid fa-money-bill-wave'></i> Pagar</a>";
+                                        // echo "<a href='{$_ENV['URL_ADM']}view-pay/$id_pay' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-solid fa-comment-dollar'></i> Pagar</a>";
+                                    }
+
+                                    if (in_array('ViewPay', $this->data['buttonPermission'])) {
+                                        echo "<a href='{$_ENV['URL_ADM']}installments/$id_pay' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-coins'></i> Parcelar</a>";
+                                        // echo "<a href='{$_ENV['URL_ADM']}view-pay/$id_pay' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Parcelar</a>";
+                                    }
 
                                     if (in_array('ViewPay', $this->data['buttonPermission'])) {
                                         echo "<a href='{$_ENV['URL_ADM']}view-pay/$id_pay' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Visualizar</a>";
@@ -103,7 +133,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
 
                                             <input type="hidden" name="partner_id" id="partner_id" value="<?php echo $partner_id ?? ''; ?>">
 
-                                            <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo $id_pay; ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
+                                            <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo $id_pay; ?>)"><i class="fa-regular fa-trash-can"></i>Deletar</button>
 
                                         </form>
                                     <?php } ?>
@@ -153,7 +183,14 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
                     "sSortAscending": ": Ordenar colunas de forma ascendente",
                     "sSortDescending": ": Ordenar colunas de forma descendente"
                 }
-            }
+            },
+
+            "columnDefs": [{
+                    "className": "text-start",
+                    "targets": "_all"
+                } // Define todas as colunas alinhadas à esquerda
+            ]
+
         });
     });
 </script>

@@ -62,7 +62,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
                         foreach ($this->data['users'] as $user) {
                             // Extrai variáveis do array de usuário
                             extract($user);
-                        ?>
+                            ?>
                             <tr>
                                 <th><?php echo $id; ?></th>
                                 <td><?php echo $name; ?></td>
@@ -101,10 +101,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_user');
                                 </td>
                             </tr>
 
-                        <?php
-                        } ?>
-
-
+                        <?php } ?>
                     </tbody>
 
                 </table>

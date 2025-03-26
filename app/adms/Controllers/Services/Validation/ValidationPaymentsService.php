@@ -74,8 +74,8 @@ class ValidationPaymentsService
             }
         }
 
-        echo "Iniciando Validation 77";
-        var_dump($errors);
+        // echo "Iniciando Validation 77";
+        // var_dump($errors);
         return $errors;
 
     }

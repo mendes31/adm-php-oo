@@ -30,9 +30,14 @@ class PaymentsRepository extends DbConnection
     {
         $offset = max(0, ($page - 1) * $limitResult);
 
-        $sql = 'SELECT ap.id AS id_pay,  ap.num_doc,  ap.description, sup.card_name, au.name AS name_user, af.name AS name_freq,
-                    ab.bank_name, acc.name AS name_cc,apm.name AS name_apm, aap.name AS name_aap, ap.file, ap.paid, ap.value,
-                    ap.doc_date, ap.due_date, ap.expected_date, ap.pay_date, ap.created_at, ap.updated_at
+        $sql = 'SELECT ap.id AS id_pay,  ap.num_doc,  ap.description, ap.file, ap.paid, ap.value, ap.doc_date, ap.due_date, ap.expected_date, ap.pay_date, ap.created_at, ap.updated_at,
+                    sup.card_name, 
+                    au.name AS name_user, 
+                    af.name AS name_freq, af.days,
+                    ab.bank_name, 
+                    acc.name AS name_cc,
+                    apm.name AS name_apm, 
+                    aap.name AS name_aap
                 FROM adms_pay ap 
                     LEFT JOIN adms_users au ON au.id = ap.user_launch_id
                     LEFT JOIN adms_frequency af on af.id = ap.frequency_id
@@ -73,7 +78,28 @@ class PaymentsRepository extends DbConnection
      */
     public function getPay(int $id): array|bool
     {
-        $sql = 'SELECT * FROM adms_pay WHERE id = :id LIMIT 1';
+
+        $sql = 'SELECT ap.id AS id_pay, ap.num_doc, ap.description, ap.file, ap.paid, ap.value, ap.doc_date, ap.due_date, ap.expected_date, ap.pay_date, ap.created_at, ap.updated_at,
+                        sup.card_name, 
+                        au.name AS name_user,
+                        au2.name AS user_pay, 
+                        af.name AS name_freq,
+                        af.days,
+                        ab.bank_name, 
+                        acc.name AS name_cc,
+                        apm.name AS name_apm,
+                        aap.name AS name_aap
+                FROM adms_pay ap 
+                    LEFT JOIN adms_users au ON au.id = ap.user_launch_id
+                    LEFT JOIN adms_users au2 ON au2.id = ap.user_pay_id
+                    LEFT JOIN adms_frequency af on af.id = ap.frequency_id
+                    LEFT JOIN adms_supplier sup on sup.id = ap.partner_id
+                    LEFT JOIN adms_bank_accounts ab on ab.id = ap.bank_id
+                    LEFT JOIN adms_cost_center acc on acc.id = ap.cost_center_id
+                    LEFT JOIN adms_payment_method apm on apm.id = ap.pay_method_id
+                    LEFT JOIN adms_accounts_plan aap on aap.id = ap.account_id
+                WHERE ap.id = :id LIMIT 1';
+
         $stmt = $this->getConnection()->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -91,7 +117,7 @@ class PaymentsRepository extends DbConnection
     {
         $name = $this->getSupplierName($data['partner_id']);
 
-        
+
         try {
             $sql = 'INSERT INTO adms_pay (description, num_doc, file, partner_id, bank_id, cost_center_id, 
                     user_launch_id, frequency_id, pay_method_id, account_id, value, original_value,
@@ -119,10 +145,13 @@ class PaymentsRepository extends DbConnection
             $stmt->bindValue(':pay_method_id', $data['pay_method_id'] ?? null, PDO::PARAM_INT);
             $stmt->bindValue(':account_id', $data['account_id'] ?? null, PDO::PARAM_INT);
 
-            $value = number_format((float) $data['value'], 2, '.', '');
+            // $value = number_format((float) $data['value'], 2, '.', '');
+            // $stmt->bindParam(':value', $value, PDO::PARAM_STR);
+            $value = isset($data['value']) ? str_replace(',', '.', $data['value']) : '0.00';
+            $value = number_format((float) $value, 2, '.', '');
             $stmt->bindParam(':value', $value, PDO::PARAM_STR);
 
-            $value = number_format((float) $data['value'], 2, '.', '');
+            // $value = number_format((float) $data['value'], 2, '.', '');
             $stmt->bindParam(':original_value', $value, PDO::PARAM_STR);
 
             $total_value_old = isset($data['total_value_old']) ? (float) $data['total_value_old'] : 0.00;
@@ -178,12 +207,12 @@ class PaymentsRepository extends DbConnection
      */
     public function updatePay(array $data): bool
     {
+        $name = $this->getSupplierName($data['partner_id']);
         try {
-            // QUERY para atualizar Conta
             $sql = 'UPDATE adms_pay 
                     SET description = :description, num_doc = :num_doc, partner_id = :partner_id, bank_id = :bank_id, cost_center_id = :cost_center_id, 
-                    user_pay_id = :user_pay_id, frequency_id = :frequency_id, pay_method_id = :pay_method_id, account_id = :account_id, value = :value,
-                    /*subtotal*/, amount_paid = :amount_paid, discount_value = :discount_value, fine_value = :fine_value, interest = :interest, 
+                     frequency_id = :frequency_id, pay_method_id = :pay_method_id, account_id = :account_id, value = :value, original_value = :original_value
+                    amount_paid = :amount_paid, discount_value = :discount_value, fine_value = :fine_value, interest = :interest, 
                     residual_total = :residual_total, due_date = :due_date, expected_date = :expected_date, updated_at = :updated_at';
 
             // Condição para indicar qual registro editar
@@ -192,31 +221,24 @@ class PaymentsRepository extends DbConnection
             // Preparar a QUERY
             $stmt = $this->getConnection()->prepare($sql);
 
-            $stmt->bindValue(':description', $data['description'], PDO::PARAM_STR);
+            $description = !empty($data['description']) ? $data['description'] : $name;
+            $stmt->bindValue(':description', $description, PDO::PARAM_STR);
 
             $stmt->bindValue(':num_doc', $data['num_doc'], PDO::PARAM_STR);
 
             $stmt->bindValue(':partner_id', $data['partner_id'] ?? null, PDO::PARAM_INT);
             $stmt->bindValue(':bank_id', $data['bank_id'] ?? null, PDO::PARAM_INT);
             $stmt->bindValue(':cost_center_id', $data['cost_center_id'] ?? null, PDO::PARAM_INT);
-            $stmt->bindValue(':user_pay_id', $_SESSION['user_id'], PDO::PARAM_INT);
+            $stmt->bindValue(':user_launch_id', $_SESSION['user_id'], PDO::PARAM_INT);
             $stmt->bindValue(':frequency_id', $data['frequency_id'] ?? null, PDO::PARAM_INT);
             $stmt->bindValue(':pay_method_id', $data['pay_method_id'] ?? null, PDO::PARAM_INT);
             $stmt->bindValue(':account_id', $data['account_id'] ?? null, PDO::PARAM_INT);
 
-            $value = number_format((float) $data['value'], 2, '.', '');
+            $value = isset($data['value']) ? str_replace(',', '.', $data['value']) : '0.00';
+            $value = number_format((float) $value, 2, '.', '');
             $stmt->bindParam(':value', $value, PDO::PARAM_STR);
 
-            $value = number_format((float) $data['value'], 2, '.', '');
             $stmt->bindParam(':original_value', $value, PDO::PARAM_STR);
-
-            $total_value_old = isset($data['total_value_old']) ? (float) $data['total_value_old'] : 0.00;
-            $total_value_old = number_format($total_value_old, 2, '.', '');
-            $stmt->bindParam(':total_value_old', $total_value_old, PDO::PARAM_STR);
-
-            $subtotal = isset($data['subtotal']) ? (float) $data['subtotal'] : 0.00;
-            $subtotal = number_format($subtotal, 2, '.', '');
-            $stmt->bindParam(':subtotal', $subtotal, PDO::PARAM_STR);
 
             $amount_paid = isset($data['amount_paid']) ? (float) $data['amount_paid'] : 0.00;
             $amount_paid = number_format($amount_paid, 2, '.', '');
@@ -238,10 +260,10 @@ class PaymentsRepository extends DbConnection
             $residual_total = number_format($residual_total, 2, '.', '');
             $stmt->bindParam(':residual_total', $residual_total, PDO::PARAM_STR);
 
-            $stmt->bindValue(':doc_date', date("Y-m-d H:i:s"));
+            // $stmt->bindValue(':doc_date', date("Y-m-d H:i:s"));
             $stmt->bindValue(':due_date', $data['due_date'] ? date("Y-m-d H:i:s", strtotime($data['due_date'])) : null, PDO::PARAM_STR);
             $stmt->bindValue(':expected_date', $data['expected_date'] ? date("Y-m-d H:i:s", strtotime($data['expected_date'])) : null, PDO::PARAM_STR);
-            $stmt->bindValue(':created_at', date("Y-m-d H:i:s"));
+            $stmt->bindValue(':updated_at', date("Y-m-d H:i:s"));
 
             return $stmt->execute();
         } catch (Exception $e) {
@@ -298,5 +320,4 @@ class PaymentsRepository extends DbConnection
 
         return $stmt->fetchColumn();
     }
-    
 }

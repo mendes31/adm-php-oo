@@ -7,14 +7,14 @@ use App\adms\Helpers\CSRFHelper;
 <div class="container-fluid px-4">
 
     <div class="mb-1 d-flex flex-column flex-sm-row gap-2">
-        <h2 class="mt-3">Banco</h2>
+        <h2 class="mt-3">Conta</h2>
 
         <ol class="breadcrumb mb-3 mt-0 mt-sm-3 ms-auto">
             <li class="breadcrumb-item">
                 <a href="<?php echo $_ENV['URL_ADM']; ?>dashboard" class="text-decoration-none">Dashboard</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="<?php echo $_ENV['URL_ADM']; ?>list-banks" class="text-decoration-none">Bancos</a>
+                <a href="<?php echo $_ENV['URL_ADM']; ?>list-payments" class="text-decoration-none">Contas</a>
             </li>
             <li class="breadcrumb-item">Editar</li>
 
@@ -29,14 +29,14 @@ use App\adms\Helpers\CSRFHelper;
             <span>Editar</span>
 
             <span class="ms-auto d-sm-flex flex-row">
-            <?php
-                if (in_array('ListBanks', $this->data['buttonPermission'])) {
-                    echo "<a href='{$_ENV['URL_ADM']}list-banks' class='btn btn-info btn-sm me-1 mb-1'><i class='fa-solid fa-list'></i> Listar</a> ";
+                <?php
+                if (in_array('ListPayments', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}list-payments' class='btn btn-info btn-sm me-1 mb-1'><i class='fa-solid fa-list'></i> Listar</a> ";
                 }
 
                 $id = ($this->data['form']['id'] ?? '');
-                if (in_array('ViewBank', $this->data['buttonPermission'])) {
-                    echo "<a href='{$_ENV['URL_ADM']}view-bank/$id' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Visualizar</a> ";
+                if (in_array('ViewPay', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}view-pay/$id' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Visualizar</a> ";
                 }
                 ?>
             </span>
@@ -47,31 +47,197 @@ use App\adms\Helpers\CSRFHelper;
 
             <?php include './app/adms/Views/partials/alerts.php'; ?>
 
+            <!-- Formulário para cadastrar uma nova Conta à Pagar -->
             <form action="" method="POST" class="row g-3">
 
-                <input type="hidden" name="csrf_token" value="<?php echo CSRFHelper::generateCSRFToken('form_update_banks'); ?>">
+                <input type="hidden" name="csrf_token" value="<?php echo CSRFHelper::generateCSRFToken('form_update_pay'); ?>">
 
                 <input type="hidden" name="id" id="id" value="<?php echo $this->data['form']['id'] ?? ''; ?>">
 
-                <div class="col-6">
-                    <label for="bank_name" class="form-label">Nome</label>
-                    <input type="text" name="bank_name" class="form-control" id="bank_name" placeholder="Nome do banco" value="<?php echo $this->data['form']['bank_name'] ?? ''; ?>">
+                <div class="col-4">
+                    <label for="num_doc" class="form-label">Nº Documento</label>
+                    <input type="text" name="num_doc" class="form-control" id="num_doc" placeholder="Nº Documento" value="<?php echo $this->data['form']['num_doc'] ?? ''; ?>">
                 </div>
 
-                <div class="col-6">
-                    <label for="bank" class="form-label">Nome</label>
-                    <input type="text" name="bank" class="form-control" id="bank" placeholder="Banco" value="<?php echo $this->data['form']['bank'] ?? ''; ?>">
+
+                <div class="col-md-4">
+                    <label for="partner_id" class="form-label">Fornecedor</label>
+                    <select name="partner_id" class="form-select" id="partner_id">
+                        <option value="">Selecione um Fornecedor</option>
+                        <?php
+                        if ($this->data['listSuppliers'] ?? false) {
+                            foreach ($this->data['listSuppliers'] as $listSupplier) {
+                                extract($listSupplier);
+
+                                // Se existir um valor salvo no banco, ele será marcado como selecionado
+                                $selected = (isset($this->data['form']['partner_id']) && $this->data['form']['partner_id'] == $id)
+                                    ? 'selected'
+                                    : '';
+
+                                echo "<option value='$id' $selected>$card_name</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                    <!-- <select name="partner_id" class="form-select" id="partner_id">
+                        <option value="" selected>Selecione um Fornecedor</option>
+                        <?php
+                        // Verificar se existe fornecedor
+                        if ($this->data['listSuppliers'] ?? false) {
+                            // percorrer o array de fornecedor
+                            foreach ($this->data['listSuppliers'] as $listSupplier) {
+                                // Extrari as variáveis do array
+                                extract($listSupplier);
+                                // Verificar se deve manter selecionado a opção
+                                $selected = isset($this->data['form']['id']) && $this->data['form']['id'] == $id ? 'selected' : '';
+                                echo "<option value='$id' $selected >$card_name</option>";
+                            }
+                        }
+                        ?>
+                    </select> -->
                 </div>
 
-                <div class="col-6">
-                    <label for="account" class="form-label">Nome</label>
-                    <input type="text" name="account" class="form-control" id="account" placeholder="Conta" value="<?php echo $this->data['form']['account'] ?? ''; ?>">
+                <div class="col-4">
+                    <label for="value" class="form-label">Valor</label>
+                    <input type="text" name="value" class="form-control" id="value" placeholder="Valor"
+                        value="<?php echo $this->data['form']['value'] ?? ''; ?>">
                 </div>
 
-                <div class="col-6">
-                    <label for="agency" class="form-label">Nome</label>
-                    <input type="text" name="agency" class="form-control" id="agency" placeholder="Nome do banco" value="<?php echo $this->data['form']['agency'] ?? ''; ?>">
+                <div class="col-3">
+                    <label for="due_date" class="form-label">Vencimento</label>
+                    <input type="date" name="due_date" class="form-control" id="due_date" placeholder="Fornecedor" value="<?php echo $this->data['form']['due_date'] ?? ''; ?>">
                 </div>
+
+                <div class="col-3">
+                    <label for="expected_date" class="form-label">Previsão Pagamento</label>
+                    <input type="date" name="expected_date" class="form-control" id="expected_date" placeholder="Fornecedor" value="<?php echo $this->data['form']['expected_date'] ?? ''; ?>">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="frequency_id" class="form-label">Frequência</label>
+                    <select name="frequency_id" class="form-select" id="frequency_id">
+                        <!-- <option value="" selected>Selecione uma Frequência</option> -->
+                        <?php
+                        // Verificar se existe frequencias
+                        if ($this->data['listFrequencies'] ?? false) {
+                            // percorrer o array de frequencias
+                            foreach ($this->data['listFrequencies'] as $listFrequency) {
+                                // Extrari as variáveis do array
+                                extract($listFrequency);
+                                // Verificar se deve manter selecionado a opção
+                                $selected = isset($this->data['form']['id']) && $this->data['form']['id'] == $id ? 'selected' : '';
+                                echo "<option value='$id' $selected >$name</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+
+
+                <div class="col-md-3">
+                    <label for="pay_method_id" class="form-label">Forma de Pagamento</label>
+                    <select name="pay_method_id" class="form-select" id="pay_method_id">
+                        <option value="" selected>Selecione uma Forma de Pagamento</option>
+                        <?php
+                        // Verificar se existe forma de pagametno
+                        if ($this->data['listPaymentMethods'] ?? false) {
+                            // percorrer o array de forma de pagametno
+                            foreach ($this->data['listPaymentMethods'] as $listPaymentMethod) {
+                                // Extrari as variáveis do array
+                                extract($listPaymentMethod);
+                                // Verificar se deve manter selecionado a opção
+                                $selected = isset($this->data['form']['id']) && $this->data['form']['id'] == $id ? 'selected' : '';
+                                echo "<option value='$id' $selected >$name</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+
+
+                <!-- <div class="col-4">
+                    <label for="account_id" class="form-label">Plano de Contas</label>
+                    <input type="text" name="account_id" class="form-control" id="account_id" placeholder="Frequencia" value="<?php echo $this->data['form']['account_id'] ?? ''; ?>">
+                </div> -->
+
+                <div class="col-md-4">
+                    <label for="account_id" class="form-label">Plano de Contas</label>
+                    <select name="account_id" class="form-select" id="account_id">
+                        <option value="" selected>Selecione o Plano de Contas</option>
+                        <?php
+                        // Verificar se existe plano de contas
+                        if ($this->data['listAccountsPlan'] ?? false) {
+                            // percorrer o array de plano de contas
+                            foreach ($this->data['listAccountsPlan'] as $listAccountPlan) {
+                                // Extrari as variáveis do array
+                                extract($listAccountPlan);
+                                // Verificar se deve manter selecionado a opção
+                                $selected = isset($this->data['form']['id']) && $this->data['form']['id'] == $id ? 'selected' : '';
+                                echo "<option value='$id' $selected >$name</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="cost_center_id" class="form-label">Centro de Custo</label>
+                    <select name="cost_center_id" class="form-select" id="cost_center_id">
+                        <option value="" selected>Selecione o Centro de Custo</option>
+                        <?php
+                        // Verificar se existe centros de custo
+                        if ($this->data['listCostCenters'] ?? false) {
+                            // percorrer o array de centros de custo
+                            foreach ($this->data['listCostCenters'] as $listCostCenter) {
+                                // Extrari as variáveis do array
+                                extract($listCostCenter);
+                                // Verificar se deve manter selecionado a opção
+                                $selected = isset($this->data['form']['id']) && $this->data['form']['id'] == $id ? 'selected' : '';
+                                echo "<option value='$id' $selected >$name</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="bank_id" class="form-label">Banco Saída</label>
+                    <select name="bank_id" class="form-select" id="bank_id">
+                        <option value="" selected>Selecione a Origem da Saída</option>
+                        <?php
+                        // Verificar se existe banco
+                        if ($this->data['listBanks'] ?? false) {
+                            // percorrer o array de banco
+                            foreach ($this->data['listBanks'] as $listBank) {
+                                // Extrari as variáveis do array
+                                extract($listBank);
+                                // Verificar se deve manter selecionado a opção
+                                $selected = isset($this->data['form']['id']) && $this->data['form']['id'] == $id ? 'selected' : '';
+                                echo "<option value='$id' $selected >$bank_name</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <div class="col-4">
+                    <label for="description" class="form-label">Descrição - Observações</label>
+                    <input type="text" name="description" class="form-control" id="description" placeholder="Observações" value="<?php echo $this->data['form']['description'] ?? ''; ?>">
+                </div>
+
+
+                <!-- <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Foto</label>
+                        <input type="file" name="file" onChange="carregarImg();" id="arquivo">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div id="divImg">
+                        <img src="<?php echo $_ENV['URL_ADM'] ?>public/adms/image/contas/sem-foto.png" width="100px" id="target">
+                    </div>
+                </div> -->
+
 
 
                 <div class="col-12">

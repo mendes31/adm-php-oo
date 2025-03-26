@@ -58,17 +58,13 @@ use App\adms\Helpers\CSRFHelper;
                 <div class="col-md-4">
                     <label for="partner_id" class="form-label">Fornecedor</label>
                     <select name="partner_id" class="form-select" id="partner_id">
-                        <option value="" selected>Selecione</option>
+                        <option value="" selected>Selecione um Fornecedor</option>
                         <?php
-                        // Verificar se existe fornecedor
                         if ($this->data['listSuppliers'] ?? false) {
-                            // percorrer o array de fornecedor
                             foreach ($this->data['listSuppliers'] as $listSupplier) {
-                                // Extrari as variáveis do array
                                 extract($listSupplier);
-                                // Verificar se deve manter selecionado a opção
-                                $selected = isset($this->data['form']['id']) && $this->data['form']['id'] == $id ? 'selected' : '';
-                                echo "<option value='$id' $selected >$card_name</option>";
+                                $selected = isset($this->data['form']['partner_id']) && $this->data['form']['partner_id'] == $id ? 'selected' : '';
+                                echo "<option value='$id' $selected>$card_name</option>";
                             }
                         }
                         ?>
@@ -77,7 +73,8 @@ use App\adms\Helpers\CSRFHelper;
 
                 <div class="col-4">
                     <label for="value" class="form-label">Valor</label>
-                    <input type="text" name="value" class="form-control" id="value" placeholder="Valor" value="<?php echo $this->data['form']['value'] ?? ''; ?>">
+                    <input type="text" name="value" class="form-control" id="value" placeholder="Valor" 
+                        value="<?php echo $this->data['form']['value'] ?? ''; ?>">
                 </div>
 
                 <div class="col-3">
@@ -90,15 +87,10 @@ use App\adms\Helpers\CSRFHelper;
                     <input type="date" name="expected_date" class="form-control" id="expected_date" placeholder="Fornecedor" value="<?php echo $this->data['form']['expected_date'] ?? ''; ?>">
                 </div>
 
-                <!-- <div class="col-4">
-                    <label for="frequency_id" class="form-label">Frequência</label>
-                    <input type="text" name="frequency_id" class="form-control" id="frequency_id" placeholder="Frequencia" value="<?php echo $this->data['form']['frequency_id'] ?? ''; ?>">
-                </div> -->
-
                 <div class="col-md-3">
                     <label for="frequency_id" class="form-label">Frequência</label>
                     <select name="frequency_id" class="form-select" id="frequency_id">
-                        <option value="" selected>Selecione</option>
+                        <!-- <option value="" selected>Selecione uma Frequência</option> -->
                         <?php
                         // Verificar se existe frequencias
                         if ($this->data['listFrequencies'] ?? false) {
@@ -115,22 +107,18 @@ use App\adms\Helpers\CSRFHelper;
                     </select>
                 </div>
 
-                <!-- <div class="col-3">
-                    <label for="pay_method_id" class="form-label">Forma de Pagamento</label>
-                    <input type="text" name="pay_method_id" class="form-control" id="pay_method_id" placeholder="Forma de Pagamento" value="<?php echo $this->data['form']['pay_method_id'] ?? ''; ?>">
-                </div> -->
 
                 <div class="col-md-3">
                     <label for="pay_method_id" class="form-label">Forma de Pagamento</label>
                     <select name="pay_method_id" class="form-select" id="pay_method_id">
-                        <option value="" selected>Selecione</option>
+                        <option value="" selected>Selecione uma Forma de Pagamento</option>
                         <?php
                         // Verificar se existe forma de pagametno
                         if ($this->data['listPaymentMethods'] ?? false) {
                             // percorrer o array de forma de pagametno
-                            foreach ($this->data['listPaymentMethods'] as $listFrequency) {
+                            foreach ($this->data['listPaymentMethods'] as $listPaymentMethod) {
                                 // Extrari as variáveis do array
-                                extract($listFrequency);
+                                extract($listPaymentMethod);
                                 // Verificar se deve manter selecionado a opção
                                 $selected = isset($this->data['form']['id']) && $this->data['form']['id'] == $id ? 'selected' : '';
                                 echo "<option value='$id' $selected >$name</option>";
@@ -149,7 +137,7 @@ use App\adms\Helpers\CSRFHelper;
                 <div class="col-md-4">
                     <label for="account_id" class="form-label">Plano de Contas</label>
                     <select name="account_id" class="form-select" id="account_id">
-                        <option value="" selected>Selecione</option>
+                        <option value="" selected>Selecione o Plano de Contas</option>
                         <?php
                         // Verificar se existe plano de contas
                         if ($this->data['listAccountsPlan'] ?? false) {
@@ -166,16 +154,10 @@ use App\adms\Helpers\CSRFHelper;
                     </select>
                 </div>
 
-
-                <!-- <div class="col-4">
-                    <label for="cost_center_id" class="form-label">Centro de Custo</label>
-                    <input type="text" name="cost_center_id" class="form-control" id="cost_center_id" placeholder="Frequencia" value="<?php echo $this->data['form']['cost_center_id'] ?? ''; ?>">
-                </div> -->
-
                 <div class="col-md-4">
                     <label for="cost_center_id" class="form-label">Centro de Custo</label>
                     <select name="cost_center_id" class="form-select" id="cost_center_id">
-                        <option value="" selected>Selecione</option>
+                        <option value="" selected>Selecione o Centro de Custo</option>
                         <?php
                         // Verificar se existe centros de custo
                         if ($this->data['listCostCenters'] ?? false) {
@@ -192,15 +174,10 @@ use App\adms\Helpers\CSRFHelper;
                     </select>
                 </div>
 
-                <!-- <div class="col-4">
-                    <label for="bank_id" class="form-label">Banco - Saida</label>
-                    <input type="text" name="bank_id" class="form-control" id="bank_id" placeholder="Selecione o local da saída" value="<?php echo $this->data['form']['bank_id'] ?? ''; ?>">
-                </div> -->
-
                 <div class="col-md-4">
                     <label for="bank_id" class="form-label">Banco Saída</label>
                     <select name="bank_id" class="form-select" id="bank_id">
-                        <option value="" selected>Selecione</option>
+                        <option value="" selected>Selecione a Origem da Saída</option>
                         <?php
                         // Verificar se existe banco
                         if ($this->data['listBanks'] ?? false) {
@@ -223,10 +200,7 @@ use App\adms\Helpers\CSRFHelper;
                 </div>
 
 
-
-
-
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                     <div class="form-group">
                         <label>Foto</label>
                         <input type="file" name="file" onChange="carregarImg();" id="arquivo">
@@ -236,7 +210,7 @@ use App\adms\Helpers\CSRFHelper;
                     <div id="divImg">
                         <img src="<?php echo $_ENV['URL_ADM'] ?>public/adms/image/contas/sem-foto.png" width="100px" id="target">
                     </div>
-                </div>
+                </div> -->
 
 
 
@@ -265,27 +239,27 @@ use App\adms\Helpers\CSRFHelper;
         // <?php echo $_ENV['URL_ADM'] ?>public/adms/image/contas/sem-foto.png
 
         if (resultado[1] === 'pdf') {
-            $('#target').attr('src', "<?php echo $_ENV['URL_ADM'] ?>public/adms/image/contas/pdf.png");
+            $('#target').attr('src', "<?php echo $_ENV['URL_ADM'] ?>public/adms/image/pdf.png");
             return;
         }
 
         if (resultado[1] === 'rar' || resultado[1] === 'zip') {
-            $('#target').attr('src', "<?php echo $_ENV['URL_ADM'] ?>public/adms/image/contas/rar.png");
+            $('#target').attr('src', "<?php echo $_ENV['URL_ADM'] ?>public/adms/image/rar.png");
             return;
         }
 
         if (resultado[1] === 'doc' || resultado[1] === 'docx' || resultado[1] === 'txt') {
-            $('#target').attr('src', "<?php echo $_ENV['URL_ADM'] ?>public/adms/image/contas/word.png");
+            $('#target').attr('src', "<?php echo $_ENV['URL_ADM'] ?>public/adms/image/word.png");
             return;
         }
 
         if (resultado[1] === 'xlsx' || resultado[1] === 'xlsm' || resultado[1] === 'xls') {
-            $('#target').attr('src', "<?php echo $_ENV['URL_ADM'] ?>public/adms/image/contas/excel.png");
+            $('#target').attr('src', "<?php echo $_ENV['URL_ADM'] ?>public/adms/image/excel.png");
             return;
         }
 
         if (resultado[1] === 'xml') {
-            $('#target').attr('src', "<?php echo $_ENV['URL_ADM'] ?>public/adms/image/contas/xml.png");
+            $('#target').attr('src', "<?php echo $_ENV['URL_ADM'] ?>public/adms/image/xml.png");
             return;
         }
 

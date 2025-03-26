@@ -217,9 +217,9 @@ class FrequencyRepository extends DbConnection
     public function getAllFrequencySelect(): array
     {
         // QUERY para recuperar os registros do banco de dados
-        $sql = 'SELECT id, name 
+        $sql = 'SELECT id, name, days
                 FROM adms_frequency                
-                ORDER BY name ASC';
+                ORDER BY id ASC';
 
         // Preparar a QUERY
         $stmt = $this->getConnection()->prepare($sql);

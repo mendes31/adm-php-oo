@@ -3,21 +3,21 @@
 use App\adms\Helpers\CSRFHelper;
 
 // Gera o token CSRF para proteger o formulário de deleção
-$csrf_token = CSRFHelper::generateCSRFToken('form_delete_bank');
+$csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
 
 ?>
 
 <div class="container-fluid px-4">
 
     <div class="mb-1 d-flex flex-column flex-sm-row gap-2">
-        <h2 class="mt-3">Banco</h2>
+        <h2 class="mt-3">Conta</h2>
 
         <ol class="breadcrumb mb-3 mt-0 mt-sm-3 ms-auto">
             <li class="breadcrumb-item">
                 <a href="<?php echo $_ENV['URL_ADM']; ?>dashboard" class="text-decoration-none">Dashboard</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="<?php echo $_ENV['URL_ADM']; ?>list-banks" class="text-decoration-none">Bancos</a>
+                <a href="<?php echo $_ENV['URL_ADM']; ?>list-payments" class="text-decoration-none">Contas</a>
             </li>
             <li class="breadcrumb-item">Visualizar</li>
 
@@ -32,31 +32,31 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_bank');
 
             <span class="ms-sm-auto d-sm-flex flex-row">
                 <?php
-                if (in_array('ListBanks', $this->data['buttonPermission'])) {
-                    echo "<a href='{$_ENV['URL_ADM']}list-banks' class='btn btn-info btn-sm me-1 mb-1'><i class='fa-solid fa-list'></i> Listar</a> ";
+                if (in_array('ListPayments', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}list-payments' class='btn btn-info btn-sm me-1 mb-1'><i class='fa-solid fa-list'></i> Listar</a> ";
                 }
 
-                $id = ($this->data['banks']['id'] ?? '');
+                $id = ($this->data['pay']['id_pay'] ?? '');
 
-                if (in_array('UpdateBank', $this->data['buttonPermission'])) {
-                    echo "<a href='{$_ENV['URL_ADM']}update-bank/$id' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-pen-to-square'></i> Editar</a>";
+                if (in_array('UpdatePay', $this->data['buttonPermission'])) {
+                    echo "<a href='{$_ENV['URL_ADM']}update-pay/$id' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-pen-to-square'></i> Editar</a>";
                 }
-                if (in_array('DeleteBank', $this->data['buttonPermission'])) {
+                if (in_array('DeletePay', $this->data['buttonPermission'])) {
                 ?>
 
                     <!-- Formulário para deletar nível de acesso -->
-                    <form id="formDelete<?php echo ($this->data['banks']['id'] ?? ''); ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-bank" method="POST">
+                    <form id="formDelete<?php echo ($this->data['pay']['id_pay'] ?? ''); ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-pay" method="POST">
 
                         <!-- Campo oculto para o token CSRF -->
                         <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
 
-                        <!-- Campo oculto para o ID do nível de acesso -->
-                        <input type="hidden" name="id" id="id" value="<?php echo ($this->data['banks']['id'] ?? ''); ?>">
-
-                        <input type="hidden" name="bank_name" id="id" value="<?php echo ($this->data['banks']['bank_name'] ?? ''); ?>">
+                        <!-- Campo oculto para o ID da conta -->
+                        <input type="hidden" name="id" id="id" value="<?php echo ($this->data['pay']['id_pay'] ?? ''); ?>">
+                        <!-- Campo oculto para o num_doc da conta -->
+                        <input type="hidden" name="num_doc" id="num_doc" value="<?php echo ($this->data['pay']['num_doc'] ?? ''); ?>">
 
                         <!-- Botão para submeter o formulário -->
-                        <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo ($this->data['banks']['id'] ?? ''); ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
+                        <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo ($this->data['pay']['id_pay'] ?? ''); ?>)"><i class="fa-regular fa-trash-can"></i> Deletar</button>
 
                     </form>
                 <?php } ?>
@@ -70,28 +70,66 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_bank');
             include './app/adms/Views/partials/alerts.php';
 
             // Verifica se há usuários no array
-            if (isset($this->data['banks'])) {
+            if (isset($this->data['pay'])) {
 
-                // Extrai variáveis do array $this->data['banks'] para fácil acesso
-                extract($this->data['banks']);
+                // Extrai variáveis do array $this->data['pay'] para fácil acesso
+                extract($this->data['pay']);
             ?>
 
                 <dl class="row">
+                    
+                <!-- <td><?php echo $file; ?></td> -->
 
                     <dt class="col-sm-3">ID: </dt>
-                    <dd class="col-sm-9"><?php echo $id; ?></dd>
+                    <dd class="col-sm-9"><?php echo $id_pay; ?></dd>
 
-                    <dt class="col-sm-3">Nome: </dt>
+                    <dt class="col-sm-3">Data: </dt>
+                    <dd class="col-sm-9"><?php echo date("d-m-Y", strtotime($doc_date)); ?></dd>
+
+                    <dt class="col-sm-3">Nº Doc: </dt>
+                    <dd class="col-sm-9"><?php echo $num_doc; ?></dd>
+
+                    <dt class="col-sm-3">Descrição: </dt>
+                    <dd class="col-sm-9"><?php echo $description; ?></dd>                    
+
+                    <dt class="col-sm-3">Fornecedor: </dt>
+                    <dd class="col-sm-9"><?php echo $card_name; ?></dd>
+
+                    <dt class="col-sm-3">Valor: </dt>
+                    <dd class="col-sm-9"><?php echo $value; ?></dd>
+
+                    <dt class="col-sm-3">Vencimento: </dt>
+                    <dd class="col-sm-9"><?php echo date("d-m-Y", strtotime($due_date)); ?></dd>
+
+                    <dt class="col-sm-3">Previsão Pgto: </dt>
+                    <dd class="col-sm-9"><?php echo date("d-m-Y", strtotime($expected_date)); ?></dd>
+
+                    <dt class="col-sm-3">Frequência: </dt>
+                    <dd class="col-sm-9"><?php echo $name_freq; ?></dd>
+
+                    <dt class="col-sm-3">Centro de Custo: </dt>
+                    <dd class="col-sm-9"><?php echo $name_cc; ?></dd>
+
+                    <dt class="col-sm-3">Plano de Contas: </dt>
+                    <dd class="col-sm-9"><?php echo $name_aap; ?></dd>
+
+                    <dt class="col-sm-3">Forma Pgto: </dt>
+                    <dd class="col-sm-9"><?php echo $name_apm; ?></dd>                    
+
+                    <dt class="col-sm-3">Saída: </dt>
                     <dd class="col-sm-9"><?php echo $bank_name; ?></dd>
 
-                    <dt class="col-sm-3">Banco: </dt>
-                    <dd class="col-sm-9"><?php echo $bank; ?></dd>
+                    <dt class="col-sm-3">Usuário Lançamento: </dt>
+                    <dd class="col-sm-9"><?php echo $name_user; ?></dd>
 
-                    <dt class="col-sm-3">Conta: </dt>
-                    <dd class="col-sm-9"><?php echo $account; ?></dd>
+                    <dt class="col-sm-3">Usuário Pagamento: </dt>
+                    <dd class="col-sm-9"><?php echo $user_pay; ?></dd> 
 
-                    <dt class="col-sm-3">Agência: </dt>
-                    <dd class="col-sm-9"><?php echo $agency; ?></dd>
+                    <dt class="col-sm-3">Pago: </dt>
+                    <dd class="col-sm-9"><?php echo (!empty($paid) && $paid != 0) ? "Sim" : "Não"; ?></dd>
+
+                    <dt class="col-sm-3">Data Pgto: </dt>
+                    <dd class="col-sm-9"><?php echo !empty($pay_date) ? date("d/m/Y H:i:s", strtotime($pay_date)) : "Data não informada"; ?></dd>
 
                     <dt class="col-sm-3">Cadastrado: </dt>
                     <dd class="col-sm-9"><?php echo ($created_at ? date('d/m/Y H:i:s', strtotime($created_at)) : ""); ?></dd>
