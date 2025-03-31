@@ -3,7 +3,7 @@
 namespace App\adms\Controllers\pay;
 
 use App\adms\Controllers\Services\PageLayoutService;
-use App\adms\Controllers\Services\Validation\ValidationPaymentsService;
+use App\adms\Controllers\Services\Validation\ValidationPayService;
 use App\adms\Helpers\CSRFHelper;
 use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Repository\AccountPlanRepository;
@@ -12,7 +12,7 @@ use App\adms\Models\Repository\CostCentersRepository;
 use App\adms\Models\Repository\FrequencyRepository;
 use App\adms\Models\Repository\LogsRepository;
 use App\adms\Models\Repository\PaymentMethodsRepository;
-use App\adms\Models\Repository\PaymentsRepository;
+use App\adms\Models\Repository\PayRepository;
 use App\adms\Models\Repository\SupplierRepository;
 use App\adms\Views\Services\LoadViewService;
 
@@ -26,13 +26,13 @@ use App\adms\Views\Services\LoadViewService;
  * @package App\adms\Controllers\pay
  * @author Rafael Mendes
  */
-class UpdatePay
+class Payment
 {
     /** @var array|string|null $data Dados que devem ser enviados para a VIEW */
     private array|string|null $data = null;
 
-     /** @var array|string|null $data Dados que devem ser enviados para a VIEW */
-     private array|string|null $dataBD = null;
+    /** @var array|string|null $data Dados que devem ser enviados para a VIEW */
+    private array|string|null $dataBD = null;
 
     /**
      * Editar o Conta.
@@ -50,14 +50,17 @@ class UpdatePay
         $this->data['form'] = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
         // Validar o CSRF token e a existência do ID da conta
-        if (isset($this->data['form']['csrf_token']) && 
-            CSRFHelper::validateCSRFToken('form_update_pay', $this->data['form']['csrf_token'])) 
-        {
+        if (isset($this->data['form']['csrf_token']) && CSRFHelper::validateCSRFToken('form_payment', $this->data['form']['csrf_token'])) {
             // Editar o Conta
-            $this->editPay();
+            // Recuperar o registro do Conta
+            $viewPay = new PayRepository();
+
+            $this->dataBD = $viewPay->getPay((int) $id);
+
+            $this->downPay();
         } else {
             // Recuperar o registro do Conta
-            $viewPay = new PaymentsRepository();
+            $viewPay = new PayRepository();
             $this->data['form'] = $viewPay->getPay((int) $id);
 
             // Verificar se a Conta foi encontrado
@@ -106,7 +109,7 @@ class UpdatePay
         // Instanciar o repositório para recuperar os bancos
         $listBanks = new BanksRepository();
         $this->data['listBanks'] = $listBanks->getAllBanksSelect();
-        
+
         // Definir o título da página
         // Ativar o item de menu
         // Apresentar ou ocultar botão 
@@ -120,7 +123,7 @@ class UpdatePay
         $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW
-        $loadView = new LoadViewService("adms/Views/pay/update", $this->data);
+        $loadView = new LoadViewService("adms/Views/pay/payment", $this->data);
         $loadView->loadView();
     }
 
@@ -133,46 +136,67 @@ class UpdatePay
      * 
      * @return void
      */
-    private function editPay(): void
+    private function downPay(): void
     {
         // Validar os dados do formulário
-        $validationPay = new ValidationPaymentsService();
-        $this->data['errors'] = $validationPay->validate($this->data['form']);
+        $validationPay = new ValidationPayService();
+        $this->data['errors'] = $validationPay->validate($this->dataBD, $this->data['form']);
+
+        var_dump($this->data['form']);
 
         // Se houver erros de validação, recarregar a visualização
         if (!empty($this->data['errors'])) {
-            
+
             $this->viewPay();
             return;
         }
 
+        $resultOriginalValue = $validationPay->validateOriginalValue($this->dataBD, $this->data['form']);
         // Atualizar a Conta
-        $payUpdate = new PaymentsRepository();
+        $payUpdate = new PayRepository();
 
-        $result = $payUpdate->updatePay($this->data['form']);
+        if ($resultOriginalValue) {
+
+            $result = $payUpdate->updatePay($this->dataBD, $this->data['form']);
+            
+            var_dump($this->data['form']);
+
+        } else {
+            $result = $payUpdate->updatePayResidue($this->dataBD, $this->data['form']);
+            if ($result) {
+
+                $resultPartial = $payUpdate->createPartialValue($this->dataBD, $this->data['form']);
+
+                if ($resultPartial) {
+                    $resultMovement = $payUpdate->createMovement($this->dataBD, $this->data['form']);
+                }
+            }
+            $_SESSION['success'] = "Conta paga/baixada com sucesso!";
+            header("Location: {$_ENV['URL_ADM']}view-pay/{$this->data['form']['id_pay']}");
+        }
 
         // Verificar o resultado da atualização
-        if ($result) {
-           
+        if ($resultMovement) {
+
             // gravar logs na tabela adms-logs
             if ($_ENV['APP_LOGS'] == 'Sim') {
                 $dataLogs = [
                     'table_name' => 'adms_pay',
                     'action' => 'edição',
-                    'record_id' => $this->data['form']['id'],
+                    'record_id' => $this->data['form']['id_pay'],
                     'description' => $this->data['form']['num_doc'],
-    
+
                 ];
                 // Instanciar a classe validar  o usuário
                 $insertLogs = new LogsRepository();
                 $insertLogs->insertLogs($dataLogs);
             }
-        
 
-            $_SESSION['success'] = "Conta editada com sucesso!";
-            header("Location: {$_ENV['URL_ADM']}view-pay/{$this->data['form']['id']}");
+
+            $_SESSION['success'] = "Conta paga/baixada com sucesso!";
+            header("Location: {$_ENV['URL_ADM']}view-pay/{$this->data['form']['id_pay']}");
         } else {
-            $this->data['errors'][] = "Conta não editado!";
+            $this->data['errors'][] = "Conta não editada!";
             $this->viewPay();
         }
     }

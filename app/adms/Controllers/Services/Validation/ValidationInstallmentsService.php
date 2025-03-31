@@ -2,12 +2,12 @@
 
 namespace App\adms\Controllers\Services\Validation;
 
-use App\adms\Models\Repository\PaymentsRepository;
+use App\adms\Models\Repository\InstallmentsRepository;
 use App\adms\Models\Repository\SupplierRepository;
 use Rakit\Validation\Validator;
 
 /**
- * Classe ValidationPaymentsService
+ * Classe ValidationclassInstallmentsService
  * 
  * Esta classe é responsável por validar os dados de um formulário de contas a pagar, aplicando regras de validação para criação e edição de Contas à pagar.
  * Ela utiliza o pacote `Rakit\Validation` para realizar as validações e inclui uma regra personalizada de unicidade em múltiplas colunas.
@@ -15,7 +15,7 @@ use Rakit\Validation\Validator;
  * @package App\adms\Controllers\Services\Validation
  * @author Rafael Mendes 
  */
-class ValidationPaymentsService
+class ValidationInstallmentsService
 {
     /**
      * Validar os dados do formulário.
@@ -34,7 +34,7 @@ class ValidationPaymentsService
         $validator = new Validator();
 
         // Instanciar o repositório para verificar unicidade no banco
-        $paymentsRepo = new PaymentsRepository();
+        $nstallmentsRepo = new InstallmentsRepository();
 
         // Definir regras de validação
         $rules = [
@@ -43,15 +43,21 @@ class ValidationPaymentsService
         ];
 
         // Verificar se num_doc já existe para o mesmo parceiro
-        if (!isset($data['id'])) {
-            if ($paymentsRepo->existsNumDocForPartner($data['num_doc'], $data['partner_id'])) {
-                $errors['num_doc'] = 'O número do documento já existe para este fornecedor.';
-            }
-        } else {
-            if ($paymentsRepo->existsNumDocForPartner($data['num_doc'], $data['partner_id'], $data['id'])) {
-                $errors['num_doc'] = 'O número do documento já existe para este fornecedor.';
-            }
+        // if (!isset($data['id_pay'])) {
+        //     if ($nstallmentsRepo->existsNumDocForPartner($data['num_doc'], $data['partner_id'])) {
+        //         $errors['num_doc'] = 'O número do documento já existe para este fornecedor.';
+        //     }
+        // } else {
+        //     if ($nstallmentsRepo->existsNumDocForPartner($data['num_doc'], $data['partner_id'], $data['id_pay'])) {
+        //         $errors['num_doc'] = 'O número do documento já existe para este fornecedor.';
+        //     }
+        // }
+
+        // Verificar se num_doc já existe para o mesmo parceiro
+        if ($nstallmentsRepo->existsNumDocForPartner($data['num_doc'], $data['partner_id'], $data['id_pay'] ?? null)) {
+            $errors['num_doc'] = 'O número do documento já existe para este fornecedor.';
         }
+
 
         // Criar a validação
         $validation = $validator->make($data, $rules);
@@ -77,7 +83,6 @@ class ValidationPaymentsService
         // echo "Iniciando Validation 77";
         // var_dump($errors);
         return $errors;
-
     }
 
     public function getSupplierName(int $partner_id): string
@@ -102,12 +107,11 @@ class ValidationPaymentsService
 
     public function validateFile(array $data): bool
     {
-        
+
         // Verifica se a variável $id está definida e é um número
         if (empty($data['file'])) {
-           return false;
+            return false;
         }
         return true;
-        
     }
 }

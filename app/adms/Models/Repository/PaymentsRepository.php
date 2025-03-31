@@ -206,12 +206,13 @@ class PaymentsRepository extends DbConnection
      * @return bool `true` se a atualização foi bem-sucedida ou `false` em caso de erro.
      */
     public function updatePay(array $data): bool
+
     {
         $name = $this->getSupplierName($data['partner_id']);
         try {
             $sql = 'UPDATE adms_pay 
                     SET description = :description, num_doc = :num_doc, partner_id = :partner_id, bank_id = :bank_id, cost_center_id = :cost_center_id, 
-                     frequency_id = :frequency_id, pay_method_id = :pay_method_id, account_id = :account_id, value = :value, original_value = :original_value
+                     frequency_id = :frequency_id, pay_method_id = :pay_method_id, account_id = :account_id, value = :value, original_value = :original_value,
                     amount_paid = :amount_paid, discount_value = :discount_value, fine_value = :fine_value, interest = :interest, 
                     residual_total = :residual_total, due_date = :due_date, expected_date = :expected_date, updated_at = :updated_at';
 
@@ -229,7 +230,6 @@ class PaymentsRepository extends DbConnection
             $stmt->bindValue(':partner_id', $data['partner_id'] ?? null, PDO::PARAM_INT);
             $stmt->bindValue(':bank_id', $data['bank_id'] ?? null, PDO::PARAM_INT);
             $stmt->bindValue(':cost_center_id', $data['cost_center_id'] ?? null, PDO::PARAM_INT);
-            $stmt->bindValue(':user_launch_id', $_SESSION['user_id'], PDO::PARAM_INT);
             $stmt->bindValue(':frequency_id', $data['frequency_id'] ?? null, PDO::PARAM_INT);
             $stmt->bindValue(':pay_method_id', $data['pay_method_id'] ?? null, PDO::PARAM_INT);
             $stmt->bindValue(':account_id', $data['account_id'] ?? null, PDO::PARAM_INT);
@@ -264,6 +264,7 @@ class PaymentsRepository extends DbConnection
             $stmt->bindValue(':due_date', $data['due_date'] ? date("Y-m-d H:i:s", strtotime($data['due_date'])) : null, PDO::PARAM_STR);
             $stmt->bindValue(':expected_date', $data['expected_date'] ? date("Y-m-d H:i:s", strtotime($data['expected_date'])) : null, PDO::PARAM_STR);
             $stmt->bindValue(':updated_at', date("Y-m-d H:i:s"));
+            $stmt->bindValue(':id', $data['id'], PDO::PARAM_INT);
 
             return $stmt->execute();
         } catch (Exception $e) {
@@ -294,23 +295,46 @@ class PaymentsRepository extends DbConnection
         }
     }
 
-    public function existsNumDocForPartner(string $num_doc, int $partner_id): bool
+    // public function existsNumDocForPartner(string $num_doc, int $partner_id): bool
+    // {
+    //     $sql = "SELECT COUNT(*) FROM adms_pay WHERE num_doc = :num_doc AND partner_id = :partner_id";
+
+
+    //     $stmt = $this->getConnection()->prepare($sql);
+    //     $stmt->bindParam(':num_doc', $num_doc);
+    //     $stmt->bindParam(':partner_id', $partner_id);
+
+    //     $stmt->execute();
+    //     return $stmt->fetchColumn() > 0;
+    // }
+
+    public function existsNumDocForPartner($numDoc, $partnerId, $ignoreId = null)
     {
+       
+
         $sql = "SELECT COUNT(*) FROM adms_pay WHERE num_doc = :num_doc AND partner_id = :partner_id";
 
 
+        if ($ignoreId) {
+            $sql .= " AND id != :ignore_id"; // Ignorar o próprio ID
+        }
+
         $stmt = $this->getConnection()->prepare($sql);
-        $stmt->bindParam(':num_doc', $num_doc);
-        $stmt->bindParam(':partner_id', $partner_id);
+        $stmt->bindParam(':num_doc', $numDoc);
+        $stmt->bindParam(':partner_id', $partnerId);
+
+        if ($ignoreId) {
+            $stmt->bindParam(':ignore_id', $ignoreId);
+        }
 
         $stmt->execute();
         return $stmt->fetchColumn() > 0;
     }
 
+
     public function getSupplierName(int $partner_id): string
     {
-        // var_dump($partner_id);
-        // exit;
+      
         $sql = "SELECT 	card_name FROM adms_supplier WHERE id = :partner_id LIMIT 1";
 
         $stmt = $this->getConnection()->prepare($sql);
@@ -319,5 +343,37 @@ class PaymentsRepository extends DbConnection
         $stmt->execute();
 
         return $stmt->fetchColumn();
+    }
+
+    public function getSupplierNameAccount(int $id): string
+    {
+       
+        $sql = "SELECT as2.card_name from adms_pay ap 
+                INNER JOIN adms_supplier as2 on as2.id = ap.partner_id 
+                WHERE ap.id = :id LIMIT 1";
+
+        $stmt = $this->getConnection()->prepare($sql);
+
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
+    }
+
+    public function getInstallments(int $id): array|bool
+    {
+
+        $sql = 'SELECT 
+                ap.id AS id_pay, ap.value, 
+                af.name AS name_freq, af.days
+                FROM adms_pay ap                     
+                    LEFT JOIN adms_frequency af on af.id = ap.frequency_id
+                WHERE ap.id = :id LIMIT 1';
+
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

@@ -102,7 +102,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
                     <dd class="col-sm-9"><?php echo date("d-m-Y", strtotime($due_date)); ?></dd>
 
                     <dt class="col-sm-3">Previsão Pgto: </dt>
-                    <dd class="col-sm-9"><?php echo date("d-m-Y", strtotime($expected_date)); ?></dd>
+                    <dd class="col-sm-9"><?php echo !empty($expected_date) ? date("d-m-Y", strtotime($expected_date)) : 'N/A'; ?></dd>
 
                     <dt class="col-sm-3">Frequência: </dt>
                     <dd class="col-sm-9"><?php echo $name_freq; ?></dd>

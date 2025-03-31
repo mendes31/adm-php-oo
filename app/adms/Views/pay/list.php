@@ -92,7 +92,8 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
                                 <td class="d-none d-md-table-cell"><?php echo $card_name; ?></td>
                                 <td><?php echo $value; ?></td>
                                 <td><?php echo date("d-m-Y", strtotime($due_date)); ?></td>
-                                <td class="d-none d-md-table-cell"><?php echo date("d-m-Y", strtotime($expected_date)); ?></td>
+                                <td class="d-none d-md-table-cell"><?php echo !empty($expected_date) ? date("d-m-Y", strtotime($expected_date)) : 'N/A'; ?></td>
+                                
                                 <!-- <td class="d-none d-md-table-cell"><?php echo $name_freq; ?></td> -->
                                 <td class="d-none d-md-table-cell"><?php echo $name_apm; ?></td>
                                 <td class="d-none d-md-table-cell"><?php echo $bank_name; ?></td>
@@ -102,22 +103,23 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
 
                                     <?php
 
-                                    if (in_array('ViewPay', $this->data['buttonPermission'])) {
-                                        echo "<a href='{$_ENV['URL_ADM']}view-pay/$id_pay' class='btn btn-success btn-sm me-1 mb-1'><i class='fa-solid fa-money-bill-wave'></i> Pagar</a>";
-                                        // echo "<a href='{$_ENV['URL_ADM']}view-pay/$id_pay' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-solid fa-comment-dollar'></i> Pagar</a>";
+                                    if (in_array('Payment', $this->data['buttonPermission'])) {
+                                        
+                                        
+                                        echo "<a href='{$_ENV['URL_ADM']}payment/$id_pay' class='btn btn-success btn-sm me-1 mb-1'><i class='fa-solid fa-money-bill-wave'></i> </a>";
+                                    }
+
+                                    if (in_array('Installments', $this->data['buttonPermission'])) {
+                                        echo "<a href='{$_ENV['URL_ADM']}installments/$id_pay' class='btn btn-sm me-1 mb-1' style='background-color: #7f7f7f; color: #fff; border-color: #7f7f7f;'><i class='fa-solid fa-coins'></i> </a>";
+
                                     }
 
                                     if (in_array('ViewPay', $this->data['buttonPermission'])) {
-                                        echo "<a href='{$_ENV['URL_ADM']}installments/$id_pay' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-coins'></i> Parcelar</a>";
-                                        // echo "<a href='{$_ENV['URL_ADM']}view-pay/$id_pay' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Parcelar</a>";
-                                    }
-
-                                    if (in_array('ViewPay', $this->data['buttonPermission'])) {
-                                        echo "<a href='{$_ENV['URL_ADM']}view-pay/$id_pay' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Visualizar</a>";
+                                        echo "<a href='{$_ENV['URL_ADM']}view-pay/$id_pay' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> </a>";
                                     }
 
                                     if (in_array('UpdatePay', $this->data['buttonPermission'])) {
-                                        echo "<a href='{$_ENV['URL_ADM']}update-pay/$id_pay' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-pen-to-square'></i> Editar</a>";
+                                        echo "<a href='{$_ENV['URL_ADM']}update-pay/$id_pay' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-pen-to-square'></i> </a>";
                                     }
 
                                     if (in_array('DeletePay', $this->data['buttonPermission'])) {
@@ -133,7 +135,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
 
                                             <input type="hidden" name="partner_id" id="partner_id" value="<?php echo $partner_id ?? ''; ?>">
 
-                                            <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo $id_pay; ?>)"><i class="fa-regular fa-trash-can"></i>Deletar</button>
+                                            <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo $id_pay; ?>)"><i class="fa-regular fa-trash-can"></i></button>
 
                                         </form>
                                     <?php } ?>
@@ -158,6 +160,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
 
     </div>
 </div>
+
 
 <script type="text/javascript">
     $(document).ready(function() {

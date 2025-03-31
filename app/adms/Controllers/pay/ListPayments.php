@@ -57,7 +57,7 @@ class ListPayments
         $pageElements = [
             'title_head' => 'Listar Contas à pagar',
             'menu' => 'list-payments',
-            'buttonPermission' => ['CreatePay', 'ViewPay', 'UpdatePay', 'DeletePay'],
+            'buttonPermission' => ['CreatePay', 'ViewPay', 'Installments', 'Payment', 'UpdatePay', 'DeletePay'],
         ];
         $pageLayoutService = new PageLayoutService();
         $pageLayoutService->configurePageElements($pageElements);

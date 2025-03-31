@@ -52,50 +52,37 @@ use App\adms\Helpers\CSRFHelper;
 
                 <input type="hidden" name="csrf_token" value="<?php echo CSRFHelper::generateCSRFToken('form_update_pay'); ?>">
 
-                <input type="hidden" name="id" id="id" value="<?php echo $this->data['form']['id'] ?? ''; ?>">
+                <input type="hidden" name="id" id="id" value="<?php echo $this->data['form']['id_pay'] ?? ''; ?>">
+
+                <input type="hidden" name="partner_id" id="partner_id" value="<?php echo $this->data['form']['partner_id'] ?? ''; ?>">
 
                 <div class="col-4">
                     <label for="num_doc" class="form-label">Nº Documento</label>
                     <input type="text" name="num_doc" class="form-control" id="num_doc" placeholder="Nº Documento" value="<?php echo $this->data['form']['num_doc'] ?? ''; ?>">
                 </div>
 
-
                 <div class="col-md-4">
                     <label for="partner_id" class="form-label">Fornecedor</label>
                     <select name="partner_id" class="form-select" id="partner_id">
-                        <option value="">Selecione um Fornecedor</option>
                         <?php
-                        if ($this->data['listSuppliers'] ?? false) {
+
+                        // Verifica se existe uma lista de fornecedores
+                        if (!empty($this->data['listSuppliers'])) {
                             foreach ($this->data['listSuppliers'] as $listSupplier) {
                                 extract($listSupplier);
 
-                                // Se existir um valor salvo no banco, ele será marcado como selecionado
-                                $selected = (isset($this->data['form']['partner_id']) && $this->data['form']['partner_id'] == $id)
-                                    ? 'selected'
-                                    : '';
+                                // Verifica se já há um fornecedor salvo no banco e seleciona a opção correspondente
+                                $selected = (!empty($this->data['form']['card_name']) && $this->data['form']['card_name'] == $card_name) ? 'selected' : '';
+
+
 
                                 echo "<option value='$id' $selected>$card_name</option>";
                             }
                         }
                         ?>
                     </select>
-                    <!-- <select name="partner_id" class="form-select" id="partner_id">
-                        <option value="" selected>Selecione um Fornecedor</option>
-                        <?php
-                        // Verificar se existe fornecedor
-                        if ($this->data['listSuppliers'] ?? false) {
-                            // percorrer o array de fornecedor
-                            foreach ($this->data['listSuppliers'] as $listSupplier) {
-                                // Extrari as variáveis do array
-                                extract($listSupplier);
-                                // Verificar se deve manter selecionado a opção
-                                $selected = isset($this->data['form']['id']) && $this->data['form']['id'] == $id ? 'selected' : '';
-                                echo "<option value='$id' $selected >$card_name</option>";
-                            }
-                        }
-                        ?>
-                    </select> -->
                 </div>
+
 
                 <div class="col-4">
                     <label for="value" class="form-label">Valor</label>
@@ -103,15 +90,28 @@ use App\adms\Helpers\CSRFHelper;
                         value="<?php echo $this->data['form']['value'] ?? ''; ?>">
                 </div>
 
-                <div class="col-3">
+                <!-- <div class="col-3">
                     <label for="due_date" class="form-label">Vencimento</label>
                     <input type="date" name="due_date" class="form-control" id="due_date" placeholder="Fornecedor" value="<?php echo $this->data['form']['due_date'] ?? ''; ?>">
+                </div> -->
+
+                <div class="col-3">
+                    <label for="due_date" class="form-label">Previsão Pagamento</label>
+                    <input type="date" name="due_date" class="form-control" id="expected_date"
+                        value="<?php echo !empty($this->data['form']['due_date']) ? date('Y-m-d', strtotime($this->data['form']['due_date'])) : ''; ?>">
                 </div>
+
+                <!-- <div class="col-3">
+                    <label for="expected_date" class="form-label">Previsão Pagamento</label>
+                    <input type="date" name="expected_date" class="form-control" id="expected_date" placeholder="Fornecedor" value="<?php echo $this->data['form']['expected_date'] ?? ''; ?>">
+                </div> -->
 
                 <div class="col-3">
                     <label for="expected_date" class="form-label">Previsão Pagamento</label>
-                    <input type="date" name="expected_date" class="form-control" id="expected_date" placeholder="Fornecedor" value="<?php echo $this->data['form']['expected_date'] ?? ''; ?>">
+                    <input type="date" name="expected_date" class="form-control" id="expected_date"
+                        value="<?php echo !empty($this->data['form']['expected_date']) ? date('Y-m-d', strtotime($this->data['form']['expected_date'])) : ''; ?>">
                 </div>
+
 
                 <div class="col-md-3">
                     <label for="frequency_id" class="form-label">Frequência</label>
@@ -124,8 +124,10 @@ use App\adms\Helpers\CSRFHelper;
                             foreach ($this->data['listFrequencies'] as $listFrequency) {
                                 // Extrari as variáveis do array
                                 extract($listFrequency);
-                                // Verificar se deve manter selecionado a opção
-                                $selected = isset($this->data['form']['id']) && $this->data['form']['id'] == $id ? 'selected' : '';
+                                // // Verificar se deve manter selecionado a opção
+
+                                $selected = (!empty($this->data['form']['name_freq']) && $this->data['form']['name_freq'] == $name) ? 'selected' : '';
+                                // $selected = isset($this->data['form']['name_freq']) && $this->data['form']['name_freq'] == $name ? 'selected' : '';
                                 echo "<option value='$id' $selected >$name</option>";
                             }
                         }
@@ -146,7 +148,7 @@ use App\adms\Helpers\CSRFHelper;
                                 // Extrari as variáveis do array
                                 extract($listPaymentMethod);
                                 // Verificar se deve manter selecionado a opção
-                                $selected = isset($this->data['form']['id']) && $this->data['form']['id'] == $id ? 'selected' : '';
+                                $selected = isset($this->data['form']['name_apm']) && $this->data['form']['name_apm'] == $name ? 'selected' : '';
                                 echo "<option value='$id' $selected >$name</option>";
                             }
                         }
@@ -172,7 +174,7 @@ use App\adms\Helpers\CSRFHelper;
                                 // Extrari as variáveis do array
                                 extract($listAccountPlan);
                                 // Verificar se deve manter selecionado a opção
-                                $selected = isset($this->data['form']['id']) && $this->data['form']['id'] == $id ? 'selected' : '';
+                                $selected = isset($this->data['form']['name_aap']) && $this->data['form']['name_aap'] == $name ? 'selected' : '';
                                 echo "<option value='$id' $selected >$name</option>";
                             }
                         }
@@ -192,7 +194,7 @@ use App\adms\Helpers\CSRFHelper;
                                 // Extrari as variáveis do array
                                 extract($listCostCenter);
                                 // Verificar se deve manter selecionado a opção
-                                $selected = isset($this->data['form']['id']) && $this->data['form']['id'] == $id ? 'selected' : '';
+                                $selected = isset($this->data['form']['name_cc']) && $this->data['form']['name_cc'] == $name ? 'selected' : '';
                                 echo "<option value='$id' $selected >$name</option>";
                             }
                         }
@@ -212,7 +214,7 @@ use App\adms\Helpers\CSRFHelper;
                                 // Extrari as variáveis do array
                                 extract($listBank);
                                 // Verificar se deve manter selecionado a opção
-                                $selected = isset($this->data['form']['id']) && $this->data['form']['id'] == $id ? 'selected' : '';
+                                $selected = isset($this->data['form']['bank_name']) && $this->data['form']['bank_name'] == $bank_name ? 'selected' : '';
                                 echo "<option value='$id' $selected >$bank_name</option>";
                             }
                         }

@@ -92,6 +92,8 @@ class AddAdmsPages extends AbstractSeed
             ['name'=> 'Visualizar Contas à Pagar', 'controller' => 'ViewPay', 'controller_url' => 'view-pay', 'directory' => 'pay', 'obs' => 'Página apresentar os detalhes do Contas à Pagar.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 13],
             ['name'=> 'Editar Contas à Pagar', 'controller' => 'UpdatePay', 'controller_url' => 'update-pay', 'directory' => 'pay', 'obs' => 'Página com o formulário editar Contas à Pagar.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 13],           
             ['name'=> 'Apagar Contas à Pagar', 'controller' => 'DeletePay', 'controller_url' => 'delete-pay', 'directory' => 'pay', 'obs' => 'Página para apagar o Contas à Pagar do banco de dados.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 13],
+            ['name'=> 'Parcelar Contas à Pagar', 'controller' => 'Installments', 'controller_url' => 'installments', 'directory' => 'pay', 'obs' => 'Página com o formulário parcelar Conta à Pagar.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 13],           
+            ['name'=> 'Pagar Conta', 'controller' => 'Payment', 'controller_url' => 'payment', 'directory' => 'pay', 'obs' => 'Página para pagar/baixar Conta do banco de dados.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 13],
            
             ['name'=> 'Cadastrar Contas à Receber', 'controller' => 'CreateReceive', 'controller_url' => 'create-receive', 'directory' => 'receive', 'obs' => 'Página com o formulário cadastrar Contas à Receber.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 14],
             ['name'=> 'Listar Contas à Receber', 'controller' => 'ListReceive', 'controller_url' => 'list-receive', 'directory' => 'receive', 'obs' => 'Página para listar o Contas à Receber.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 14],
@@ -134,7 +136,7 @@ class AddAdmsPages extends AbstractSeed
             ['name'=> 'Visualizar Forma de Pagamento', 'controller' => 'ViewPaymentMethod', 'controller_url' => 'view-payment-method', 'directory' => 'paymentMethod', 'obs' => 'Página apresentar os detalhes do Forma de Pagamento.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 20],
             ['name'=> 'Editar Forma de Pagamento', 'controller' => 'UpdatePaymentMethod', 'controller_url' => 'update-payment-method', 'directory' => 'paymentMethod', 'obs' => 'Página com o formulário editar Forma de Pagamento.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 20],           
             ['name'=> 'Apagar Forma de Pagamento', 'controller' => 'DeletePaymentMethod', 'controller_url' => 'delete-payment-method', 'directory' => 'paymentMethod', 'obs' => 'Página para apagar o Forma de Pagamento do banco de dados.', 'public_page' => 0, 'page_status' => 1, 'adms_packages_page_id' => 1, 'adms_groups_page_id' => 20],
-
+            
             
         ];
 
