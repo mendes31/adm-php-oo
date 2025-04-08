@@ -30,12 +30,13 @@ final class AdmsMovements extends AbstractMigration
                 ->addColumn('type', 'string', ['null' => false])                
                 ->addColumn('movement', 'string', ['null' => false])
                 ->addColumn('description', 'string', ['null' => false])
-                ->addColumn('movement_value', 'decimal', ['precision' => 10, 'scale' => 2, 'null' => false])   //valor
-                ->addColumn('user_id', 'integer', ['null' => false])                                           //id do usuário lançamento
-                ->addColumn('created_at', 'timestamp')                                                         //data da criação do registro
-                ->addColumn('bank_id', 'integer', ['null' => false])
-                ->addColumn('movement_id', 'integer', ['null' => false])
-                ->addColumn('updated_at', 'timestamp', ['null' => true, 'default' => null])                    //data da atualização do registro
+                ->addColumn('movement_value', 'decimal', ['precision' => 10, 'scale' => 2, 'null' => false])    //valor
+                ->addColumn('user_id', 'integer', ['null' => false])                                            //id do usuário lançamento
+                ->addColumn('created_at', 'timestamp')                                                          //data da criação do registro
+                ->addColumn('bank_id', 'integer', ['null' => false])                                            //Banco Saída
+                ->addColumn('method_id', 'integer', ['null' => false])                                          //Forma de PGTO
+                ->addColumn('movement_id', 'integer', ['null' => false])                                        //ID da conta 
+                ->addColumn('updated_at', 'timestamp', ['null' => true, 'default' => null])                     //data da atualização do registro
 
                 ->create();
 

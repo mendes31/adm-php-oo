@@ -76,76 +76,205 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
                 extract($this->data['pay']);
             ?>
 
-                <dl class="row">
-                    
-                <!-- <td><?php echo $file; ?></td> -->
-
-                    <dt class="col-sm-3">ID: </dt>
-                    <dd class="col-sm-9"><?php echo $id_pay; ?></dd>
-
-                    <dt class="col-sm-3">Data: </dt>
-                    <dd class="col-sm-9"><?php echo date("d-m-Y", strtotime($doc_date)); ?></dd>
-
-                    <dt class="col-sm-3">Nº Doc: </dt>
-                    <dd class="col-sm-9"><?php echo $num_doc; ?></dd>
-
-                    <dt class="col-sm-3">Descrição: </dt>
-                    <dd class="col-sm-9"><?php echo $description; ?></dd>                    
-
-                    <dt class="col-sm-3">Fornecedor: </dt>
-                    <dd class="col-sm-9"><?php echo $card_name; ?></dd>
-
-                    <dt class="col-sm-3">Valor: </dt>
-                    <dd class="col-sm-9"><?php echo $value; ?></dd>
-
-                    <dt class="col-sm-3">Vencimento: </dt>
-                    <dd class="col-sm-9"><?php echo date("d-m-Y", strtotime($due_date)); ?></dd>
-
-                    <dt class="col-sm-3">Previsão Pgto: </dt>
-                    <dd class="col-sm-9"><?php echo !empty($expected_date) ? date("d-m-Y", strtotime($expected_date)) : 'N/A'; ?></dd>
-
-                    <dt class="col-sm-3">Frequência: </dt>
-                    <dd class="col-sm-9"><?php echo $name_freq; ?></dd>
-
-                    <dt class="col-sm-3">Centro de Custo: </dt>
-                    <dd class="col-sm-9"><?php echo $name_cc; ?></dd>
-
-                    <dt class="col-sm-3">Plano de Contas: </dt>
-                    <dd class="col-sm-9"><?php echo $name_aap; ?></dd>
-
-                    <dt class="col-sm-3">Forma Pgto: </dt>
-                    <dd class="col-sm-9"><?php echo $name_apm; ?></dd>                    
-
-                    <dt class="col-sm-3">Saída: </dt>
-                    <dd class="col-sm-9"><?php echo $bank_name; ?></dd>
-
-                    <dt class="col-sm-3">Usuário Lançamento: </dt>
-                    <dd class="col-sm-9"><?php echo $name_user; ?></dd>
-
-                    <dt class="col-sm-3">Usuário Pagamento: </dt>
-                    <dd class="col-sm-9"><?php echo $user_pay; ?></dd> 
-
-                    <dt class="col-sm-3">Pago: </dt>
-                    <dd class="col-sm-9"><?php echo (!empty($paid) && $paid != 0) ? "Sim" : "Não"; ?></dd>
-
-                    <dt class="col-sm-3">Data Pgto: </dt>
-                    <dd class="col-sm-9"><?php echo !empty($pay_date) ? date("d/m/Y H:i:s", strtotime($pay_date)) : "Data não informada"; ?></dd>
-
-                    <dt class="col-sm-3">Cadastrado: </dt>
-                    <dd class="col-sm-9"><?php echo ($created_at ? date('d/m/Y H:i:s', strtotime($created_at)) : ""); ?></dd>
-
-                    <dt class="col-sm-3">Editado: </dt>
-                    <dd class="col-sm-9"><?php echo ($updated_at ? date('d/m/Y H:i:s', strtotime($updated_at)) : ""); ?></dd>
-                </dl>
-
             <?php
-            } else { // Caso o nível de acesso não seja encontrado
-                echo "<div class='alert alert-danger' role='alert'>Banco não encontrado!</div>";
-            }
+            // Verifica se há usuários no array
+            if (isset($this->data['movementValues'])) {
+
+                // Extrai variáveis do array $this->data['pay'] para fácil acesso
+                extract($this->data['movementValues']);
+
+                // Calcula a soma dos valores pagos
+                $totalPago = 0;
+                if (!empty($this->data['movementValues'])) {
+                    foreach ($this->data['movementValues'] as $movementValue) {
+                        $totalPago += $movementValue['movement_value'];
+                    }
+                }
+
+                if($discount_value > 0){
+                    $saldoPagar = $original_value - ($amount_paid + $discount_value);
+                } else {
+                    $saldoPagar = $original_value - $amount_paid;
+                }
+                
+                if ($saldoPagar < 0) {
+                    $saldoPagar = 0;
+                }
             ?>
 
+                    <dl class="row">
+
+                        <!-- <td><?php echo $file; ?></td> -->
+
+                        <dt class="col-sm-3">ID: </dt>
+                        <dd class="col-sm-9"><?php echo $id_pay; ?></dd>
+
+                        <!-- <dt class="col-sm-3">Data: </dt>
+                        <dd class="col-sm-9"><?php echo date("d-m-Y", strtotime($doc_date)); ?></dd> -->
+
+                        <dt class="col-sm-3">Nº Doc: </dt>
+                        <dd class="col-sm-9"><?php echo $num_doc; ?></dd>
+
+                        <dt class="col-sm-3">Descrição: </dt>
+                        <dd class="col-sm-9"><?php echo $description; ?></dd>
+
+                        <dt class="col-sm-3">Fornecedor: </dt>
+                        <dd class="col-sm-9"><?php echo $card_name; ?></dd>
+
+                        <dt class="col-sm-3">Valor Original: </dt>
+                        <dd class="col-sm-9"><?php echo 'R$ ' . number_format($original_value ?? 0, 2, ',', '.'); ?></dd>
+
+                        <dt class="col-sm-3">Valor Pago: </dt>
+                        <dd class="col-sm-9"><?php echo 'R$ ' . number_format($amount_paid ?? 0, 2, ',', '.'); ?></dd>
+
+                        <dt class="col-sm-3">Valor à Pagar: </dt>
+                        <dd class="col-sm-9"><?php echo 'R$ ' . number_format($saldoPagar, 2, ',', '.'); ?></dd>
+
+                        <dt class="col-sm-3">Vencimento: </dt>
+                        <dd class="col-sm-9"><?php echo date("d-m-Y", strtotime($due_date)); ?></dd>
+
+                        <dt class="col-sm-3">Previsão Pgto: </dt>
+                        <dd class="col-sm-9"><?php echo !empty($expected_date) ? date("d-m-Y", strtotime($expected_date)) : 'N/A'; ?></dd>
+
+                        <dt class="col-sm-3">Frequência: </dt>
+                        <dd class="col-sm-9"><?php echo $name_freq; ?></dd>
+
+                        <dt class="col-sm-3">Centro de Custo: </dt>
+                        <dd class="col-sm-9"><?php echo $name_cc; ?></dd>
+
+                        <dt class="col-sm-3">Plano de Contas: </dt>
+                        <dd class="col-sm-9"><?php echo $name_aap; ?></dd>
+
+                        <!-- <dt class="col-sm-3">Forma Pgto: </dt>
+                        <dd class="col-sm-9"><?php echo $name_apm; ?></dd> -->
+
+                        <!-- <dt class="col-sm-3">Saída: </dt>
+                        <dd class="col-sm-9"><?php echo $bank_name; ?></dd> -->
+
+                        <dt class="col-sm-3">Usuário Lançamento: </dt>
+                        <dd class="col-sm-9"><?php echo $name_user; ?></dd>
+
+                        <!-- <dt class="col-sm-3">Usuário Pagamento: </dt>
+                        <dd class="col-sm-9"><?php echo $user_pay; ?></dd> -->
+
+                        <dt class="col-sm-3">Pago: </dt>
+                        <dd class="col-sm-9"><?php echo (!empty($paid) && $paid != 0) ? "Sim" : "Não"; ?></dd>
+
+                        <!-- <dt class="col-sm-3">Data Pgto: </dt>
+                        <dd class="col-sm-9"><?php echo !empty($pay_date) ? date("d/m/Y H:i:s", strtotime($pay_date)) : "Data não informada"; ?></dd> -->
+
+                        <dt class="col-sm-3">Cadastrado: </dt>
+                        <dd class="col-sm-9"><?php echo ($created_at ? date('d/m/Y H:i:s', strtotime($created_at)) : ""); ?></dd>
+
+                        <dt class="col-sm-3">Editado: </dt>
+                        <dd class="col-sm-9"><?php echo ($updated_at ? date('d/m/Y H:i:s', strtotime($updated_at)) : ""); ?></dd>
+                    </dl>
+                <?php } ?>
         </div>
 
+
+
+        <div class="card-body">
+            <div class="card mb-4 border-light shadow">
+                <div class="card-header d-flex flex-column flex-sm-row gap-2">
+                    <span>Pagamentos Realizados</span>
+
+                    <span class="ms-sm-auto d-sm-flex flex-row">
+
+
+
+                        <span class="ms-auto">
+                            <?php
+
+                            // Exibe a soma formatada
+                            echo "<span class='badge bg-primary ms-3'>Total Pago: R$ " . number_format($totalPago, 2, ',', '.') . "</span>";
+                            ?>
+                        </span>
+                </div>
+
+
+                <table class="table table-striped table-hover" id="tabela">
+                    <thead>
+                        <tr>
+                            <th scope="col">Data PGTO</th>
+                            <th scope="col">Nº Doc</th>
+                            <th scope="col">Valor Pago</th>
+                            <th scope="col" class="d-none d-md-table-cell">Forma PGTO</th>
+                            <th scope="col" class="d-none d-md-table-cell">Local de Saída</th>
+                            <th scope="col" class="d-none d-md-table-cell">Usuário PGTO</th>
+                            <th scope="col" class="d-none d-md-table-cell">Tipo</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <?php
+                        // Percorre o array de pagamentos
+                        foreach ($this->data['movementValues'] as $movementValues) {
+                            extract($movementValues); ?>
+
+                            <tr>
+                                <td class="d-none d-md-table-cell"><?php echo date("d-m-Y H:i:s", strtotime($created_at)); ?></td>
+                                <td><?php echo $id_mov; ?></td>
+                                <td><?php echo 'R$ ' . number_format($movement_value, 2, ',', '.'); ?></td>
+                                <td class="d-none d-md-table-cell"><?php echo $name_method; ?></td>
+                                <td class="d-none d-md-table-cell"><?php echo $name_bank; ?></td>
+                                <td class="d-none d-md-table-cell"><?php echo $name_user; ?></td>
+                                <td class="d-none d-md-table-cell"><?php echo $type; ?></td>
+                            </tr>
+
+                        <?php } ?>
+
+                    </tbody>
+                </table>
+
+            <?php
+                // Inclui o arquivo de paginação
+                include_once './app/adms/Views/partials/pagination.php';
+            } else {
+                echo "<div class='alert alert-danger' role='alert'>Nenhuma Conta encontrada!</div>";
+            } ?>
+
+            </div>
+        </div>
     </div>
 
 </div>
+
+
+</div>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#tabela').DataTable({
+            "language": {
+                "decimal": ",",
+                "thousands": ".",
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sEmptyTable": "Nenhum dado disponível na tabela",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+                "sSearch": "Buscar:",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Próximo",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            },
+            "columnDefs": [{
+                "className": "text-start",
+                "targets": "_all"
+            }]
+        });
+    });
+</script>

@@ -16,7 +16,7 @@ use App\adms\Helpers\CSRFHelper;
             <li class="breadcrumb-item">
                 <a href="<?php echo $_ENV['URL_ADM']; ?>list-payments" class="text-decoration-none">Contas</a>
             </li>
-            <li class="breadcrumb-item">Editar</li>
+            <li class="breadcrumb-item">Pagar</li>
 
         </ol>
 
@@ -46,6 +46,21 @@ use App\adms\Helpers\CSRFHelper;
         <div class="card-body">
 
             <?php include './app/adms/Views/partials/alerts.php'; ?>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const campos = ['value', 'discount_value', 'fine_value', 'interest'];
+
+                    campos.forEach(id => {
+                        const input = document.getElementById(id);
+                        if (input) {
+                            input.addEventListener('input', function() {
+                                this.value = this.value.replace(',', '.');
+                            });
+                        }
+                    });
+                });
+            </script>
 
             <!-- Formulário para cadastrar uma nova Conta à Pagar -->
             <form action="" method="POST" class="row g-3">
@@ -148,25 +163,25 @@ use App\adms\Helpers\CSRFHelper;
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    function calcularSubtotal() {
-        let value = parseFloat(document.getElementById("value").value) || 0;
-        let interest = parseFloat(document.getElementById("interest").value) || 0;
-        let fine_value = parseFloat(document.getElementById("fine_value").value) || 0;
-        let discount_value = parseFloat(document.getElementById("discount_value").value) || 0;
+    document.addEventListener("DOMContentLoaded", function() {
+        function calcularSubtotal() {
+            let value = parseFloat(document.getElementById("value").value) || 0;
+            let interest = parseFloat(document.getElementById("interest").value) || 0;
+            let fine_value = parseFloat(document.getElementById("fine_value").value) || 0;
+            let discount_value = parseFloat(document.getElementById("discount_value").value) || 0;
 
-        let subtotal = value + interest + fine_value - discount_value;
-        
-        document.getElementById("subtotal").value = subtotal.toFixed(2);
-    }
+            let subtotal = value + interest + fine_value - discount_value;
 
-    // Adiciona evento a todos os campos que afetam o subtotal
-    document.getElementById("value").addEventListener("input", calcularSubtotal);
-    document.getElementById("interest").addEventListener("input", calcularSubtotal);
-    document.getElementById("fine_value").addEventListener("input", calcularSubtotal);
-    document.getElementById("discount_value").addEventListener("input", calcularSubtotal);
+            document.getElementById("subtotal").value = subtotal.toFixed(2);
+        }
 
-    // Chama a função ao carregar a página para garantir que o subtotal já esteja correto
-    calcularSubtotal();
-});
+        // Adiciona evento a todos os campos que afetam o subtotal
+        document.getElementById("value").addEventListener("input", calcularSubtotal);
+        document.getElementById("interest").addEventListener("input", calcularSubtotal);
+        document.getElementById("fine_value").addEventListener("input", calcularSubtotal);
+        document.getElementById("discount_value").addEventListener("input", calcularSubtotal);
+
+        // Chama a função ao carregar a página para garantir que o subtotal já esteja correto
+        calcularSubtotal();
+    });
 </script>

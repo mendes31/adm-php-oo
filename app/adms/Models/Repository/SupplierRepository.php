@@ -149,6 +149,65 @@ class SupplierRepository extends DbConnection
         }
     }
 
+    public function importSupplier(array $data): bool|int
+    {
+        try {
+
+            // QUERY para cadastrar Fornecedor
+            $sql = 'INSERT INTO 
+                adms_supplier (card_code, card_name, type_person, doc, phone, email, address, description, active, date_birth, created_at) 
+                VALUES (:card_code, :card_name, :type_person, :doc, :phone, :email, :address, :description, :active, :date_birth, :created_at)';
+
+            // Preparar a QUERY
+            $stmt = $this->getConnection()->prepare($sql);
+
+            // Substituir os parâmetros da QUERY pelos valores
+            $stmt->bindValue(':card_code', $data[0], PDO::PARAM_STR);
+            $stmt->bindValue(':card_name', $data[1], PDO::PARAM_STR);
+            $stmt->bindValue(':type_person', $data[2], PDO::PARAM_STR);
+            $stmt->bindValue(':doc', $data[3], PDO::PARAM_STR);
+            $stmt->bindValue(':phone', $data[5], PDO::PARAM_STR);
+            $stmt->bindValue(':email', $data[6], PDO::PARAM_STR);
+            $stmt->bindValue(':address', $data[7], PDO::PARAM_STR);
+            $stmt->bindValue(':description', $data[8], PDO::PARAM_STR);
+            $stmt->bindValue(':active', $data[9], PDO::PARAM_STR);
+
+            $dateBirth = isset($data[10]) ? date("Y-m-d H:i:s", strtotime($data[10])) : null;
+            $stmt->bindValue(':date_birth', $dateBirth, PDO::PARAM_STR); // data nascimento
+
+            $stmt->bindValue(':created_at', date("Y-m-d H:i:s"));
+
+            // Executar a QUERY
+            $stmt->execute();
+
+            // Retornar o ID do departamento recém cadastrado
+            return $this->getConnection()->lastInsertId();
+        } catch (Exception $e) {
+            // Gerar log de erro
+            GenerateLog::generateLog("error", "Fornecedor não cadastrada.", ['name' => $data['card_name'], 'error' => $e->getMessage()]);
+
+            return false;
+        }
+    }
+
+    public function validaSupplier(string $card_code): array|bool
+    {
+        // QUERY para recuperar o registro do banco de dados
+        $sql = 'SELECT id, card_code, card_name, type_person, doc, phone, email, address, description, active, date_birth, created_at, updated_at
+                FROM adms_supplier
+                WHERE card_code = :card_code';
+
+        // Preparar a QUERY
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->bindValue(':card_code', $card_code, PDO::PARAM_STR);
+
+        // Executar a QUERY
+        $stmt->execute();
+
+        // Ler o registro e retornar
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
 
     /**
      * Atualizar os dados de um Fornecedor existente.

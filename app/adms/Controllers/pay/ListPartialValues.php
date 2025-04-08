@@ -4,12 +4,11 @@ namespace App\adms\Controllers\pay;
 
 use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Controllers\Services\PaginationService;
-use App\adms\Models\Repository\PaymentsRepository;
-use App\adms\Models\Repository\PayRepository;
+use App\adms\Models\Repository\PartialValuesRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**
- * Controller para listar Contas à pagar
+ * Controller para listar valores pagos para a conta
  *
  * Esta classe é responsável por recuperar e exibir uma lista de Bancos no sistema. Utiliza um repositório
  * para obter dados dos Bancos e um serviço de paginação para gerenciar a navegação entre páginas de resultados.
@@ -18,14 +17,10 @@ use App\adms\Views\Services\LoadViewService;
  * @package App\adms\Controllers\pay
  * @author Rafael Mendes
  */
-class ListPayments
+class ListPartialValues
 {
     /** @var array|string|null $data Dados que devem ser enviados para a VIEW */
     private array|string|null $data = null;
-
-    /** @var int $limitResult Limite de registros por página */
-    private int $limitResult = 100000; // Ajuste conforme necessário
-
     /**
      * Recuperar e listarContas à pagar com paginação.
      * 
@@ -36,40 +31,33 @@ class ListPayments
      * 
      * @return void
      */
-    public function index(string|int $page = 1): void
+    public function index(int|string $id): void
     {
         // Receber os dados do formulário
         $this->data['form'] = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
         // Instanciar o Repository para recuperar os registros do banco de dados
-        $listPayments = new PaymentsRepository();
+        $payUpdate = new PartialValuesRepository();
 
         // Recuperar os Bancos para a página atual
-        $this->data['payments'] = $listPayments->getAllPayments((int) $page, (int) $this->limitResult);
+        $this->data['partialValues'] = $payUpdate->getPartialValue($id);
 
-
-        // Gerar dados de paginação
-        $this->data['pagination'] = PaginationService::generatePagination(
-            (int) $listPayments->getAmountPayments(), 
-            (int) $this->limitResult, 
-            (int) $page, 
-            'list-payments'
-        );
+        $this->data['movementValues'] = $payUpdate->getMovementValues($id);
 
         // Definir o título da página
         // Ativar o item de menu
         // Apresentar ou ocultar botão 
         $pageElements = [
-            'title_head' => 'Listar Contas à pagar',
+            'title_head' => 'Listar Pagamentos',
             'menu' => 'list-payments',
-            'buttonPermission' => ['CreatePay', 'ViewPay', 'Installments', 'Payment', 'UpdatePay', 'DeletePay'],
+            'buttonPermission' => ['ListPayments'],
         ];
         $pageLayoutService = new PageLayoutService();
         $pageLayoutService->configurePageElements($pageElements);
         $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
 
         // Carregar a VIEW com os dados
-        $loadView = new LoadViewService("adms/Views/pay/list", $this->data);
+        $loadView = new LoadViewService("adms/Views/pay/listPartialValues", $this->data);
         $loadView->loadView();
     }
 }

@@ -142,11 +142,8 @@ class Payment
         $validationPay = new ValidationPayService();
         $this->data['errors'] = $validationPay->validate($this->dataBD, $this->data['form']);
 
-        var_dump($this->data['form']);
-
         // Se houver erros de validação, recarregar a visualização
         if (!empty($this->data['errors'])) {
-
             $this->viewPay();
             return;
         }
@@ -158,9 +155,37 @@ class Payment
         if ($resultOriginalValue) {
 
             $result = $payUpdate->updatePay($this->dataBD, $this->data['form']);
-            
-            var_dump($this->data['form']);
 
+            if ($result) {
+                $resultMovement = $payUpdate->createMovement($this->dataBD, $this->data['form']);
+
+                // Verificar o resultado da atualização
+                if ($resultMovement) {
+
+                    // gravar logs na tabela adms-logs
+                    if ($_ENV['APP_LOGS'] == 'Sim') {
+                        $dataLogs = [
+                            'table_name' => 'adms_pay',
+                            'action' => 'edição',
+                            'record_id' => $this->data['form']['id_pay'],
+                            'description' => $this->data['form']['num_doc'],
+
+                        ];
+                        // Instanciar a classe validar  o usuário
+                        $insertLogs = new LogsRepository();
+                        $insertLogs->insertLogs($dataLogs);
+                    }
+
+
+                    $_SESSION['success'] = "Conta paga/baixada com sucesso!";
+                    header("Location: {$_ENV['URL_ADM']}view-pay/{$this->data['form']['id_pay']}");
+                } else {
+                    $this->data['errors'][] = "Conta não editada!";
+                    $this->viewPay();
+                }
+            }
+
+            // var_dump($this->data['form']);
         } else {
             $result = $payUpdate->updatePayResidue($this->dataBD, $this->data['form']);
             if ($result) {
@@ -169,35 +194,35 @@ class Payment
 
                 if ($resultPartial) {
                     $resultMovement = $payUpdate->createMovement($this->dataBD, $this->data['form']);
+
+                    // Verificar o resultado da atualização
+                    if ($resultMovement) {
+
+                        // gravar logs na tabela adms-logs
+                        if ($_ENV['APP_LOGS'] == 'Sim') {
+                            $dataLogs = [
+                                'table_name' => 'adms_pay',
+                                'action' => 'edição',
+                                'record_id' => $this->data['form']['id_pay'],
+                                'description' => $this->data['form']['num_doc'],
+
+                            ];
+                            // Instanciar a classe validar  o usuário
+                            $insertLogs = new LogsRepository();
+                            $insertLogs->insertLogs($dataLogs);
+                        }
+
+
+                        $_SESSION['success'] = "Conta paga/baixada com sucesso!";
+                        header("Location: {$_ENV['URL_ADM']}view-pay/{$this->data['form']['id_pay']}");
+                    } else {
+                        $this->data['errors'][] = "Conta não editada!";
+                        $this->viewPay();
+                    }
                 }
             }
-            $_SESSION['success'] = "Conta paga/baixada com sucesso!";
-            header("Location: {$_ENV['URL_ADM']}view-pay/{$this->data['form']['id_pay']}");
         }
-
-        // Verificar o resultado da atualização
-        if ($resultMovement) {
-
-            // gravar logs na tabela adms-logs
-            if ($_ENV['APP_LOGS'] == 'Sim') {
-                $dataLogs = [
-                    'table_name' => 'adms_pay',
-                    'action' => 'edição',
-                    'record_id' => $this->data['form']['id_pay'],
-                    'description' => $this->data['form']['num_doc'],
-
-                ];
-                // Instanciar a classe validar  o usuário
-                $insertLogs = new LogsRepository();
-                $insertLogs->insertLogs($dataLogs);
-            }
-
-
-            $_SESSION['success'] = "Conta paga/baixada com sucesso!";
-            header("Location: {$_ENV['URL_ADM']}view-pay/{$this->data['form']['id_pay']}");
-        } else {
-            $this->data['errors'][] = "Conta não editada!";
-            $this->viewPay();
-        }
+        // $_SESSION['success'] = "Conta paga/baixada com sucesso!";
+        // header("Location: {$_ENV['URL_ADM']}view-pay/{$this->data['form']['id_pay']}");
     }
 }

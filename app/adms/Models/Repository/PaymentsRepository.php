@@ -30,7 +30,7 @@ class PaymentsRepository extends DbConnection
     {
         $offset = max(0, ($page - 1) * $limitResult);
 
-        $sql = 'SELECT ap.id AS id_pay,  ap.num_doc,  ap.description, ap.file, ap.paid, ap.value, ap.doc_date, ap.due_date, ap.expected_date, ap.pay_date, ap.created_at, ap.updated_at,
+        $sql = 'SELECT ap.id AS id_pay,  ap.num_doc,  ap.description, ap.file, ap.paid, ap.value, ap.original_value, ap.amount_paid, ap.discount_value, ap.doc_date, ap.due_date, ap.expected_date, ap.pay_date, ap.created_at, ap.updated_at,
                     sup.card_name, 
                     au.name AS name_user, 
                     af.name AS name_freq, af.days,
@@ -46,7 +46,7 @@ class PaymentsRepository extends DbConnection
                     LEFT JOIN adms_cost_center acc on acc.id = ap.cost_center_id
                     LEFT JOIN adms_payment_method apm on apm.id = ap.pay_method_id
                     LEFT JOIN adms_accounts_plan aap on aap.id = ap.account_id
-                ORDER BY id_pay DESC LIMIT :limit OFFSET :offset';
+                ORDER BY due_date DESC LIMIT :limit OFFSET :offset';
 
         $stmt = $this->getConnection()->prepare($sql);
         $stmt->bindValue(':limit', $limitResult, PDO::PARAM_INT);
@@ -79,7 +79,7 @@ class PaymentsRepository extends DbConnection
     public function getPay(int $id): array|bool
     {
 
-        $sql = 'SELECT ap.id AS id_pay, ap.num_doc, ap.description, ap.file, ap.paid, ap.value, ap.doc_date, ap.due_date, ap.expected_date, ap.pay_date, ap.created_at, ap.updated_at,
+        $sql = 'SELECT ap.id AS id_pay, ap.num_doc, ap.description, ap.file, ap.paid, ap.value, ap.original_value, ap.amount_paid, ap.discount_value, ap.doc_date, ap.due_date, ap.expected_date, ap.pay_date, ap.created_at, ap.updated_at,
                         sup.card_name, 
                         au.name AS name_user,
                         au2.name AS user_pay, 
@@ -106,6 +106,8 @@ class PaymentsRepository extends DbConnection
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+
 
     /**
      * Cadastra uma nova Conta a Pagar.

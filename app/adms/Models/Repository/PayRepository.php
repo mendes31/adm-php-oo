@@ -31,7 +31,8 @@ class PayRepository extends DbConnection
 
 
         $sql = 'SELECT 
-                        ap.id AS id_pay, ap.num_doc, ap.description, ap.file, ap.paid, ap.value, ap.original_value, ap.doc_date, ap.due_date, ap.expected_date, ap.pay_date, ap.created_at, ap.updated_at,
+                        ap.id AS id_pay, ap.num_doc, ap.description, ap.file, ap.paid, ap.value, ap.original_value, ap.amount_paid, ap.doc_date, 
+                        ap.due_date, ap.expected_date, ap.pay_date, ap.created_at, ap.updated_at,
                         sup.card_name, 
                         au.name AS name_user,
                         au2.name AS user_pay, 
@@ -171,12 +172,15 @@ class PayRepository extends DbConnection
     public function updatePay(array $dataForm, array $data): bool
 
     {
+        var_dump($data);
+        var_dump($dataForm);
 
         try {
             $sql = 'UPDATE adms_pay 
                     SET bank_id = :bank_id, 
                         pay_method_id = :pay_method_id, 
-                        value = :value, 
+                        value = :value,
+                        amount_paid = :amount_paid,
                         discount_value = :discount_value, 
                         fine_value = :fine_value, 
                         interest = :interest, 
@@ -199,6 +203,10 @@ class PayRepository extends DbConnection
             $subtotal = isset($data['subtotal']) ? str_replace(',', '.', $data['subtotal']) : '0.00';
             $subtotal = number_format((float) $subtotal, 2, '.', '');
             $stmt->bindParam(':value', $subtotal, PDO::PARAM_STR);
+
+            $amountPaid = $subtotal + $dataForm['amount_paid'];
+            $amountPaid = number_format((float) $amountPaid, 2, '.', '');
+            $stmt->bindParam(':amount_paid',$amountPaid, PDO::PARAM_STR);
 
             $discount_value = isset($data['discount_value']) ? (float) $data['discount_value'] : 0.00;
             $discount_value = number_format($discount_value, 2, '.', '');
@@ -246,7 +254,8 @@ class PayRepository extends DbConnection
                     SET num_doc = :num_doc,
                         bank_id = :bank_id, 
                         pay_method_id = :pay_method_id, 
-                        value = :value, 
+                        value = :value,
+                        amount_paid = :amount_paid, 
                         discount_value = :discount_value, 
                         fine_value = :fine_value, 
                         interest = :interest, 
@@ -259,13 +268,13 @@ class PayRepository extends DbConnection
 
             // var_dump($sql);       
             // var_dump($data);
-          
+
             // Preparar a QUERY
             $stmt = $this->getConnection()->prepare($sql);
 
             // 'description' => "Doc: ". "{$this->data['form']['num_doc']} " ." - " . "{$this->dataBD['card_name']}" . " (Parcelamento)",
-    
-            $num_doc = "(Resíduo) ". $data['num_doc'];
+
+            $num_doc = "(Resíduo) " . $data['num_doc'];
             $stmt->bindValue(':num_doc', $num_doc, PDO::PARAM_STR);
 
             $stmt->bindValue(':bank_id', $data['bank_id'] ?? null, PDO::PARAM_INT);
@@ -279,12 +288,18 @@ class PayRepository extends DbConnection
             $original_value = number_format((float) $original_value, 2, '.', '');
             // Subtrair os valores corretamente formatados
             $original_value = $original_value - $subtotal;
-            
+
             // var_dump($original_value);
             // exit;
 
             //value = recebe original_value
             $stmt->bindParam(':value', $original_value, PDO::PARAM_STR);
+
+            $stmt->bindParam(':amount_paid', $original_value, PDO::PARAM_STR);
+
+            $amountPaid = $subtotal + $dataBD['amount_paid'];
+            $amountPaid = number_format((float) $amountPaid, 2, '.', '');
+            $stmt->bindParam(':amount_paid',$amountPaid, PDO::PARAM_STR);
 
 
             $discount_value = isset($data['discount_value']) ? (float) $data['discount_value'] : 0.00;
@@ -315,7 +330,7 @@ class PayRepository extends DbConnection
         }
     }
 
-    
+
 
     /**
      * Cadastra um pagamento parcial.
@@ -330,11 +345,11 @@ class PayRepository extends DbConnection
         try {
             $sql = 'INSERT INTO adms_partial_value (account_id, type, partial_value, user_id, created_at)
                     VALUES (:account_id, :type, :partial_value, :user_id, :created_at)';
-            
-            var_dump($sql);
-          
 
-            $stmt = $this->getConnection()->prepare($sql);          
+            var_dump($sql);
+
+
+            $stmt = $this->getConnection()->prepare($sql);
 
             $stmt->bindValue(':account_id', $data['id_pay'] ?? null, PDO::PARAM_INT);
 
@@ -358,7 +373,7 @@ class PayRepository extends DbConnection
         }
     }
 
-        /**
+    /**
      * Cadastra um pagamento parcial.
      *
      * @param array $data Dados de um pagamento parcial.
@@ -366,23 +381,25 @@ class PayRepository extends DbConnection
      */
     public function createMovement(array $dataForm, array $data): bool|int
     {
+        var_dump($data);
         try {
-            $sql = 'INSERT INTO adms_movements (type, movement, description, movement_value, user_id, bank_id, movement_id, created_at)
-                    VALUES (:type, :movement,  :description, :movement_value, :user_id,:bank_id, :movement_id, :created_at)';
+            $sql = 'INSERT INTO adms_movements (type, movement, description, movement_value, user_id, bank_id, method_id, movement_id, created_at)
+                    VALUES (:type, :movement,  :description, :movement_value, :user_id,:bank_id, :method_id, :movement_id, :created_at)';
 
-            $stmt = $this->getConnection()->prepare($sql); 
-            
+            $stmt = $this->getConnection()->prepare($sql);
+
             $stmt->bindValue(':type', 'Saída', PDO::PARAM_STR);
             $stmt->bindValue(':movement', 'Conta à Pagar', PDO::PARAM_STR);
-            $stmt->bindParam(':description',  $data['description'], PDO::PARAM_STR);                      
+            $stmt->bindParam(':description',  $data['description'], PDO::PARAM_STR);
 
-            $movement_value = isset($data['value']) ? str_replace(',', '.', $data['value']) : '0.00';
+            $movement_value = isset($data['subtotal']) ? str_replace(',', '.', $data['subtotal']) : '0.00';
             $movement_value = number_format((float) $movement_value, 2, '.', '');
             $stmt->bindParam(':movement_value', $movement_value, PDO::PARAM_STR);
 
             $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
             $stmt->bindValue(':bank_id', $data['bank_id'], PDO::PARAM_INT);
-            $stmt->bindValue(':movement_id', $data['id_pay'] ?? null, PDO::PARAM_INT); 
+            $stmt->bindValue(':method_id', $data['pay_method_id'], PDO::PARAM_INT);
+            $stmt->bindValue(':movement_id', $data['id_pay'] ?? null, PDO::PARAM_INT);
 
             $stmt->bindValue(':created_at', date("Y-m-d H:i:s"));
 
@@ -394,6 +411,7 @@ class PayRepository extends DbConnection
             return false;
         }
     }
+
 
 
     /**

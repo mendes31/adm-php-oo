@@ -73,7 +73,7 @@ use App\adms\Helpers\CSRFHelper;
 
                 <div class="col-4">
                     <label for="value" class="form-label">Valor</label>
-                    <input type="text" name="value" class="form-control" id="value" placeholder="Valor" 
+                    <input type="text" name="value" class="form-control" id="value" placeholder="Valor"
                         value="<?php echo $this->data['form']['value'] ?? ''; ?>">
                 </div>
 
@@ -84,7 +84,7 @@ use App\adms\Helpers\CSRFHelper;
 
                 <div class="col-3">
                     <label for="expected_date" class="form-label">Previsão Pagamento</label>
-                    <input type="date" name="expected_date" class="form-control" id="expected_date" placeholder="Fornecedor" value="<?php echo $this->data['form']['expected_date'] ?? ''; ?>">
+                    <input type="date" name="expected_date" class="form-control" id="expected_date" placeholder="Fornecedor" value="<?php echo $this->data['form']['expected_date'] ?? ''; ?>" readonly>
                 </div>
 
                 <div class="col-md-3">
@@ -276,4 +276,60 @@ use App\adms\Helpers\CSRFHelper;
             target.src = "";
         }
     }
+</script>
+
+<script>
+    // Lista de feriados fixos (você pode expandir com feriados móveis ou buscar de API)
+    const feriadosFixos = [
+        "01-01", // Confraternização
+        "03-22", // Aniversário Cidade
+        "04-21", // Tiradentes
+        "05-01", // Dia do Trabalho
+        "09-07", // Independência
+        "10-12", // Nossa Senhora
+        "11-02", // Finados
+        "11-15", // Proclamação
+        "12-25" // Natal
+    ];
+
+    // Função para verificar se é fim de semana
+    function isWeekend(date) {
+        const day = date.getDay();
+        return day === 0 || day === 6; // domingo ou sábado
+    }
+
+    // Função para verificar se é feriado
+    function isHoliday(date) {
+        const mesDia = ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + date.getDate()).slice(-2);
+        return feriadosFixos.includes(mesDia);
+    }
+
+    // Função para obter o próximo dia útil
+    function getNextBusinessDay(date) {
+        let nextDate = new Date(date);
+        do {
+            nextDate.setDate(nextDate.getDate() + 1);
+        } while (isWeekend(nextDate) || isHoliday(nextDate));
+        return nextDate;
+    }
+
+    // Listener para o campo due_date
+    document.getElementById("due_date").addEventListener("change", function() {
+        const dueDateValue = this.value;
+        if (!dueDateValue) return;
+
+        let [year, month, day] = dueDateValue.split("-");
+        let date = new Date(year, month - 1, day); // Isso força data local correta
+
+
+        if (isWeekend(date) || isHoliday(date)) {
+            date = getNextBusinessDay(date);
+        }
+
+        const yyyy = date.getFullYear();
+        const mm = ("0" + (date.getMonth() + 1)).slice(-2);
+        const dd = ("0" + date.getDate()).slice(-2);
+
+        document.getElementById("expected_date").value = `${yyyy}-${mm}-${dd}`;
+    });
 </script>

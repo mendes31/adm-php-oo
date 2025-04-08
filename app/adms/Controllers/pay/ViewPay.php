@@ -5,7 +5,9 @@ namespace App\adms\Controllers\pay;
 use App\adms\Controllers\Services\PageLayoutService;
 use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Repository\LogsRepository;
+use App\adms\Models\Repository\PartialValuesRepository;
 use App\adms\Models\Repository\PaymentsRepository;
+use App\adms\Models\Repository\PayRepository;
 use App\adms\Views\Services\LoadViewService;
 
 /**
@@ -22,6 +24,9 @@ class ViewPay
 {
     /** @var array|string|null $data Dados que devem ser enviados para a VIEW */
     private array|string|null $data = null;
+
+    /** @var array|string|null $data Dados que devem ser enviados para a VIEW */
+    private array|string|null $dataPgto = null;
 
     /**
      * Recuperar os detalhes do Conta à Pagar.
@@ -48,6 +53,10 @@ class ViewPay
         // Instanciar o Repository para recuperar o registro do Conta à Pagar de dados
         $viewPay = new PaymentsRepository();
         $this->data['pay'] = $viewPay->getPay((int) $id);
+
+        // Instanciar o Repository para recuperar o registro do Conta à Pagar de dados
+        $viewMovementValues = new PartialValuesRepository();
+        $this->data['movementValues'] = $viewMovementValues->getMovementValues((int) $id);
 
         // Verificar se encontrou o registro no Conta à Pagar de dados
         if (!$this->data['pay']) {

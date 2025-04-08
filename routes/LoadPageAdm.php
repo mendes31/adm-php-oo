@@ -45,9 +45,9 @@ class LoadPageAdm
         "ListAccountsPlan", "CreateAccountPlan", "ViewAccountPlan", "UpdateAccountPlan", "DeleteAccountPlan",
         "ListFrequncies", "CreateFrequncy", "ViewFrequncy", "UpdateFrequncy", "DeleteFrequncy",
         "ListCustomers", "CreateCustomer", "ViewCustomer", "UpdateCustomer", "DeleteCustomer",
-        "ListSuppliers", "CreateSupplier", "ViewSupplier", "UpdateSupplier", "DeleteSupplier",
+        "ListSuppliers", "CreateSupplier", "ViewSupplier", "UpdateSupplier", "DeleteSupplier", 'ProcessFile',
         "ListPaymentMethods", "CreatePaymentMethod", "ViewPaymentMethod", "UpdatePaymentMethod", "DeletePaymentMethod",
-        "ListPayments", "CreatePay", "ViewPay", "UpdatePay", "DeletePay", "Payment", "Installments",
+        "ListPayments", "CreatePay", "ViewPay", "UpdatePay", "DeletePay", "Payment", "Installments", "ListPartialValues",
     ];
 
     /** @var array $listDirectory Recebe a lista de diretórios com as controllers */
@@ -177,6 +177,8 @@ class LoadPageAdm
 
                 // Criar o caminho da controller/classe
                 $this->classLoad = "\\App\\$package\\Controllers\\$directory\\" . $this->urlController;
+
+                var_dump($this->classLoad);
 
                 // Verificar se a classe existe
                 if (class_exists($this->classLoad)) {

@@ -27,6 +27,16 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_supplier');
         <div class="card-header hstack gap-2">
             <span>Listar</span>
 
+
+            <span class="ms-auto">
+                <form method="POST" action="<?php echo $_ENV['URL_ADM'] . 'process-file'; ?>" enctype="multipart/form-data">
+                    <label>Arquivo: </label>
+                    <input type="file" name="arquivo" id="arquivo">
+                    <input type="submit" value="Enviar">
+                </form>
+            </span>
+
+
             <span class="ms-auto">
                 <?php
                 if (in_array('CreateSupplier', $this->data['buttonPermission'])) {

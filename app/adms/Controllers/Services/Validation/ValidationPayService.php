@@ -25,9 +25,9 @@ class ValidationPayService
 
     public function validate(array $dataBD, array $data): array
     {
-        var_dump($data);
-        var_dump($dataBD);
-     
+        // var_dump($data);
+        // var_dump($dataBD);
+
         // Criar o array para receber mensagens de erro
         $errors = [];
 
@@ -66,14 +66,14 @@ class ValidationPayService
             }
         }
 
-        var_dump($data);
-     
+        // var_dump($data);
+
 
         // Verificar se o valor a ser baixado não é maior que o valor total da conta
         if (!empty($data['value']) && !empty($data['id_pay'])) {
             $conta = $paymentsRepo->getPay($data['id_pay']);
 
-            var_dump($conta);
+            // var_dump($conta);
 
             if ($conta) {
                 $valorTotal = (float) $conta['value']; // Supondo que 'value' seja o total da conta
@@ -86,39 +86,56 @@ class ValidationPayService
             }
         }
 
+        if ($conta) {
+            $valorTotal = (float) $conta['value']; // Total da conta
+            $valorBaixado = (float) $data['value'];
+
+            if ($valorBaixado < $valorTotal) {
+                // Verifica se algum dos campos foi preenchido
+                $temMultaOuDesconto =
+                    (!empty($data['discount_value']) && (float)$data['discount_value'] > 0) ||
+                    (!empty($data['fine_value']) && (float)$data['fine_value'] > 0) ||
+                    (!empty($data['interest']) && (float)$data['interest'] > 0);
+
+                if ($temMultaOuDesconto) {
+                    $errors['value'] = "Se o valor a ser baixado for menor que o valor original ({$valorTotal}), não pode ser adicionado Desconto, Multa ou Juros.";
+                }
+            }
+        } else {
+            $errors['id_pay'] = 'Conta não encontrada.';
+        }
         return $errors;
-
-
     }
+
 
     public function validateOriginalValue(array $dataBD, array $data): bool
     {
-        var_dump($data);
-        var_dump($dataBD);
-    
+        // var_dump($data);
+        // var_dump($dataBD);
+
         // Instanciar o repositório de pagamentos
         $paymentsRepo = new PayRepository();
-    
-        var_dump($data);
-    
+
+        // var_dump($data);
+
         // Verificar se os valores necessários estão definidos
         if (empty($data['value']) || empty($data['id_pay'])) {
             return false;
         }
-    
+
         // Buscar os dados do pagamento
         $conta = $paymentsRepo->getPay($data['id_pay']);
-    
-        var_dump($conta);
-    
+
+        // var_dump($conta);
+
         // Verificar se a conta foi encontrada e se tem um valor original válido
-        if (!empty($conta) && isset($conta['original_value'])) {
-            return ((float) $data['value'] === (float) $conta['original_value']);
+        if (!empty($conta) && isset($conta['value'])) {
+            return ((float) $data['value'] === (float) $conta['value']);
         }
-    
+
         return false;
     }
-    
+
 
     public function getSupplierName(int $partner_id): string
     {
