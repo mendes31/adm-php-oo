@@ -80,7 +80,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
                             <th scope="col">Fornecedor</th>
                             <th scope="col" class="d-none d-md-table-cell">Valor</th>
                             <th scope="col" class="d-none d-md-table-cell">Pago</th>
-                            <th scope="col">Pagar</th>
+                            <th scope="col" class="d-none d-md-table-cell">Pagar</th>
                             <th scope="col" class="d-none d-md-table-cell">Vencimento</th>
                             <th scope="col" class="d-none d-md-table-cell">Previsão</th>
                             <!-- <th scope="col" class="d-none d-md-table-cell">Frequencia</th> -->

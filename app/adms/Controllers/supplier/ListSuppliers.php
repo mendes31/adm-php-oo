@@ -25,7 +25,7 @@ class ListSuppliers
     private array|string|null $data = null;
 
     /** @var int $limitResult Limite de registros por página */
-    private int $limitResult = 10000; // Ajuste conforme necessário
+    private int $limitResult = 100; // Ajuste conforme necessário
 
     /**
      * Recuperar e listar Fornecedores com paginação.

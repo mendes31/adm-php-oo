@@ -61,13 +61,13 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_supplier');
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Nome</th>
-                            <th scope="col">Pessoa</th>
-                            <th scope="col">Documetento</th>
-                            <th scope="col">Telefone</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Endereço</th>
-                            <th scope="col">Descrição/Observações</th>
-                            <th scope="col">Data Nascimetno</th>
+                            <th scope="col" class="d-none d-md-table-cell">Pessoa</th>
+                            <th scope="col" class="d-none d-md-table-cell">Documetento</th>
+                            <th scope="col" class="d-none d-md-table-cell">Telefone</th>
+                            <th scope="col" class="d-none d-md-table-cell">Email</th>
+                            <th scope="col" class="d-none d-md-table-cell">Endereço</th>
+                            <th scope="col" class="d-none d-md-table-cell">Descrição/Observações</th>
+                            <th scope="col" class="d-none d-md-table-cell">Data Nascimetno</th>
                             <th scope="col">Ativo</th>
                             <th scope="col" class="text-center">Ações</th>
                         </tr>
@@ -84,41 +84,76 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_supplier');
                             <tr>
                                 <td><?php echo $card_code; ?></td>
                                 <td><?php echo $card_name; ?></td>
-                                <td><?php echo $type_person; ?></td>
-                                <td><?php echo $doc; ?></td>
-                                <td><?php echo $phone; ?></td>
-                                <td><?php echo $email; ?></td>
-                                <td><?php echo $address; ?></td>
-                                <td><?php echo $description; ?></td>
-                                <td><?php echo $date_birth; ?></td>
+                                <td class="d-none d-md-table-cell"><?php echo $type_person; ?></td>
+                                <td class="d-none d-md-table-cell"><?php echo $doc; ?></td>
+                                <td class="d-none d-md-table-cell"><?php echo $phone; ?></td>
+                                <td class="d-none d-md-table-cell"><?php echo $email; ?></td>
+                                <td class="d-none d-md-table-cell"><?php echo $address; ?></td>
+                                <td class="d-none d-md-table-cell"><?php echo $description; ?></td>
+                                <td class="d-none d-md-table-cell"><?php echo $date_birth; ?></td>
                                 <td><?php echo ($active == 1) ? 'SIM' : 'NÃO'; ?></td>
 
                                 <td class="text-center">
+                                    <div class="tabela-acoes">
 
-                                    <?php
-                                    if (in_array('ViewSupplier', $this->data['buttonPermission'])) {
-                                        echo "<a href='{$_ENV['URL_ADM']}view-supplier/$id' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Visualizar</a>";
-                                    }
+                                        <?php
+                                        // if (in_array('ViewSupplier', $this->data['buttonPermission'])) {
+                                        //     echo "<a href='{$_ENV['URL_ADM']}view-supplier/$id' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Visualizar</a>";
 
-                                    if (in_array('UpdateSupplier', $this->data['buttonPermission'])) {
-                                        echo "<a href='{$_ENV['URL_ADM']}update-supplier/$id' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-pen-to-square'></i> Editar</a>";
-                                    }
+                                        // }
 
-                                    if (in_array('DeleteSupplier', $this->data['buttonPermission'])) {
-                                    ?>
+                                        if (in_array('ViewSupplier', $this->data['buttonPermission'])) {
+                                            echo "<a href='{$_ENV['URL_ADM']}view-supplier/$id'
+                                            class='btn btn-primary btn-sm me-1 mb-1' 
+                                            data-bs-toggle='tooltip' 
+                                            data-bs-placement='top' 
+                                            data-bs-custom-class='tooltip-visualizar' 
+                                            title='Visualizar'>
+                                            <i class='fa-regular fa-eye'></i>
+                                          </a>";
+                                        }
 
-                                        <form id="formDelete<?php echo $id; ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-supplier" method="POST" class="d-inline">
+                                        // if (in_array('UpdateSupplier', $this->data['buttonPermission'])) {
+                                        //     echo "<a href='{$_ENV['URL_ADM']}update-supplier/$id' class='btn btn-warning btn-sm me-1 mb-1'><i class='fa-solid fa-pen-to-square'></i> Editar</a>";
+                                        // }
 
-                                            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                                        if (in_array('UpdateSupplier', $this->data['buttonPermission'])) {
+                                            echo "<a href='{$_ENV['URL_ADM']}update-supplier/$id'
+                                            class='btn btn-warning btn-sm me-1 mb-1' 
+                                            data-bs-toggle='tooltip' 
+                                            data-bs-placement='top' 
+                                            data-bs-custom-class='tooltip-editar' 
+                                            title='Editar'>
+                                            <i class='fa-solid fa-pen-to-square'></i>
+                                          </a>";
+                                        }
 
-                                            <input type="hidden" name="id" id="id" value="<?php echo $id ?? ''; ?>">
+                                        if (in_array('DeleteSupplier', $this->data['buttonPermission'])) {
+                                        ?>
 
-                                            <input type="hidden" name="card_name" id="card_name" value="<?php echo $card_name ?? ''; ?>">
+                                            <form id="formDelete<?php echo $id; ?>" action="<?php echo $_ENV['URL_ADM']; ?>delete-supplier" method="POST" class="d-inline">
 
-                                            <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo $id; ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button>
+                                                <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
 
-                                        </form>
-                                    <?php } ?>
+                                                <input type="hidden" name="id" id="id" value="<?php echo $id ?? ''; ?>">
+
+                                                <input type="hidden" name="card_name" id="card_name" value="<?php echo $card_name ?? ''; ?>">
+
+                                                <!-- <button type="submit" class="btn btn-danger btn-sm me-1 mb-1" onclick="confirmDeletion(event, <?php echo $id; ?>)"><i class="fa-regular fa-trash-can"></i> Apagar</button> -->
+
+                                                <button type="submit"
+                                                    class="btn btn-danger btn-sm me-1 mb-1"
+                                                    onclick="confirmDeletion(event, <?php echo $id; ?>)"
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-placement="top"
+                                                    data-bs-custom-class="tooltip-deletar"
+                                                    title="Excluir">
+                                                    <i class="fa-regular fa-trash-can"></i>
+                                                </button>
+
+                                            </form>
+                                        <?php } ?>
+                                    </div>
 
                                 </td>
                             </tr>
@@ -141,7 +176,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_supplier');
     </div>
 </div>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     $(document).ready(function() {
         $('#tabela').DataTable({
             "language": {
@@ -166,6 +201,61 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_supplier');
                     "sSortDescending": ": Ordenar colunas de forma descendente"
                 }
             }
+        });
+    });
+</script> -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        const table = $('#tabela').DataTable({
+            "scrollX": true, // Ativa rolagem horizontal
+            "autoWidth": false, // Impede que as colunas fiquem largas demais
+            "responsive": true, // Torna a tabela responsiva
+            "paging": true, // Mantém a paginação ativada
+            "lengthChange": false, // Oculta opção de alterar quantidade de registros
+            "info": false, // Remove a informação "Mostrando X de Y"
+            "columnDefs": [{
+                    "width": "100px",
+                    "targets": "_all"
+                } // Reduz a largura mínima das colunas
+            ],
+            "language": {
+                "decimal": ",",
+                "thousands": ".",
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sEmptyTable": "Nenhum dado disponível na tabela",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+                "sSearch": "Buscar:",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Próximo",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            },
+            columnDefs: [{
+                className: "text-start",
+                targets: "_all"
+            }]
+
+        });
+
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
         });
     });
 </script>

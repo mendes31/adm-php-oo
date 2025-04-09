@@ -29,7 +29,7 @@ class SupplierRepository extends DbConnection
      * @param int $limitResult Número máximo de resultados por página.
      * @return array Lista de fornecedores recuperados do banco de dados.
      */
-    public function getAllSuppliers(int $page = 1, int $limitResult = 10): array
+    public function getAllSuppliers(int $page = 1, int $limitResult = 100): array
     {
         // Calcular o registro inicial, função max para garantir valor mínimo 0
         $offset = max(0, ($page - 1) * $limitResult);
@@ -39,6 +39,12 @@ class SupplierRepository extends DbConnection
                 FROM adms_supplier               
                 ORDER BY id ASC
                 LIMIT :limit OFFSET :offset';
+        
+        // // QUERY para recuperar os registros do banco de dados
+        // $sql = 'SELECT id, card_code, card_name, type_person, doc, phone, email, address, description, active, date_birth, created_at, updated_at
+        //         FROM adms_supplier               
+        //         ORDER BY id ASC
+        //         LIMIT 5';
 
         // Preparar a QUERY
         $stmt = $this->getConnection()->prepare($sql);
@@ -153,6 +159,8 @@ class SupplierRepository extends DbConnection
     {
         try {
 
+            var_dump($data);
+
             // QUERY para cadastrar Fornecedor
             $sql = 'INSERT INTO 
                 adms_supplier (card_code, card_name, type_person, doc, phone, email, address, description, active, date_birth, created_at) 
@@ -166,13 +174,13 @@ class SupplierRepository extends DbConnection
             $stmt->bindValue(':card_name', $data[1], PDO::PARAM_STR);
             $stmt->bindValue(':type_person', $data[2], PDO::PARAM_STR);
             $stmt->bindValue(':doc', $data[3], PDO::PARAM_STR);
-            $stmt->bindValue(':phone', $data[5], PDO::PARAM_STR);
-            $stmt->bindValue(':email', $data[6], PDO::PARAM_STR);
-            $stmt->bindValue(':address', $data[7], PDO::PARAM_STR);
-            $stmt->bindValue(':description', $data[8], PDO::PARAM_STR);
-            $stmt->bindValue(':active', $data[9], PDO::PARAM_STR);
+            $stmt->bindValue(':phone', $data[4], PDO::PARAM_STR);
+            $stmt->bindValue(':email', $data[5], PDO::PARAM_STR);
+            $stmt->bindValue(':address', $data[6], PDO::PARAM_STR);
+            $stmt->bindValue(':description', $data[7], PDO::PARAM_STR);
+            $stmt->bindValue(':active', $data[8], PDO::PARAM_INT);
 
-            $dateBirth = isset($data[10]) ? date("Y-m-d H:i:s", strtotime($data[10])) : null;
+            $dateBirth = isset($data[9]) ? date("Y-m-d H:i:s", strtotime($data[9])) : null;
             $stmt->bindValue(':date_birth', $dateBirth, PDO::PARAM_STR); // data nascimento
 
             $stmt->bindValue(':created_at', date("Y-m-d H:i:s"));
