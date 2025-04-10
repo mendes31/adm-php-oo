@@ -214,7 +214,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
                             extract($movementValues); ?>
 
                             <tr>
-                                <td class="d-none d-md-table-cell"><?php echo date("d-m-Y H:i:s", strtotime($created_at)); ?></td>
+                                <td><?php echo date("d-m-Y H:i:s", strtotime($created_at)); ?></td>
                                 <td><?php echo $id_mov; ?></td>
                                 <td><?php echo 'R$ ' . number_format($movement_value, 2, ',', '.'); ?></td>
                                 <td class="d-none d-md-table-cell"><?php echo $name_method; ?></td>
@@ -278,3 +278,9 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
         });
     });
 </script>
+
+<!-- <script>
+    window.addEventListener('beforeunload', function () {
+        navigator.sendBeacon("<?php echo $_ENV['URL_ADM']; ?>clear-busy-pay/<?php echo $this->data['pay']['id_pay']; ?>");
+    });
+</script> -->

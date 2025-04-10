@@ -206,7 +206,7 @@ class PayRepository extends DbConnection
 
             $amountPaid = $subtotal + $dataForm['amount_paid'];
             $amountPaid = number_format((float) $amountPaid, 2, '.', '');
-            $stmt->bindParam(':amount_paid',$amountPaid, PDO::PARAM_STR);
+            $stmt->bindParam(':amount_paid', $amountPaid, PDO::PARAM_STR);
 
             $discount_value = isset($data['discount_value']) ? (float) $data['discount_value'] : 0.00;
             $discount_value = number_format($discount_value, 2, '.', '');
@@ -235,6 +235,101 @@ class PayRepository extends DbConnection
             return false;
         }
     }
+
+    public function updateBusy(int $idPay, int $userId): bool
+
+    {
+        // var_dump($idPay);
+        // var_dump($userId);
+        // exit;
+
+
+        try {
+            $sql = 'UPDATE adms_pay SET busy = 1, user_temp = :user_id, updated_at = :updated_at';
+
+            // Condição para indicar qual registro editar
+            $sql .= ' WHERE id = :id';
+
+            var_dump($sql);
+
+            // Preparar a QUERY
+            $stmt = $this->getConnection()->prepare($sql);
+
+            $stmt->bindParam(':user_id', $userId, \PDO::PARAM_INT);
+            $stmt->bindValue(':updated_at', date("Y-m-d H:i:s"));
+            $stmt->bindValue(':id', $idPay, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        } catch (Exception $e) {
+            // Gerar log de erro
+            GenerateLog::generateLog("error", "Conta não baixada.", ['id' => $idPay, 'error' => $e->getMessage()]);
+
+            return false;
+        }
+    }
+
+    public function clearBusy(int $idPay): bool
+    {
+        try {
+            $sql = 'UPDATE adms_pay SET busy = :busy, user_temp = :user_id, updated_at = :updated_at WHERE id = :id';
+    
+            $stmt = $this->getConnection()->prepare($sql);
+    
+            $busy = 0;
+            $userId = null;
+            $updatedAt = date("Y-m-d H:i:s");
+    
+            $stmt->bindParam(':busy', $busy, PDO::PARAM_INT);
+            $stmt->bindParam(':user_id', $userId, PDO::PARAM_NULL);
+            $stmt->bindValue(':updated_at', $updatedAt);
+            $stmt->bindValue(':id', $idPay, PDO::PARAM_INT);
+    
+            return $stmt->execute();
+        } catch (Exception $e) {
+            GenerateLog::generateLog("error", "Conta não baixada.", ['id' => $idPay, 'error' => $e->getMessage()]);
+            return false;
+        }
+    }
+
+    public function clearUser(int $id): bool
+    {
+        try {
+            $sql = 'UPDATE adms_pay SET busy = :busy, user_temp = :user_id, updated_at = :updated_at WHERE id = :id';
+    
+            $stmt = $this->getConnection()->prepare($sql);
+    
+            $busy = 0;
+            $userId = null;
+            $updatedAt = date("Y-m-d H:i:s");
+    
+            $stmt->bindParam(':busy', $busy, PDO::PARAM_INT);
+            $stmt->bindParam(':user_id', $userId, PDO::PARAM_NULL);
+            $stmt->bindValue(':updated_at', $updatedAt);
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    
+            return $stmt->execute();
+        } catch (Exception $e) {
+            GenerateLog::generateLog("error", "Conta não baixada.", ['id' => $id, 'error' => $e->getMessage()]);
+            return false;
+        }
+    }
+    
+    public function getUserTemp(int $id): bool
+    {
+        try {
+            $sql = 'SELECT user_temp FROM adms_pay WHERE id = :id';
+    
+            $stmt = $this->getConnection()->prepare($sql);
+    
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    
+            return $stmt->execute();
+        } catch (Exception $e) {
+            GenerateLog::generateLog("error", "Teste.", ['id' => $id, 'error' => $e->getMessage()]);
+            return false;
+        }
+    }
+
 
     /**
      * Atualizar os dados de uma Conta existente.
@@ -299,7 +394,7 @@ class PayRepository extends DbConnection
 
             $amountPaid = $subtotal + $dataBD['amount_paid'];
             $amountPaid = number_format((float) $amountPaid, 2, '.', '');
-            $stmt->bindParam(':amount_paid',$amountPaid, PDO::PARAM_STR);
+            $stmt->bindParam(':amount_paid', $amountPaid, PDO::PARAM_STR);
 
 
             $discount_value = isset($data['discount_value']) ? (float) $data['discount_value'] : 0.00;

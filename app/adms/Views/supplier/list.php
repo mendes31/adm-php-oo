@@ -33,11 +33,11 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_supplier');
                     <label>Arquivo: </label>
                     <input type="file" name="arquivo" id="arquivo">
                     <input type="submit" value="Enviar">
-                </form>
-            </span>
+                </form><br>
+                <!-- </span>
 
 
-            <span class="ms-auto">
+            <span class="ms-auto"> -->
                 <?php
                 if (in_array('CreateSupplier', $this->data['buttonPermission'])) {
                     echo "<a href='{$_ENV['URL_ADM']}create-supplier' class='btn btn-success btn-sm'><i class='fa-regular fa-square-plus'></i> Cadastrar</a> ";
@@ -95,6 +95,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_supplier');
 
                                 <td class="text-center">
                                     <div class="tabela-acoes">
+                                    <!-- <div class="d-flex flex-wrap gap-1 flex-md-row flex-column justify-content-center"> -->
 
                                         <?php
                                         // if (in_array('ViewSupplier', $this->data['buttonPermission'])) {

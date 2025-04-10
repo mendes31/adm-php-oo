@@ -67,6 +67,12 @@ class ViewPay
             return;
         }
 
+      
+
+        // Atualizar o campo busy e user_temp
+        $payRepo = new PayRepository();
+        $payRepo->updateBusy((int) $id, $_SESSION['user_id']); // ou use o ID de usuário que tiver
+
         // Registrar a visualização do Conta à Pagar
         GenerateLog::generateLog("info", "Visualizado o Conta à Pagar.", ['id' => (int) $id]);
 
@@ -101,3 +107,4 @@ class ViewPay
         $loadView->loadView();
     }
 }
+

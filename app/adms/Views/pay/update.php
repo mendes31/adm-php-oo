@@ -252,3 +252,16 @@ use App\adms\Helpers\CSRFHelper;
     </div>
 
 </div>
+
+<!-- <script>
+    // window.addEventListener('beforeunload', function () {
+    //     navigator.sendBeacon("<?php echo $_ENV['URL_ADM']; ?>clear-busy-pay/<?php echo $this->data['pay']['id_pay']; ?>");
+    // });
+
+    window.addEventListener('beforeunload', function () {
+    fetch("<?php echo $_ENV['URL_ADM']; ?>clear-busy-pay/<?php echo $this->data['form']['id_pay']; ?>", {
+        method: "POST"
+    });
+});
+
+</script> -->

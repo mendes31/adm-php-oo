@@ -154,15 +154,15 @@ td.text-center {
 @media (max-width: 768px) {
   .table th, .table td {
       padding: 4px 6px; /* Diminui o espaçamento interno */
-      font-size: 13px;  /* Reduz o tamanho da fonte */
+      font-size: 12px;  /* Reduz o tamanho da fonte */
   }
 }
 
 /* Para telas ainda menores */
 @media (max-width: 576px) {
   .table th, .table td {
-      padding: 3px 5px;
-      font-size: 12px;
+      padding: 2px 4px;
+      font-size: 10px;
   }
 }
 
@@ -184,6 +184,12 @@ td.text-center {
   justify-content: center;
   padding: 5px; /* Mantém espaçamento uniforme */
 }
+
+.btn-acao {
+  min-width: 38px;  /* ou 45px, ou 100% se quiser largura cheia */
+  text-align: center;
+}
+
 
 
 

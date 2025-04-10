@@ -13,6 +13,7 @@ use App\adms\Models\Repository\FrequencyRepository;
 use App\adms\Models\Repository\LogsRepository;
 use App\adms\Models\Repository\PaymentMethodsRepository;
 use App\adms\Models\Repository\PaymentsRepository;
+use App\adms\Models\Repository\PayRepository;
 use App\adms\Models\Repository\SupplierRepository;
 use App\adms\Views\Services\LoadViewService;
 
@@ -31,8 +32,8 @@ class UpdatePay
     /** @var array|string|null $data Dados que devem ser enviados para a VIEW */
     private array|string|null $data = null;
 
-     /** @var array|string|null $data Dados que devem ser enviados para a VIEW */
-     private array|string|null $dataBD = null;
+    /** @var array|string|null $data Dados que devem ser enviados para a VIEW */
+    private array|string|null $dataBD = null;
 
     /**
      * Editar o Conta.
@@ -50,9 +51,10 @@ class UpdatePay
         $this->data['form'] = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
         // Validar o CSRF token e a existência do ID da conta
-        if (isset($this->data['form']['csrf_token']) && 
-            CSRFHelper::validateCSRFToken('form_update_pay', $this->data['form']['csrf_token'])) 
-        {
+        if (
+            isset($this->data['form']['csrf_token']) &&
+            CSRFHelper::validateCSRFToken('form_update_pay', $this->data['form']['csrf_token'])
+        ) {
             // Editar o Conta
             $this->editPay();
         } else {
@@ -67,10 +69,18 @@ class UpdatePay
                 $_SESSION['error'] = "Conta não encontrada!";
                 header("Location: {$_ENV['URL_ADM']}list-payments");
                 return;
+
+                
             }
+
+            // Atualizar o campo busy e user_temp
+            $payRepo = new PayRepository();
+            $payRepo->updateBusy((int) $id, $_SESSION['user_id']); // ou use o ID de usuário que tiver
 
             // Carregar a visualização para edição do Conta
             $this->viewPay();
+
+            
         }
     }
 
@@ -106,7 +116,7 @@ class UpdatePay
         // Instanciar o repositório para recuperar os bancos
         $listBanks = new BanksRepository();
         $this->data['listBanks'] = $listBanks->getAllBanksSelect();
-        
+
         // Definir o título da página
         // Ativar o item de menu
         // Apresentar ou ocultar botão 
@@ -141,7 +151,7 @@ class UpdatePay
 
         // Se houver erros de validação, recarregar a visualização
         if (!empty($this->data['errors'])) {
-            
+
             $this->viewPay();
             return;
         }
@@ -153,7 +163,7 @@ class UpdatePay
 
         // Verificar o resultado da atualização
         if ($result) {
-           
+
             // gravar logs na tabela adms-logs
             if ($_ENV['APP_LOGS'] == 'Sim') {
                 $dataLogs = [
@@ -161,13 +171,13 @@ class UpdatePay
                     'action' => 'edição',
                     'record_id' => $this->data['form']['id'],
                     'description' => $this->data['form']['num_doc'],
-    
+
                 ];
                 // Instanciar a classe validar  o usuário
                 $insertLogs = new LogsRepository();
                 $insertLogs->insertLogs($dataLogs);
             }
-        
+
 
             $_SESSION['success'] = "Conta editada com sucesso!";
             header("Location: {$_ENV['URL_ADM']}view-pay/{$this->data['form']['id']}");
