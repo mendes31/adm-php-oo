@@ -185,3 +185,23 @@ use App\adms\Helpers\CSRFHelper;
         calcularSubtotal();
     });
 </script>
+
+<script>
+//     window.addEventListener('beforeunload', function () {
+//         const id = document.getElementById('id')?.value;
+//         if (id) {
+//             navigator.sendBeacon("<?php echo $_ENV['URL_ADM']; ?>clear-busy-pay/" + id);
+//         }
+//     });
+// </script>
+
+<script>
+    function sendClearBusy() {
+        const id = document.getElementById('id_pay')?.value;
+        if (id) {
+            navigator.sendBeacon("<?php echo $_ENV['URL_ADM']; ?>clear-busy-pay/" + id);
+        }
+    }
+
+    window.addEventListener('pagehide', sendClearBusy);
+</script>

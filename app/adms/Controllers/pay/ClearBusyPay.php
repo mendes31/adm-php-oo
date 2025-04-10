@@ -8,6 +8,8 @@ class ClearBusyPay
 {
     public function index(int $id): void
     {
+        var_dump($id);
+        
         if (!(int) $id) {
             $_SESSION['error'] = "ID inválido para limpar bloqueio!";
             header("Location: {$_ENV['URL_ADM']}list-payments");

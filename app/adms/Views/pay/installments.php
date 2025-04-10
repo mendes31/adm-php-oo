@@ -126,3 +126,13 @@ use App\adms\Helpers\CSRFHelper;
     </div>
 
 </div>
+
+<script>
+    window.addEventListener('beforeunload', function () {
+        const id = document.getElementById('id_pay')?.value;
+        if (id) {
+            navigator.sendBeacon("<?php echo $_ENV['URL_ADM']; ?>clear-busy-pay/" + id);
+        }
+    });
+</script>
+

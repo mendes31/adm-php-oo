@@ -253,15 +253,11 @@ use App\adms\Helpers\CSRFHelper;
 
 </div>
 
-<!-- <script>
-    // window.addEventListener('beforeunload', function () {
-    //     navigator.sendBeacon("<?php echo $_ENV['URL_ADM']; ?>clear-busy-pay/<?php echo $this->data['pay']['id_pay']; ?>");
-    // });
-
+<script>
     window.addEventListener('beforeunload', function () {
-    fetch("<?php echo $_ENV['URL_ADM']; ?>clear-busy-pay/<?php echo $this->data['form']['id_pay']; ?>", {
-        method: "POST"
+        const id = document.getElementById('id')?.value;
+        if (id) {
+            navigator.sendBeacon("<?php echo $_ENV['URL_ADM']; ?>clear-busy-pay/" + id);
+        }
     });
-});
-
-</script> -->
+</script>

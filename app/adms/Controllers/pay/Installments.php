@@ -9,6 +9,7 @@ use App\adms\Helpers\GenerateLog;
 use App\adms\Models\Repository\FrequencyRepository;
 use App\adms\Models\Repository\InstallmentsRepository;
 use App\adms\Models\Repository\LogsRepository;
+use App\adms\Models\Repository\PayRepository;
 use App\adms\Models\Repository\SupplierRepository;
 use App\adms\Views\Services\LoadViewService;
 
@@ -69,6 +70,10 @@ class Installments
                 return;
             }
 
+            // Atualizar o campo busy e user_temp
+            $payRepo = new PayRepository();
+            $payRepo->updateBusy((int) $id, $_SESSION['user_id']); // ou use o ID de usuário que tiver
+            
             // Carregar a visualização para edição do Conta
             $this->viewPay();
         }

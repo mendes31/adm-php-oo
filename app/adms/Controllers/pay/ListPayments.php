@@ -38,14 +38,14 @@ class ListPayments
      */
     public function index(string|int $page = 1): void
     {
-        // Atualizar o campo busy e user_temp
-        $payRepo = new PayRepository();
-        $payRepo->getUserTemp($_SESSION['user_id']); //  ID de usuário que tiver
+        // // Atualizar o campo busy e user_temp
+        // $payRepo = new PayRepository();
+        // $payRepo->getUserTemp($_SESSION['user_id']); //  ID de usuário que tiver
 
-        if( $payRepo){
-            $payRepo->clearUser($_SESSION['user_id']);
-            
-        }
+        // if( $payRepo){
+        //     $payRepo->clearUser($_SESSION['user_id']);
+
+        // }
 
         // Receber os dados do formulário
         $this->data['form'] = filter_input_array(INPUT_POST, FILTER_DEFAULT);
