@@ -38,14 +38,10 @@ class ListPayments
      */
     public function index(string|int $page = 1): void
     {
-        // // Atualizar o campo busy e user_temp
+
+        // Liberar o "busy" de todas as contas do usuário atual ao acessar a listagem de pagamentos
         // $payRepo = new PayRepository();
-        // $payRepo->getUserTemp($_SESSION['user_id']); //  ID de usuário que tiver
-
-        // if( $payRepo){
-        //     $payRepo->clearUser($_SESSION['user_id']);
-
-        // }
+        // $payRepo->clearBusy($_SESSION['user_id']); // Liberar o "busy" do usuário
 
         // Receber os dados do formulário
         $this->data['form'] = filter_input_array(INPUT_POST, FILTER_DEFAULT);
@@ -55,6 +51,16 @@ class ListPayments
 
         // Recuperar os Bancos para a página atual
         $this->data['payments'] = $listPayments->getAllPayments((int) $page, (int) $this->limitResult);
+
+        // Atualizar o campo busy e user_temp
+        $payRepo = new PayRepository();
+        $payRepo->getUserTemp($_SESSION['user_id']); //  ID de usuário que tiver
+
+        
+
+        if ($payRepo) {
+            $payRepo->clearUser($_SESSION['user_id']);
+        }
 
 
         // Gerar dados de paginação
@@ -76,6 +82,8 @@ class ListPayments
         $pageLayoutService = new PageLayoutService();
         $pageLayoutService->configurePageElements($pageElements);
         $this->data = array_merge($this->data, $pageLayoutService->configurePageElements($pageElements));
+
+
 
         // Carregar a VIEW com os dados
         $loadView = new LoadViewService("adms/Views/pay/list", $this->data);

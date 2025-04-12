@@ -47,6 +47,8 @@ class UpdatePay
      */
     public function index(int|string $id): void
     {
+        // var_dump($id);
+        // exit;
         // Receber os dados do formulário
         $this->data['form'] = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 

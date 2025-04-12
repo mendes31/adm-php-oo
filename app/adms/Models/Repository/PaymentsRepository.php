@@ -26,13 +26,14 @@ class PaymentsRepository extends DbConnection
      * @param int $limitResult Número máximo de resultados por página.
      * @return array Lista de Contas a Pagar recuperadas do banco de dados.
      */
-    public function getAllPayments(int $page = 1, int $limitResult = 10): array
+    public function getAllPayments(int $page = 1, int $limitResult = 100): array
     {
         $offset = max(0, ($page - 1) * $limitResult);
 
-        $sql = 'SELECT ap.id AS id_pay,  ap.num_doc,  ap.description, ap.file, ap.paid, ap.value, ap.original_value, ap.amount_paid, ap.discount_value, ap.doc_date, ap.due_date, ap.expected_date, ap.pay_date, ap.created_at, ap.updated_at,
+        $sql = 'SELECT ap.id AS id_pay, ap.num_doc,  ap.description, ap.busy, ap.user_temp, ap.file, ap.paid, ap.value, ap.original_value, ap.amount_paid, ap.discount_value, ap.doc_date, ap.due_date, ap.expected_date, ap.pay_date, ap.created_at, ap.updated_at,
                     sup.card_name, 
-                    au.name AS name_user, 
+                    au.name AS name_user,
+                    au2.name AS name_user_temp, 
                     af.name AS name_freq, af.days,
                     ab.bank_name, 
                     acc.name AS name_cc,
@@ -40,6 +41,7 @@ class PaymentsRepository extends DbConnection
                     aap.name AS name_aap
                 FROM adms_pay ap 
                     LEFT JOIN adms_users au ON au.id = ap.user_launch_id
+                    LEFT JOIN adms_users au2 ON au2.id = ap.user_temp
                     LEFT JOIN adms_frequency af on af.id = ap.frequency_id
                     LEFT JOIN adms_supplier sup on sup.id = ap.partner_id
                     LEFT JOIN adms_bank_accounts ab on ab.id = ap.bank_id
@@ -55,6 +57,39 @@ class PaymentsRepository extends DbConnection
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getPaymentsStatus(?int $id = null, int $limit = 100): array
+    {
+        if ($id) {
+            $sql = 'SELECT id AS id_pay, busy FROM adms_pay WHERE id = :id LIMIT 1';
+            $stmt = $this->getConnection()->prepare($sql);
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        } else {
+            $sql = 'SELECT id AS id_pay, busy FROM adms_pay ORDER BY updated_at DESC LIMIT :limit';
+            $stmt = $this->getConnection()->prepare($sql);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        }
+    
+        $stmt->execute();
+        return $id ? $stmt->fetch(PDO::FETCH_ASSOC) : $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+
+    public function getBusy(int $id): array|null
+    {
+        $sql = 'SELECT id_pay, busy, user_temp FROM payments WHERE id_pay = :id LIMIT 1';
+
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Retorna array se encontrou, ou null se não encontrou
+        return $result ?: null;
+    }
+
 
     /**
      * Recupera a quantidade total de Contas a Pagar para paginação.
@@ -312,7 +347,7 @@ class PaymentsRepository extends DbConnection
 
     public function existsNumDocForPartner($numDoc, $partnerId, $ignoreId = null)
     {
-       
+
 
         $sql = "SELECT COUNT(*) FROM adms_pay WHERE num_doc = :num_doc AND partner_id = :partner_id";
 
@@ -336,7 +371,7 @@ class PaymentsRepository extends DbConnection
 
     public function getSupplierName(int $partner_id): string
     {
-      
+
         $sql = "SELECT 	card_name FROM adms_supplier WHERE id = :partner_id LIMIT 1";
 
         $stmt = $this->getConnection()->prepare($sql);
@@ -349,7 +384,7 @@ class PaymentsRepository extends DbConnection
 
     public function getSupplierNameAccount(int $id): string
     {
-       
+
         $sql = "SELECT as2.card_name from adms_pay ap 
                 INNER JOIN adms_supplier as2 on as2.id = ap.partner_id 
                 WHERE ap.id = :id LIMIT 1";

@@ -75,7 +75,7 @@ class Payment
             // Atualizar o campo busy e user_temp
             $payRepo = new PayRepository();
             $payRepo->updateBusy((int) $id, $_SESSION['user_id']); // ou use o ID de usuário que tiver
-            
+
             // Carregar a visualização para edição do Conta
             $this->viewPay();
         }
@@ -180,6 +180,8 @@ class Payment
                         $insertLogs->insertLogs($dataLogs);
                     }
 
+                    // Após editar e baixar a conta, liberar o "busy"
+                    $payUpdate->clearBusy($this->data['form']['id_pay']);
 
                     $_SESSION['success'] = "Conta paga/baixada com sucesso!";
                     header("Location: {$_ENV['URL_ADM']}view-pay/{$this->data['form']['id_pay']}");

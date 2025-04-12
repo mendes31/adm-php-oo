@@ -172,8 +172,8 @@ class PayRepository extends DbConnection
     public function updatePay(array $dataForm, array $data): bool
 
     {
-        var_dump($data);
-        var_dump($dataForm);
+        // var_dump($data);
+        // var_dump($dataForm);
 
         try {
             $sql = 'UPDATE adms_pay 
@@ -192,7 +192,7 @@ class PayRepository extends DbConnection
             // Condição para indicar qual registro editar
             $sql .= ' WHERE id = :id_pay';
 
-            var_dump($sql);
+            // var_dump($sql);
 
             // Preparar a QUERY
             $stmt = $this->getConnection()->prepare($sql);
@@ -250,7 +250,7 @@ class PayRepository extends DbConnection
             // Condição para indicar qual registro editar
             $sql .= ' WHERE id = :id';
 
-            var_dump($sql);
+            // var_dump($sql);
 
             // Preparar a QUERY
             $stmt = $this->getConnection()->prepare($sql);
@@ -268,9 +268,12 @@ class PayRepository extends DbConnection
         }
     }
 
-    public function clearBusy(int $idPay): bool
+    public function clearBusy(int $idPay): array|bool
     {
+    
         try {
+            // $sql = 'UPDATE adms_pay SET busy = :busy, user_temp = :user_id, updated_at = :updated_at WHERE id = :id';
+
             $sql = 'UPDATE adms_pay SET busy = :busy, user_temp = :user_id, updated_at = :updated_at WHERE id = :id';
     
             $stmt = $this->getConnection()->prepare($sql);
@@ -294,7 +297,7 @@ class PayRepository extends DbConnection
     public function clearUser(int $id): bool
     {
         try {
-            $sql = 'UPDATE adms_pay SET busy = :busy, user_temp = :user_id, updated_at = :updated_at WHERE id = :id';
+            $sql = 'UPDATE adms_pay SET busy = :busy, user_temp = :user_id, updated_at = :updated_at WHERE user_temp = :id';
     
             $stmt = $this->getConnection()->prepare($sql);
     
@@ -314,7 +317,7 @@ class PayRepository extends DbConnection
         }
     }
     
-    public function getUserTemp(int $id): bool
+    public function getUserTemp(int $id): array|bool
     {
         try {
             $sql = 'SELECT user_temp FROM adms_pay WHERE id = :id';
@@ -329,6 +332,20 @@ class PayRepository extends DbConnection
             return false;
         }
     }
+
+    public function clearUserTemp(int $userId): bool
+{
+    try {
+        $sql = 'UPDATE adms_pay SET busy = 0, user_temp = NULL WHERE user_temp = :user_id';
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->bindParam(':user_id', $userId, \PDO::PARAM_INT);
+
+        return $stmt->execute();
+    } catch (Exception $e) {
+        GenerateLog::generateLog("error", "Erro ao liberar status busy.", ['user_id' => $userId, 'error' => $e->getMessage()]);
+        return false;
+    }
+}
 
 
     /**
@@ -435,14 +452,13 @@ class PayRepository extends DbConnection
      */
     public function createPartialValue(array $dataForm, array $data): bool|int
     {
-        var_dump($data);
+        // var_dump($data);
 
         try {
             $sql = 'INSERT INTO adms_partial_value (account_id, type, partial_value, user_id, created_at)
                     VALUES (:account_id, :type, :partial_value, :user_id, :created_at)';
 
-            var_dump($sql);
-
+            // var_dump($sql);
 
             $stmt = $this->getConnection()->prepare($sql);
 
@@ -463,7 +479,7 @@ class PayRepository extends DbConnection
             return $this->getConnection()->lastInsertId();
         } catch (Exception $e) {
             GenerateLog::generateLog("error", "Conta não cadastrada.", ['account_id' => $data['account_id'], 'error' => $e->getMessage()]);
-            var_dump($e->getMessage());
+            // var_dump($e->getMessage());
             return false;
         }
     }
@@ -476,7 +492,7 @@ class PayRepository extends DbConnection
      */
     public function createMovement(array $dataForm, array $data): bool|int
     {
-        var_dump($data);
+        // var_dump($data);
         try {
             $sql = 'INSERT INTO adms_movements (type, movement, description, movement_value, user_id, bank_id, method_id, movement_id, created_at)
                     VALUES (:type, :movement,  :description, :movement_value, :user_id,:bank_id, :method_id, :movement_id, :created_at)';

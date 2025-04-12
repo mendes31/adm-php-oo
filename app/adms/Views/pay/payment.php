@@ -187,15 +187,16 @@ use App\adms\Helpers\CSRFHelper;
 </script>
 
 <script>
-//     window.addEventListener('beforeunload', function () {
-//         const id = document.getElementById('id')?.value;
-//         if (id) {
-//             navigator.sendBeacon("<?php echo $_ENV['URL_ADM']; ?>clear-busy-pay/" + id);
-//         }
-//     });
-// </script>
+    //     window.addEventListener('beforeunload', function () {
+    //         const id = document.getElementById('id')?.value;
+    //         if (id) {
+    //             navigator.sendBeacon("<?php echo $_ENV['URL_ADM']; ?>clear-busy-pay/" + id);
+    //         }
+    //     });
+    // 
+</script>
 
-<script>
+<!-- <script>
     function sendClearBusy() {
         const id = document.getElementById('id_pay')?.value;
         if (id) {
@@ -204,4 +205,4 @@ use App\adms\Helpers\CSRFHelper;
     }
 
     window.addEventListener('pagehide', sendClearBusy);
-</script>
+</script> -->

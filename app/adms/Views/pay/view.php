@@ -279,8 +279,8 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
     });
 </script>
 
-<script>
+<!-- <script>
     window.addEventListener('beforeunload', function () {
         navigator.sendBeacon("<?php echo $_ENV['URL_ADM']; ?>clear-busy-pay/<?php echo $this->data['pay']['id_pay']; ?>");
     });
-</script>
+</script> -->

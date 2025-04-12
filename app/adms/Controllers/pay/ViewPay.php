@@ -41,6 +41,7 @@ class ViewPay
      */
     public function index(int|string $id): void
     {
+
         // Validar se o ID é um valor inteiro
         if (!(int) $id) {
             // Registrar o erro e redirecionar
@@ -66,12 +67,6 @@ class ViewPay
             header("Location: {$_ENV['URL_ADM']}list-payments");
             return;
         }
-
-      
-
-        // Atualizar o campo busy e user_temp
-        $payRepo = new PayRepository();
-        $payRepo->updateBusy((int) $id, $_SESSION['user_id']); // ou use o ID de usuário que tiver
 
         // Registrar a visualização do Conta à Pagar
         GenerateLog::generateLog("info", "Visualizado o Conta à Pagar.", ['id' => (int) $id]);
@@ -101,6 +96,12 @@ class ViewPay
             $insertLogs = new LogsRepository();
             $insertLogs->insertLogs($dataLogs);
         }
+
+              
+
+        // Atualizar o campo busy e user_temp
+        $payRepo = new PayRepository();
+        $payRepo->updateBusy((int) $id, $_SESSION['user_id']); // ou use o ID de usuário que tiver
 
         // Carregar a VIEW
         $loadView = new LoadViewService("adms/Views/pay/view", $this->data);

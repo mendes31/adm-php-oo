@@ -34,7 +34,8 @@ use App\adms\Helpers\CSRFHelper;
                     echo "<a href='{$_ENV['URL_ADM']}list-payments' class='btn btn-info btn-sm me-1 mb-1'><i class='fa-solid fa-list'></i> Listar</a> ";
                 }
 
-                $id = ($this->data['form']['id'] ?? '');
+               
+                $id = ($this->data['form']['id_pay'] ?? '');
                 if (in_array('ViewPay', $this->data['buttonPermission'])) {
                     echo "<a href='{$_ENV['URL_ADM']}view-pay/$id' class='btn btn-primary btn-sm me-1 mb-1'><i class='fa-regular fa-eye'></i> Visualizar</a> ";
                 }
@@ -253,11 +254,11 @@ use App\adms\Helpers\CSRFHelper;
 
 </div>
 
-<script>
+<!-- <script>
     window.addEventListener('beforeunload', function () {
         const id = document.getElementById('id')?.value;
         if (id) {
             navigator.sendBeacon("<?php echo $_ENV['URL_ADM']; ?>clear-busy-pay/" + id);
         }
     });
-</script>
+</script> -->

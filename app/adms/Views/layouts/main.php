@@ -1,3 +1,7 @@
+<?php
+// Supondo que o .env já esteja carregado via alguma lib tipo vlucas/phpdotenv
+$urlAdm = getenv('URL_ADM');
+?>
 <!DOCTYPE html>
 <html lang="<?php echo $_ENV['APP_LOCALE']; ?>">
 
@@ -21,7 +25,9 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-    
+ 
+
+
 
 
     <!-- JQ por CDN -->
@@ -29,6 +35,11 @@
 
     <!-- JQuery local -->
     <script src="<?php echo $_ENV['URL_ADM'] ?>public/adms/jquery/jquery-3.7.1.min.js"></script>
+
+
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
 
 
