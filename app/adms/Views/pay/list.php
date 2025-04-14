@@ -126,7 +126,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
                                 <td class="d-none d-md-table-cell"><?php echo !empty($expected_date) ? date("d-m-Y", strtotime($expected_date)) : 'N/A'; ?></td>
                                 <td class="d-none d-md-table-cell"><?php echo $name_apm; ?></td>
                                 <td class="d-none d-md-table-cell"><?php echo $bank_name; ?></td>
-                                <td class="d-none d-md-table-cell text-center" data-status>
+                                <td class="d-none d-md-table-cell text" data-status>
                                     <?php if ($busy == 1): ?>
                                         <span class="text-danger" title="Registro ocupado">
                                             <i class="fa-solid fa-lock"></i> Ocupado
