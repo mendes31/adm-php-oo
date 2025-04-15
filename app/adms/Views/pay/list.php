@@ -126,7 +126,7 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
                                 <td class="d-none d-md-table-cell"><?php echo !empty($expected_date) ? date("d-m-Y", strtotime($expected_date)) : 'N/A'; ?></td>
                                 <td class="d-none d-md-table-cell"><?php echo $name_apm; ?></td>
                                 <td class="d-none d-md-table-cell"><?php echo $bank_name; ?></td>
-                                <td class="d-none d-md-table-cell text" data-status>
+                                <!-- <td class="d-none d-md-table-cell text" data-status>
                                     <?php if ($busy == 1): ?>
                                         <span class="text-danger" title="Registro ocupado">
                                             <i class="fa-solid fa-lock"></i> Ocupado
@@ -136,7 +136,19 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
                                             <i class="fa-solid fa-unlock"></i> Livre
                                         </span>
                                     <?php endif; ?>
+                                </td> -->
+                                <td class="d-none d-md-table-cell text" data-status>
+                                    <?php if ($busy == 1): ?>
+                                        <span class="text-danger" title="Registro ocupado por:<?= $name_user_temp ?? 'usuário desconhecido' ?>">
+                                            <i class="fa-solid fa-lock"></i> Ocupado
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="text-success" title="Registro livre">
+                                            <i class="fa-solid fa-unlock"></i> Livre
+                                        </span>
+                                    <?php endif; ?>
                                 </td>
+
                                 <td class="text-center">
                                     <div class="tabela-acoes">
 
@@ -248,23 +260,30 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
 </div>
 
 <!-- Plugin para ordenação dd-mm-yyyy -->
+
 <script>
-    jQuery.extend(jQuery.fn.dataTable.ext.type.order, {
-        "date-eu-pre": function(date) {
-            if (!date) return 0;
-            const eu_date = date.split('-');
-            return new Date(`${eu_date[2]}-${eu_date[1]}-${eu_date[0]}`).getTime();
-        },
-        "date-eu-asc": function(a, b) {
-            return a - b;
-        },
-        "date-eu-desc": function(a, b) {
-            return b - a;
+    $(document).ready(function() {
+        if (jQuery.fn.dataTable) {
+            jQuery.extend(jQuery.fn.dataTable.ext.type.order, {
+                "date-eu-pre": function(date) {
+                    if (!date) return 0;
+                    const eu_date = date.split('-');
+                    return new Date(`${eu_date[2]}-${eu_date[1]}-${eu_date[0]}`).getTime();
+                },
+                "date-eu-asc": function(a, b) {
+                    return a - b;
+                },
+                "date-eu-desc": function(a, b) {
+                    return b - a;
+                }
+            });
+        } else {
+            console.error("DataTables não está carregado no momento da extensão.");
         }
     });
 </script>
 
-
+<!-- Inicialização da DataTable: Depois da extensão, você inicializa a tabela: -->
 <script type="text/javascript">
     $(document).ready(function() {
         console.log('$.fn.dataTable:', $.fn.dataTable);
@@ -359,6 +378,8 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
     });
 </script>
 
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -368,61 +389,213 @@ $csrf_token = CSRFHelper::generateCSRFToken('form_delete_pay');
     });
 </script>
 
-
 <script>
+    // Definindo a URL usando a variável PHP
+    const URL_ADM = "<?= $urlAdm ?>";
+    console.log('URL da API:', URL_ADM);
+
+    // Função auxiliar para (re)inicializar um tooltip
+    function atualizarTooltip(elemento) {
+        if (!elemento) return;
+        const antigo = bootstrap.Tooltip.getInstance(elemento);
+        if (antigo) antigo.dispose();
+        new bootstrap.Tooltip(elemento);
+    }
+
+    // Função para verificar os pagamentos
+    async function verificarPagamentos() {
+        try {
+            const response = await fetch(`${URL_ADM}get-payments-status`, {
+                cache: "no-store" // evita resposta cacheada
+            });
+
+            const text = await response.text();
+            console.log('Resposta da API:', text);
+
+            // Remove o BOM se existir
+            const cleanedText = text.replace(/^\uFEFF/, '');
+
+            try {
+                const data = JSON.parse(cleanedText);
+                console.log('Status dos pagamentos:', data);
+                data.forEach(payment => {
+                    console.log('Objeto payment:', payment);
+                    console.log('payment.id_pay:', payment.id_pay);
+                    console.log('payment.name_user_temp:', payment.name_user_temp);
+
+                    if (payment && payment.ext) {
+                        console.log('Propriedade ext:', payment.ext);
+                    } else {
+                        console.log('A propriedade "ext" não está presente ou payment é undefined');
+                    }
+
+                    const row = document.getElementById(`linha-${payment.id_pay}`);
+                    const statusCell = row?.querySelector('td[data-status]');
+
+                    if (statusCell) {
+                        const actionButtons = row.querySelectorAll('button, a.btn');
+                        let novoStatusHTML;
+
+                        if (payment.busy == 1) {
+                            novoStatusHTML = `<span class="text-danger" title="Registro ocupado por: ${payment.name_user_temp ?? 'usuário desconhecido'}">
+                                <i class="fa-solid fa-lock"></i> Ocupado
+                            </span>`;
+
+                            actionButtons.forEach(btn => {
+                                btn.setAttribute('disabled', true);
+                                btn.style.pointerEvents = 'none';
+                                btn.style.opacity = '0.6';
+                            });
+                        } else {
+                            novoStatusHTML = `<span class="text-success" title="Registro livre">
+                                <i class="fa-solid fa-unlock"></i> Livre
+                            </span>`;
+
+                            actionButtons.forEach(btn => {
+                                btn.removeAttribute('disabled');
+                                btn.style.pointerEvents = 'auto';
+                                btn.style.opacity = '1';
+                            });
+                        }
+
+                        // Remove tooltip antigo
+                        const spanAntigo = statusCell.querySelector('span');
+                        if (spanAntigo) {
+                            const oldTooltip = bootstrap.Tooltip.getInstance(spanAntigo);
+                            if (oldTooltip) oldTooltip.dispose();
+                        }
+
+                        // Atualiza o HTML do status
+                        statusCell.innerHTML = novoStatusHTML;
+
+                        // Reativa tooltip no novo span
+                        const novoSpan = statusCell.querySelector('span');
+                        atualizarTooltip(novoSpan);
+                    }
+                });
+
+            } catch (e) {
+                console.error('Erro ao interpretar JSON:', e);
+                console.log('Resposta bruta:', cleanedText);
+            }
+
+        } catch (error) {
+            console.error('Erro ao buscar status de pagamentos:', error);
+        }
+    }
+
+    // Atualiza os pagamentos a cada 3 segundos
+    setInterval(verificarPagamentos, 1000);
+</script>
+
+
+
+<!-- <script>
     // Definindo a URL usando a variável PHP
     const URL_ADM = "<?= $urlAdm ?>";
     console.log('URL da API:', URL_ADM);
 
     // Função para verificar os pagamentos
     async function verificarPagamentos() {
-    try {
-        const response = await fetch(`${URL_ADM}/get-payments-status`);
-        const text = await response.text();
-
-        // Verifique a resposta antes de tentar fazer o JSON.parse
-        console.log('Resposta da API:', text);
-
         try {
-            const data = JSON.parse(text);
-            console.log('Status dos pagamentos:', data);
-
-            // Adicione a verificação aqui
-            data.forEach(payment => {
-                console.log('Objeto payment:', payment); // Verifique o que está sendo retornado
-                if (payment && payment.ext) {
-                    const extValue = payment.ext;
-                    // Faça algo com a propriedade ext
-                    console.log('Propriedade ext:', extValue);
-                } else {
-                    console.log('A propriedade "ext" não está presente ou payment é undefined');
-                }
-
-                // Continuar com a lógica de atualização dos status
-                const row = document.getElementById(`linha-${payment.id_pay}`);
-                const statusCell = row?.querySelector('td[data-status]');
-                if (statusCell) {
-                    if (payment.busy == 1) {
-                        statusCell.innerHTML = '<span class="text-danger" title="Registro ocupado"><i class="fa-solid fa-lock"></i> Ocupado</span>';
-                    } else {
-                        statusCell.innerHTML = '<span class="text-success" title="Registro livre"><i class="fa-solid fa-unlock"></i> Livre</span>';
-                    }
-                }
+            const response = await fetch(`${URL_ADM}get-payments-status`, {
+                cache: "no-store" // evita resposta cacheada
             });
+            console.log(response);
+            const text = await response.text();
+            console.log(text);
 
-        } catch (e) {
-            console.error('Resposta não é JSON válido:', text);
+            // Verifique a resposta antes de tentar fazer o JSON.parse
+            console.log('Resposta da API:', text);
+
+            // Remove o BOM se existir
+            const cleanedText = text.replace(/^\uFEFF/, '');
+
+
+            try {
+                const data = JSON.parse(text);
+                console.log('Status dos pagamentos:', data);
+
+                // Adicione a verificação aqui
+                data.forEach(payment => {
+                    console.log('Objeto payment:', payment); // Verifique o que está sendo retornado
+                    if (payment && payment.ext) {
+                        const extValue = payment.ext;
+                        // Faça algo com a propriedade ext
+                        console.log('Propriedade ext:', extValue);
+                    } else {
+                        console.log('A propriedade "ext" não está presente ou payment é undefined');
+                    }
+
+                    // Continuar com a lógica de atualização dos status
+                    // const row = document.getElementById(`linha-${payment.id_pay}`);
+                    // const statusCell = row?.querySelector('td[data-status]');
+                    // if (statusCell) {
+                    //     if (payment.busy == 1) {
+                    //         statusCell.innerHTML = '<span class="text-danger" title="Registro ocupado"><i class="fa-solid fa-lock"></i> Ocupado</span>';
+                    //     } else {
+                    //         statusCell.innerHTML = '<span class="text-success" title="Registro livre"><i class="fa-solid fa-unlock"></i> Livre</span>';
+                    //     }
+                    // }
+                    // Dentro do forEach do verificarPagamentos
+                    const row = document.getElementById(`linha-${payment.id_pay}`);
+                    const statusCell = row?.querySelector('td[data-status]');
+
+                    if (statusCell) {
+                        const actionButtons = row.querySelectorAll('button, a.btn');
+
+                        if (payment.busy == 1) {
+                            statusCell.innerHTML = '<span class="text-danger" title="Registro ocupado por: <?= $user_temp ?? 'usuário desconhecido' ?>"><i class="fa-solid fa-lock"></i> Ocupado</span>';
+
+                            // Desativa os botões
+                            actionButtons.forEach(btn => {
+                                btn.setAttribute('disabled', true);
+                                btn.style.pointerEvents = 'none';
+                                btn.style.opacity = '0.6';
+                            });
+                        } else {
+                            statusCell.innerHTML = '<span class="text-success" title="Registro livre"><i class="fa-solid fa-unlock"></i> Livre</span>';
+
+                            // Reativa os botões
+                            actionButtons.forEach(btn => {
+                                btn.removeAttribute('disabled');
+                                btn.style.pointerEvents = 'auto';
+                                btn.style.opacity = '1';
+                            });
+                        }
+                    }
+                });
+
+            } catch (e) {
+                console.error('Resposta não é JSON válido:', text);
+            }
+
+        } catch (error) {
+            console.error('Erro ao buscar status de pagamentos:', error);
         }
-
-    } catch (error) {
-        console.error('Erro ao buscar status de pagamentos:', error);
     }
-}
 
 
     // Atualiza os pagamentos a cada 3 segundos
     setInterval(verificarPagamentos, 3000);
-</script>
+</script> -->
+
+<!-- <script>
+    $(document).ready(function () {
+        $('#tabela tbody tr').each(function () {
+            const statusText = $(this).find('td[data-status]').text().trim();
+
+            if (statusText.includes('Ocupado')) {
+                // Desabilita todos os botões dentro da linha
+                $(this).find('button, a.btn').each(function () {
+                    $(this).attr('disabled', true);
+                    $(this).css('pointer-events', 'none'); // Para links
+                    $(this).css('opacity', '0.6'); // Deixa o botão com aparência desabilitada
+                });
+            }
+        });
+    });
+</script> -->
 
 
 

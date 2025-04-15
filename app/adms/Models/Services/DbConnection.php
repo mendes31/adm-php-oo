@@ -45,6 +45,7 @@ abstract class DbConnection
 
                 // Conexão sem a porta
                 $this->connect = new PDO("mysql:host={$_ENV['DB_HOST']};dbname=" . $_ENV['DB_NAME'], $_ENV['DB_USER'], $_ENV['DB_PASS']);
+                
 
                 // echo "Conexão realizada com sucesso!<br>";
             }

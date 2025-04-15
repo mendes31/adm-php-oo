@@ -38,11 +38,6 @@ class ListPayments
      */
     public function index(string|int $page = 1): void
     {
-
-        // Liberar o "busy" de todas as contas do usuário atual ao acessar a listagem de pagamentos
-        // $payRepo = new PayRepository();
-        // $payRepo->clearBusy($_SESSION['user_id']); // Liberar o "busy" do usuário
-
         // Receber os dados do formulário
         $this->data['form'] = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 

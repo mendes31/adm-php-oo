@@ -58,21 +58,45 @@ class PaymentsRepository extends DbConnection
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getPaymentsStatus(?int $id = null, int $limit = 100): array
-    {
-        if ($id) {
-            $sql = 'SELECT id AS id_pay, busy FROM adms_pay WHERE id = :id LIMIT 1';
-            $stmt = $this->getConnection()->prepare($sql);
-            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        } else {
-            $sql = 'SELECT id AS id_pay, busy FROM adms_pay ORDER BY updated_at DESC LIMIT :limit';
-            $stmt = $this->getConnection()->prepare($sql);
-            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-        }
+    // public function getPaymentsStatus(?int $id = null, int $limit = 100): array
+    // {
+    //     if ($id) {
+    //         $sql = 'SELECT id AS id_pay, busy FROM adms_pay WHERE id = :id LIMIT 1';
+    //         $stmt = $this->getConnection()->prepare($sql);
+    //         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    //     } else {
+    //         $sql = 'SELECT id AS id_pay, busy FROM adms_pay ORDER BY updated_at DESC LIMIT :limit';
+    //         $stmt = $this->getConnection()->prepare($sql);
+    //         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    //     }
     
-        $stmt->execute();
-        return $id ? $stmt->fetch(PDO::FETCH_ASSOC) : $stmt->fetchAll(PDO::FETCH_ASSOC);
+    //     $stmt->execute();
+    //     return $id ? $stmt->fetch(PDO::FETCH_ASSOC) : $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // }
+
+    public function getPaymentsStatus(?int $id = null, int $limit = 100): array
+{
+    if ($id) {
+        $sql = 'SELECT p.id AS id_pay, p.busy as busy, u.name AS name_user_temp
+                FROM adms_pay p
+                LEFT JOIN adms_users u ON u.id = p.user_temp
+                WHERE p.id = :id
+                LIMIT 1';
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    } else {
+        $sql = 'SELECT p.id AS id_pay, p.busy, u.name AS name_user_temp
+                FROM adms_pay p
+                LEFT JOIN adms_users u ON u.id = p.user_temp
+                ORDER BY p.updated_at DESC
+                LIMIT :limit';
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
     }
+
+    $stmt->execute();
+    return $id ? $stmt->fetch(PDO::FETCH_ASSOC) : $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 
 
